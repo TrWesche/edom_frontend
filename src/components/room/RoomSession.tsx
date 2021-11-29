@@ -1,27 +1,35 @@
+import {useCallback, useEffect, useLayoutEffect, useState, useReducer} from "react";
+import useSignalChannel from "./useSignalChannel";
+import useRTCP from "./useRTCPeer";
+
+
 import {
     Grid,
     Typography
 } from "@mui/material"
+import { useParams } from "react-router-dom"
+import { randomInt } from "crypto";
 
+type RoomParams = {
+    roomID: string;
+};
 
 
 const RoomSession = () => {
+    const params = useParams();
+    // const params = useParams<keyof RoomParams>() as RoomParams;
+    // TODO: This will need to be replaced with the UUID coming from the backend or the user information from authentication
+    // const userID = randomInt(100000).toString();
+    const userID = "test";
+
+    const { sigChannel, msgContents, sendMessage } = useSignalChannel(userID, params.roomID || "error");
+    const { rtcp, createDataChannel } = useRTCP(sigChannel, sendMessage, userID, params.roomID || "error");
+
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography>This is where the Rooms will live!</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Typography>Tag Room 1</Typography>
-            </Grid>
-            <Grid item xs={6} md={6}>
-                <Typography>Experimentation Room 1</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Typography>Capture the Flag Room 1</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Typography>Racing Room 1</Typography>
+                <Typography>This will be a room!</Typography>
             </Grid>
         </Grid>
     )

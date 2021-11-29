@@ -11,3 +11,6 @@ https://axios-http.com/docs/req_config
 
 https://www.coolgenerator.com/ascii-text-generator
 -- Use "Standard"
+
+
+https://dev.to/itays123/using-websockets-with-react-js-the-right-way-no-library-needed-15d0
