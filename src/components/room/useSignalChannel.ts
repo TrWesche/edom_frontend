@@ -1,121 +1,60 @@
 // https://medium.com/swlh/build-a-real-time-chat-app-with-react-hooks-and-socket-io-4859c9afecb0
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 // import ws from "ws";
 
 import { SIGNAL_SERVER_WS_URL } from "../../config/config";
-import * as roomEvents from "./roomEventDictionary.json"
+import { SigChMessageProps } from "./RoomSession";
 
-// interface SendMessageProps {
+const useSignalChannel = (
+        srcUID: string | undefined,
+        roomID: string | undefined, 
+        setSigChannelState: React.Dispatch<string>,
+        sigChMsgQueue: Array<SigChMessageProps>,
+        setSigChMsgQueue: React.Dispatch<Array<SigChMessageProps>>
+    ) => {
 
-// }
-
-
-const useSignalChannel = (srcUID: string, roomID: string, dependencies: Array<string> = []) => {
-    let msgContents;
-    const sigChRef = useRef<WebSocket>();
+    const sigChRef = useRef<WebSocket>(new WebSocket(SIGNAL_SERVER_WS_URL));
 
     useEffect(() => {
-        sigChRef.current = new WebSocket(SIGNAL_SERVER_WS_URL);
+        // sigChRef.current = new WebSocket(SIGNAL_SERVER_WS_URL);
 
-        sigChRef.current.addEventListener("open", () => {
-            console.log("Signal Channel Opened");
+        sigChRef.current.onopen = ((ev: Event) => {
+            setSigChannelState("open");
         });
 
-        sigChRef.current.addEventListener("close", (ev: CloseEvent) => {
-            console.log("Signaling Channel Closed");
-            console.log(ev.code);
+        sigChRef.current.onclose = ((ev: CloseEvent) => {
+            console.log(`Signaling Channel Closed.  Code: ${ev.code}`);
             console.log(ev.reason);
-        });
+            setSigChannelState("close");
+        })
 
-        sigChRef.current.addEventListener("error", (ev: Event) => {
+        sigChRef.current.onerror = ((ev: Event) => {
             console.log("Signaling Channel Error");
+            setSigChannelState("error");
         });
 
 
-        sigChRef.current.addEventListener("message", (ev: MessageEvent) => {
-            msgContents = JSON.parse(ev.data);
-            console.log(msgContents);
-    
-            switch (msgContents.type) {
-                case roomEvents.Signal.RecievedChannelEntered:
-                    console.log("Someone Has Entered the Channel");
-                    break;
-                case roomEvents.Signal.RecievedChannelExited:
-                    console.log("Someone Has Left the Channel");
-                    break;
-                case roomEvents.Signal.RecievedSDPOffer:
-                    console.log("SDP Offer Received From Channel");
-                    break;
-                case roomEvents.Signal.RecievedSDPAnswer:
-                    console.log("SDP Answer Received From Channel");
-                    break;
-                case roomEvents.Signal.ReceivedICECandidate:
-                    console.log("ICE Candidate Received From Channel");
-                    break;
-                default:
-                    console.log("Non-Actionable Message Type Received");
+        sigChRef.current.onmessage = ((ev: MessageEvent) => {
+            try {
+                const message = JSON.parse(ev.data);
+                setSigChMsgQueue([...sigChMsgQueue, message]);
+            } catch (error) {
+                console.log("Could not parse event, invalid JSON")
             }
-            console.log(ev.data);
         });
-
-        // sigChRef.current = new ws(SIGNAL_SERVER_WS_URL);
-        
-        // const temp = new WebSocket(SIGNAL_SERVER_WS_URL)
-        // temp!.onopen((e) => {
-        //     console.log("test")
-        // })
-
-        
-        // sigChRef.current?.on("open", () => {
-        //     console.log("Signaling Channel Opened");
-        //     // TODO: Send channel entered message here?
-        // });
-    
-        // sigChRef.current?.on("close", (code, reason) => {
-        //     console.log("Signaling Channel Closed");
-        //     console.log(code);
-        //     console.log(reason);
-        // });
-    
-        // sigChRef.current?.on("error", () => {
-        //     console.log("Signaling Channel Error");
-        // });
-    
-        // sigChRef.current?.on("message", (data: string) => {
-        //     msgContents = JSON.parse(data);
-        //     console.log(msgContents);
-    
-        //     switch (msgContents.type) {
-        //         case roomEvents.Signal.RecievedChannelEntered:
-        //             console.log("Someone Has Entered the Channel");
-        //             break;
-        //         case roomEvents.Signal.RecievedChannelExited:
-        //             console.log("Someone Has Left the Channel");
-        //             break;
-        //         case roomEvents.Signal.RecievedSDPOffer:
-        //             console.log("SDP Offer Received From Channel");
-        //             break;
-        //         case roomEvents.Signal.RecievedSDPAnswer:
-        //             console.log("SDP Answer Received From Channel");
-        //             break;
-        //         case roomEvents.Signal.ReceivedICECandidate:
-        //             console.log("ICE Candidate Received From Channel");
-        //             break;
-        //         default:
-        //             console.log("Non-Actionable Message Type Received");
-        //     }
-        //     console.log(data);
-        // });
-    }, [ roomID, ...dependencies ]);
+    }, [ srcUID, roomID, setSigChannelState, setSigChMsgQueue, sigChMsgQueue ]);
     // TODO: Better Define Dependencies to Avoid Spread Operator
     
 
     const sendMessage = (message: Object) => {
+        console.log("Sending Message");
+        console.log(message);
+
         sigChRef.current?.send(JSON.stringify(message));
     };
 
-    return {sigChannel: sigChRef.current, msgContents, sendMessage};
+    return {sigChannel: sigChRef.current, sendMessage};
 };
 
 export default useSignalChannel;
