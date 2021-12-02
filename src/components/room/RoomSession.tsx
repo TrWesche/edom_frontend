@@ -41,30 +41,20 @@ const RoomSession = () => {
     const [userData, setUserData] = useState<UserProps>({userID: undefined, userName: undefined});
     const [rtcpState, setRTCPState] = useState("waiting");
     const [sigChannelState, setSigChannelState] = useState("initializing");
+
+    const [rtcpEventQueue, setRTCPEventQueue] = useState(); // TODO: Backup incoming channel events
     const [sigChMsgQueue, setSigChMsgQueue] = useState<Array<SigChMessageProps>>([]);
 
-
-    // const params = useParams<keyof RoomParams>() as RoomParams;
-    // TODO: This will need to be replaced with the UUID coming from the backend or the user information from authentication
-    // const userID = randomInt(100000).toString();
-    
-    // const getUser = () => {
-    //     const response = await fetch(`${SIGNAL_SERVER_API_URL}/room/${params.roomID}`);
-    //     const data = await response.json();
-    //     return data;
-    // };
+    // Get UserID on Room Entry -- Will need to be modified for Context later
     useEffect(() => {
         if (userData.userID === undefined) {
             const getUserID = async ()  => {
-                // console.log(`${SIGNAL_SERVER_API_URL}room/${params.roomID}/newUser`);
                 try {
                     const response = await fetch(`${SIGNAL_SERVER_API_URL}room/${params.roomID}/newUser`, {
                         method: 'GET',
                         mode: 'cors'
                     });
-                    // console.log(response);
                     const jsonData = await response.json();
-                    console.log(jsonData.userID);
                     setUserData({...userData, userID: jsonData.userID})
                 } catch (error) {
                     console.log(error);
@@ -75,38 +65,39 @@ const RoomSession = () => {
     }, [])
 
 
-    // const userID = "test";
-    // const userID = getUser();
-
     const { sigChannel, sendMessage } = useSignalChannel(
             userData.userID, params.roomID || "error", 
             setSigChannelState,
             sigChMsgQueue,
             setSigChMsgQueue);
 
+    const { rtcp, 
+            iceCandidate, 
+            connectionState, 
+            createDataChannel, 
+            createOffer, 
+            createAnswer, 
+            addTracks, 
+            removeTracks } = useRTCP(sigChannel, userData.userID, params.roomID);
 
-    const { rtcp, createDataChannel, createAnswer, createOffer } = useRTCP(
-            sigChannel, 
-            sendMessage, 
-            userData.userID, 
-            params.roomID || "error", 
-            sigChannelState, setRTCPState);
 
     // Handle Incoming Signaling Channel Messages
     useEffect(() => {
         const message = sigChMsgQueue.shift();
         if (!message || sigChannel.readyState !== sigChannel?.OPEN) { return };
+        
 
         switch (message.type) {
             case msgTypes.incoming.s2cChannelEnter:
                 console.log("Someone Has Entered the Channel");
-                if (rtcp) {
+                if (rtcp && userData.userID) {
                     const handleIncUser = async () => {
-                        const rtcpOffer = await createOffer(rtcp);
+                        const rtcpOffer = await createOffer();
                         sendMessage({
                             type: msgTypes.outgoing.c2sSDPOffer,
                             roomID: params.roomID,
                             srcUID: userData.userID,
+                            trgtUID: message.srcUID,
                             offer: rtcpOffer
                         });
                     };
@@ -120,13 +111,14 @@ const RoomSession = () => {
                 break;
             case msgTypes.incoming.s2cSDPOffer:
                 console.log("SDP Offer Received From Channel");
-                if (rtcp) {
+                if (rtcp && userData.userID) {
                     const handleIncOffer = async () => {
-                        const rtcpAnswer = await createAnswer(rtcp);
+                        const rtcpAnswer = await createAnswer();
                         sendMessage({
-                            type: msgTypes.outgoing.c2sSDPOffer,
+                            type: msgTypes.outgoing.c2sSDPAnswer,
                             roomID: params.roomID,
                             srcUID: userData.userID,
+                            trgtUID: message.srcUID,
                             answer: rtcpAnswer
                         });
                     }
@@ -148,17 +140,35 @@ const RoomSession = () => {
 
 
     useEffect(() => {
-        if (sigChannel.readyState === sigChannel?.OPEN) {
+        if (sigChannelState === "open" && userData.userID) {
             sendMessage({
                 type: msgTypes.outgoing.c2sChannelEnter,
                 roomID: params.roomID,
                 srcUID: userData.userID
             }) 
         } else {
-            console.log(`Signaling Channel State: ${sigChannel?.readyState}`);
+            console.log(`Signaling Channel State: ${sigChannelState}`);
         };
-    }, [ sigChannelState ]);
+    }, [ sigChannelState, params.roomID, userData.userID ]);
+    // TODO: SendMessage probably needs to go into a Callback to address this react error propertly
 
+    useEffect(() => {
+        if (sigChannelState === "open" && userData.userID && iceCandidate) {
+            console.log("Sending New ICE Candidate");
+            const payload = {
+                type: msgTypes.outgoing.c2sICECandidate,
+                srcUID: userData.userID,
+                roomID: params.roomID,
+                candidate: iceCandidate
+            };
+    
+            sendMessage(payload);
+        } else {
+            console.log("ICECandidate - Awaiting Signaling Channel")
+        }
+        
+    }, [ iceCandidate, sigChannelState, params.roomID, userData.userID ])
+    // TODO: SendMessage probably needs to go into a Callback to address this react error propertly
 
     return (
         <Grid container spacing={2}>
