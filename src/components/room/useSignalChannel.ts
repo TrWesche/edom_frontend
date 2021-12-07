@@ -44,7 +44,6 @@ const useSignalChannel = (
             }
         });
     }, [ srcUID, roomID, setSigChannelState, setSigChMsgQueue, sigChMsgQueue ]);
-    // TODO: Better Define Dependencies to Avoid Spread Operator
     
 
     const sendMessage = (message: Object) => {

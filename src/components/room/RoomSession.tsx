@@ -1,3 +1,6 @@
+// REMEMBER: To enable/disable getUserMedia on localhost
+//    - MS Edge: type "edge://flags/" in search bar, search flags for "Insecure origins treated as secure", add testing origin
+
 // https://blog.logrocket.com/creating-chat-application-with-webrtc/
 // https://github.com/jkithome/simple-webrtc-chat-app/blob/master/src/Chat.js
 
@@ -8,10 +11,13 @@ import * as msgTypes from "./_wrtcSigChMsgTypes.json";
 
 import {
     Grid,
-    Typography
+    Typography,
+    Card
 } from "@mui/material"
 import { useParams } from "react-router-dom"
 import { SIGNAL_SERVER_API_URL } from "../../config/config";
+import VideoPlayer from "./subcomponents/VideoPlayer";
+import RoomMenu from "./subcomponents/RoomMenu";
 
 
 export interface SigChMessageProps {
@@ -35,15 +41,40 @@ export interface UserProps {
     userName: string | undefined
 }
 
+interface MediaStreamSelectProps {
+    video: boolean,
+    audio: boolean
+}
+
 const RoomSession = () => {
     const params = useParams();
 
     const [userData, setUserData] = useState<UserProps>({userID: undefined, userName: undefined});
-    const [rtcpState, setRTCPState] = useState("waiting");
-    const [sigChannelState, setSigChannelState] = useState("initializing");
+    const [mediaStream, setMediaStream] = useState<MediaStream>();
+    const [mediaStreamSelections, setMediaStreamSelections] = useState<MediaStreamSelectProps>({video: true, audio: true});
 
-    const [rtcpEventQueue, setRTCPEventQueue] = useState(); // TODO: Backup incoming channel events
+    const [sigChannelState, setSigChannelState] = useState("initializing");
     const [sigChMsgQueue, setSigChMsgQueue] = useState<Array<SigChMessageProps>>([]);
+
+    const [rtcpState, setRTCPState] = useState("waiting");
+    const [rtcpEventQueue, setRTCPEventQueue] = useState(); // TODO: Backup incoming channel events
+
+    useEffect(() => {
+        const handleGUM = async () => {
+            if (navigator.mediaDevices.getUserMedia) {
+                const localMedia = await navigator.mediaDevices.getUserMedia({
+                    video: mediaStreamSelections.video,
+                    audio: mediaStreamSelections.audio
+                });
+    
+                setMediaStream(localMedia);
+            } else {
+                console.log("Browser does not support getUserMedia.")
+            }
+        }
+        handleGUM();
+    }, [mediaStreamSelections]);
+
 
     // Get UserID on Room Entry -- Will need to be modified for Context later
     useEffect(() => {
@@ -76,7 +107,8 @@ const RoomSession = () => {
             connectionState, 
             createDataChannel, 
             createOffer, 
-            createAnswer, 
+            createAnswer,
+            addRemotePeer,
             addTracks, 
             removeTracks } = useRTCP(sigChannel, userData.userID, params.roomID);
 
@@ -111,9 +143,14 @@ const RoomSession = () => {
                 break;
             case msgTypes.incoming.s2cSDPOffer:
                 console.log("SDP Offer Received From Channel");
+                // console.log(rtcp, userData.userID);
                 if (rtcp && userData.userID) {
                     const handleIncOffer = async () => {
+                        // console.log("Adding Peer from Offer");
+                        await addRemotePeer(message.offer);
                         const rtcpAnswer = await createAnswer();
+                        console.log("Sending Answer");
+                        // console.log(rtcpAnswer);
                         sendMessage({
                             type: msgTypes.outgoing.c2sSDPAnswer,
                             roomID: params.roomID,
@@ -121,13 +158,18 @@ const RoomSession = () => {
                             trgtUID: message.srcUID,
                             answer: rtcpAnswer
                         });
-                    }
+                    };
                     handleIncOffer();
                 } else {
                     console.log("Cannot create RTCP Offer - RTCP Connection Not Initializied");
                 }
                 break;
             case msgTypes.incoming.s2cSDPAnswer:
+                const handleIncAnswer = async() => {
+                    console.log("Adding Peer from Answer");
+                    await addRemotePeer(message.answer);
+                };
+                handleIncAnswer();
                 console.log("SDP Answer Received From Channel");
                 break;
             case msgTypes.incoming.s2cICECandidate:
@@ -170,10 +212,26 @@ const RoomSession = () => {
     }, [ iceCandidate, sigChannelState, params.roomID, userData.userID ])
     // TODO: SendMessage probably needs to go into a Callback to address this react error propertly
 
+    // const renderLocalVideo = () => {
+    //     if (mediaStream === undefined) {
+    //         <Card>
+    //             <Typography>Awaiting Local Media</Typography>
+    //         </Card>
+    //     } else {
+    //         <VideoPlayer media={ mediaStream } />
+    //     }
+    // }
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography>This will be a room!</Typography>
+                <Typography variant="h5">Room Title</Typography>
+            </Grid>
+            <Grid item xs={12} md={8}>
+                <VideoPlayer media={mediaStream} remote={false} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <RoomMenu />
             </Grid>
         </Grid>
     )

@@ -1,7 +1,6 @@
 // https://medium.com/swlh/build-a-real-time-chat-app-with-react-hooks-and-socket-io-4859c9afecb0
 
 import { useEffect, useRef, useState } from "react";
-// import ws from "ws";
 
 import { RTCP_ICE_CONFIG } from "../../config/config";
 // import * as roomEvents from "./roomEventDictionary.json"
@@ -9,13 +8,9 @@ import { RTCP_ICE_CONFIG } from "../../config/config";
 
 const useRTCP = (
         sigChannel: WebSocket | undefined, 
-        // sendMessage: Function | undefined, 
         userID: string | undefined, 
         roomID: string | undefined,
-        // sigChannelState: string,
-        // setRTCPState: React.Dispatch<string>
     ) => {
-    // let msgContents;
     const [iceCandidate, setIceCandidate] = useState<RTCIceCandidate>();
     const [connectionState, setConnectionState] = useState<RTCPeerConnectionState>();
     
@@ -31,9 +26,6 @@ const useRTCP = (
         }
         else {
             console.log("Setting Up RTCPeer Connection");
-            // setRTCPState("initializing");
-            
-            // rtcpRef.current = new RTCPeerConnection(RTCP_ICE_CONFIG);
 
             rtcpRef.current.onicecandidate = ((ev: RTCPeerConnectionIceEvent) => {onIceCandidate(ev)});
             rtcpRef.current.onicecandidateerror = ((ev: Event) => {onIceCandidateError(ev)});
@@ -49,20 +41,6 @@ const useRTCP = (
             console.log("Local RTCPeer ICE Candidate Created Successfully");
             if (event.candidate) {
                 setIceCandidate(event.candidate);
-                console.log("Local ICE Candidate Saved");
-                // console.log("Sending New ICE Candidate");
-                // const payload = {
-                //     type: roomEvents.RTCP.RTCPICECandidate,
-                //     srcUID: userID,
-                //     roomID: roomID,
-                //     candidate: event.candidate
-                // }
-
-                // if (sendMessage) {
-                //     sendMessage(payload);
-                // } else {
-                //     console.log("RTCP Send Via Signal Channel Failed - Send Message Function Not Defined");
-                // }
             }
         };
     
@@ -74,27 +52,6 @@ const useRTCP = (
         function onConnectionState(event: Event) {
             console.log("RTCP Connection State Updated");
             setConnectionState(rtcpRef.current?.connectionState);
-
-            // if (rtcpRef.current?.connectionState === "new") {
-            //     setRTCPState("new");
-            //     const payload = {
-            //         type: roomEvents.Window.ChannelEntered,
-            //         roomId: roomID,
-            //         srcUID: userID
-            //     };
-
-            //     if (sendMessage) {
-            //         sendMessage(payload);
-            //     } else {
-            //         console.log("RTCP Send Via Signal Channel Failed - Send Message Function Not Defined");
-            //     }
-            // }
-
-
-            // if (rtcpRef.current?.connectionState === 'connected') {
-            //     setRTCPState("connected");
-            //     console.log("Connection Established");
-            // };
         };
 
 
@@ -167,13 +124,24 @@ const useRTCP = (
         }
     };
 
+    const addRemotePeer = async (offer: RTCSessionDescriptionInit | undefined) => {
+        if (offer) {
+            const remoteSDP = new RTCSessionDescription(offer);
+            await rtcpRef.current.setRemoteDescription(remoteSDP);
+            return;
+        } else {
+            console.log("Error: SDP Offer event received from channel without offer information.")
+        }
+    }
+
     return {
         rtcp: rtcpRef.current, 
         iceCandidate,
         connectionState,
         createDataChannel, 
         createOffer, 
-        createAnswer, 
+        createAnswer,
+        addRemotePeer,
         addTracks, 
         removeTracks
     };
