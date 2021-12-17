@@ -1,3 +1,9 @@
+https://github.com/huseyn0w/Fast-Connect/blob/main/client/src/pages/Call/Call.tsx
+
+https://www.html5rocks.com/en/tutorials/webrtc/basics/
+
+https://blog.twitch.tv/en/2015/12/18/twitch-engineering-an-introduction-and-overview-a23917b71a25/
+
 https://hashnode.com/post/how-to-use-axios-with-typescript-ckqi62md803s28us1baqyaj4u
 
 https://mui.com/components/app-bar/
