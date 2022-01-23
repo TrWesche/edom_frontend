@@ -4,7 +4,7 @@ import {
 } from "@mui/material"
 
 
-const MemberDirectory = () => {
+const UserDirectory = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -33,4 +33,4 @@ const MemberDirectory = () => {
     )
 };
 
-export default MemberDirectory;
+export default UserDirectory;

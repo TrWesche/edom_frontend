@@ -4,18 +4,18 @@ import {
 } from "@mui/material"
 
 
-const MemberAccountManagement = () => {
+const UserProfile = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography>This will be the Member Account Page!</Typography>
+                <Typography>This will be the Member Profile Page!</Typography>
                 <Typography>How Exciting!</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography>Member will be able to update their account and manager their robots from here!</Typography>
+                <Typography>Stuff about the individual member or the team!</Typography>
             </Grid>
         </Grid>
     )
 };
 
-export default MemberAccountManagement;
+export default UserProfile;

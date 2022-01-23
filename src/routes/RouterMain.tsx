@@ -6,16 +6,19 @@ import {
 import Home from "../components/home/Home"
 import Layout from "../components/layout/Layout";
 import PageNotFound from "../components/notfound/PageNotFound";
-import RobotDirectory from "../components/robot/RobotDirectory";
-import RobotProfile from "../components/robot/RobotProfile";
-import RobotSession from "../components/robot/RobotSession";
+import EquipDirectory from "../components/equip/EquipDirectory";
+import EquipProfile from "../components/equip/EquipProfile";
+import EquipSession from "../components/equip/EquipSession";
 import RoomDirectory from "../components/room/RoomDirectory";
 import RoomSession from "../components/room/RoomSession";
-import MemberAccountManagement from "../components/user/MemberAccountMgmt";
-import MemberDirectory from "../components/user/MemberDirectory";
-import MemberProfile from "../components/user/MemberProfile";
+import UserAccountManagement from "../components/user/UserAccountManagement";
+import UserDirectory from "../components/user/UserDirectory";
+import UserProfile from "../components/user/UserProfile";
 import UserLogin from "../components/user/UserLogin";
 import UserRegister from "../components/user/UserRegister";
+import GroupDirectory from "../components/group/GroupDirectory";
+import GroupProfile from "../components/group/GroupProfile";
+import GroupManagement from "../components/group/GroupManagement";
 
 
 const RouterMain = () => {
@@ -23,14 +26,18 @@ const RouterMain = () => {
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
-                <Route path="robo" element={< RobotDirectory />} />
-                <Route path="robo/:robotID" element={<RobotProfile />} />
-                <Route path="robo/:robotID/session" element={<RobotSession />} />
+                <Route path="equip" element={< EquipDirectory />} />
+                <Route path="equip/:equipID" element={<EquipProfile />} />
+                <Route path="equip/:equipID/session" element={<EquipSession />} />
 
-                <Route path="mem" element={<MemberDirectory />} />
-                <Route path="mem/:memberID" element={<MemberProfile />} />
-                <Route path="mem/uam" element={<MemberAccountManagement />} />
-
+                <Route path="users" element={<UserDirectory />} />
+                <Route path="users/:username" element={<UserProfile />} />
+                <Route path="uam" element={<UserAccountManagement />} />
+                
+                <Route path="groups" element={<GroupDirectory />} />
+                <Route path="groups/:groupID" element={<GroupProfile />} />
+                <Route path="groups/:groupID/gm" element={<GroupManagement />} />
+            
                 <Route path="room" element={<RoomDirectory />} />
                 <Route path="room/:roomID" element={<RoomSession />} />
 
