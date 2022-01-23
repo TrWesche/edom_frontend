@@ -1,5 +1,8 @@
 https://create-react-app.dev/docs/adding-typescript/
 
+# Form Event Types
+https://blaipratdesaba.com/react-typescript-cheatsheet-form-elements-and-onchange-event-types-8c2baf03230c
+
 
 # Getting Started with Create React App
 

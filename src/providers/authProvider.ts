@@ -51,8 +51,18 @@ const defaultContext: edomSessionToken = {
 //     ]
 // };
 
+const sessionStoreToken = (incomingToken: string) => {
+    // Verify Token Before Storing
+    const verifiedToken = jwt.verify(incomingToken, EDOM_PUBLIC_KEY);
+    if (typeof verifiedToken === "object") {
+        sessionStorage.setItem("authToken", incomingToken);
+    } else {
+        console.log("Token Verification Error");
+    }
+};
+
 const sessionTokenVerify = () => {
-    const unverifiedToken = sessionStorage.getItem("sid");
+    const unverifiedToken = sessionStorage.getItem("authToken");
 
     // Load Session Token
     if (unverifiedToken) {
@@ -74,6 +84,7 @@ const AuthContext = createContext(defaultContext);
 
 export {
     defaultContext,
+    sessionStoreToken,
     sessionTokenVerify,
     AuthContext
 };
