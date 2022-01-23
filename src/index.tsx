@@ -1,21 +1,38 @@
+// React Base Library Imports
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import { CssBaseline, ThemeProvider } from "@mui/material"
-import baseTheme from './styles/baseTheme';
-import RouterMain from './routes/RouterMain';
 
+// Styling Imports
+import { CssBaseline } from "@mui/material"
+
+// Application Import
+import App from './components/app';
+
+// Redux Imports
+import { Provider } from "react-redux";
+import { createStore, compose, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+
+// Redux Reducer Imports
+import reducerGlobal from './redux/reducers/reducerGlobal';
+
+
+const globalStore = createStore(
+  reducerGlobal,
+  compose(
+    applyMiddleware(thunk)
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+);
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <CssBaseline />
-    <BrowserRouter>
-      <ThemeProvider theme={baseTheme}> 
-        <RouterMain />
-      </ThemeProvider>
-    </ BrowserRouter>
+    <Provider store={globalStore}>
+      <CssBaseline />
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
