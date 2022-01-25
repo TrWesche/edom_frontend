@@ -17,12 +17,21 @@ import thunk from "redux-thunk";
 // Redux Reducer Imports
 import reducerGlobal from './redux/reducers/reducerGlobal';
 
+// -- FOR DEV ONLY, should be bypassed for Production / Testing
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const globalStore = createStore(
   reducerGlobal,
   compose(
-    applyMiddleware(thunk)
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    applyMiddleware(thunk),
+    composeEnhancers()
   )
 );
 

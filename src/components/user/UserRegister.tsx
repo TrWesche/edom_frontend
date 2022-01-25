@@ -28,7 +28,7 @@ import {
 // Typescript Interface Imports
 import { UserObjectProps } from '../../interfaces/globalInterfaces';
 import apiEDOM from '../../utils/apiEDOM';
-import { sessionStoreToken } from '../../providers/authProvider';
+import { useAuth } from '../../providers/authProvider';
 
 
 interface FormObjectProps extends UserObjectProps {
@@ -43,6 +43,8 @@ interface AlertValueObjectProps {
 
 const UserRegister = () => {
     const navigate = useNavigate();
+
+    const { authData, handleAuth } = useAuth();
 
     // Page States
     const onLoadFormValues: FormObjectProps = {
@@ -106,7 +108,13 @@ const UserRegister = () => {
             const {headers, data} = await apiEDOM.registerUser(formValues);
             // console.log(headers);
             // console.log(data);
-            sessionStoreToken(headers['auth-token']);
+            // sessionStoreToken(headers['auth-token']);
+            
+            if (!handleAuth) {
+                console.log("Error: Auth Handling Function Returned Undefined")
+            } else {
+                handleAuth(true, headers['auth-token']);
+            }
             // setAlertValues({open: true, text: "Login Successful!", severity: "success"});
             
             navigate('/');
