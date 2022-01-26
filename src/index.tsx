@@ -15,7 +15,7 @@ import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
 // Redux Reducer Imports
-import reducerGlobal from './redux/reducers/reducerGlobal';
+import reducerGlobal from './redux/reducerGlobal';
 
 // -- FOR DEV ONLY, should be bypassed for Production / Testing
 
@@ -35,6 +35,8 @@ const globalStore = createStore(
   )
 );
 
+// export type RootState = ReturnType<typeof globalStore.getState>;
+// export type AppDispatch = typeof globalStore.dispatch;
 
 ReactDOM.render(
   <React.StrictMode>

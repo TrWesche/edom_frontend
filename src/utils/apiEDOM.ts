@@ -104,11 +104,19 @@ class apiEDOM {
     };
 
     static async loginUser(loginData: UserLoginProps) {
-        console.log(loginData);
         const response = await this.postJson(`/users/auth`, loginData);
         return {headers: response.headers, data: response.data};
     };
 
+    static async getUserSecure(authToken: string) {
+        const response = await this.getJson(`/users/profile`, {}, authToken);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async updateUserSecure(updateData: UserObjectProps, authToken: string) {
+        const response = await this.patchJson(`/users/update`, updateData, authToken);
+        return {headers: response.headers, data: response.data};
+    };
 };
 
 export default apiEDOM;
