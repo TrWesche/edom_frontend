@@ -1,5 +1,5 @@
 // React Imports
-import React, { ErrorInfo, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Material UI Styling System Imports
@@ -10,7 +10,6 @@ import {
     Typography,
     IconButton,
     OutlinedInput,
-    InputLabel,
     InputAdornment,
     FormHelperText,
     FormControl,

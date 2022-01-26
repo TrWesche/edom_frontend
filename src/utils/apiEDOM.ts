@@ -1,6 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-import { UserObjectProps } from '../interfaces/globalInterfaces'
+import { 
+    UserObjectProps,
+    UserLoginProps
+} from '../interfaces/globalInterfaces'
 
 const apiURL = process.env.REACT_APP_EDOM_API_URL;
 
@@ -96,7 +99,13 @@ class apiEDOM {
 
     // Process Functions
     static async registerUser(userData: UserObjectProps) {
-        const response = await this.postJson("/users/register", userData);
+        const response = await this.postJson(`/users/register`, userData);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async loginUser(loginData: UserLoginProps) {
+        console.log(loginData);
+        const response = await this.postJson(`/users/auth`, loginData);
         return {headers: response.headers, data: response.data};
     };
 

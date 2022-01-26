@@ -8,4 +8,7 @@ export interface UserObjectProps {
     last_name?: string
 };
 
-
+export interface UserLoginProps {
+    username?: string
+    password?: string
+};
