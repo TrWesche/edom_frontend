@@ -1,0 +1,1 @@
+1. Authentication looks like it should be moved to cookies similar to what was done in OpusMarket project.  Using session is not proving to be very robust.
