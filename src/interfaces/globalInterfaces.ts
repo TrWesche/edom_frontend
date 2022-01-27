@@ -1,3 +1,4 @@
+export type PageStatusValues = "loading"|"loaded"|"error"
 
 export interface UserObjectProps {
     id?: string

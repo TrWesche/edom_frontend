@@ -113,6 +113,11 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
+    static async getUserPublic(authToken: string, username: string) {
+        const response = await this.getJson(`/users/up/${username}`, {username}, authToken);
+        return {headers: response.headers, data: response.data};
+    };
+
     static async updateUserSecure(updateData: UserObjectProps, authToken: string) {
         const response = await this.patchJson(`/users/update`, updateData, authToken);
         return {headers: response.headers, data: response.data};

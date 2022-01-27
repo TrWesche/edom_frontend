@@ -1,7 +1,6 @@
 import { Action } from "redux";
 import {
-    LOAD_USER_PROFILE,
-    UPDATE_USER_PROFILE,
+    USER_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
@@ -11,15 +10,18 @@ interface reduxAction extends Action {
     payload?: object
 }
 
-const redUserSecure = (state = INITIAL_STATE, action: reduxAction) => {
-    let currentUser;
+const targetUser = (state = INITIAL_STATE, action: reduxAction) => {
+    let targetUser;
     switch (action.type){
-        case LOAD_USER_PROFILE:
-            currentUser = {...action.payload};  
-            return currentUser;
-        case UPDATE_USER_PROFILE:
-            currentUser = {...action.payload};  
-            return currentUser;
+        case USER_ACTIONS.START_PROFILE_LOAD:
+            targetUser = {...state, isProcessing: true};
+            return targetUser;
+        case USER_ACTIONS.FINISH_PROFILE_LOAD:
+            targetUser = {...action.payload, isProcessing: false};  
+            return targetUser;
+        case USER_ACTIONS.UPDATE_PROFILE:
+            targetUser = {...action.payload, isProcessing: true};  
+            return targetUser;
         case ERROR:
             return {...state, error: true};
         default:
@@ -27,4 +29,4 @@ const redUserSecure = (state = INITIAL_STATE, action: reduxAction) => {
     }
 }
 
-export default redUserSecure;
+export default targetUser;

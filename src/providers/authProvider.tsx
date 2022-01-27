@@ -9,7 +9,7 @@ import { EDOM_PUBLIC_KEY } from "../config/config";
 
 // TODO: Update Backend to Match Version Below
 // Start Temporary ---- Until New Version of Backend JWT Token Formation Completed
-interface authToken extends jwt.JwtPayload {
+export interface authToken extends jwt.JwtPayload {
     id?: string
     username?: string
     roles?: Array<object>
