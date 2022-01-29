@@ -65,49 +65,34 @@ const defaultContext: context = {
 //     ]
 // };
 
-const sessionStoreToken = (incomingToken: string) => {
-    // Verify Token Before Storing
-    const verifiedToken = jwt.verify(incomingToken, EDOM_PUBLIC_KEY);
-    if (typeof verifiedToken === "object") {
-        sessionStorage.setItem("authToken", incomingToken);
-        return verifiedToken;
-    };
+const getCookie = (key: string) => {
+    var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
+    return b ? b.pop() : "";
+  }
 
+const authVerifyToken = () => {
+    // Verify Token Before Storing
+    const sessionToken = getCookie("sid");
+
+    if (sessionToken) {
+        const verifiedToken = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
+        if (typeof verifiedToken === "object") {
+            return verifiedToken;
+        };
+    };
+    
     return defaultContext;
 };
-
-const sessionTokenVerify = () => {
-    const unverifiedToken = sessionStorage.getItem("authToken");
-
-    // Load Session Token
-    if (unverifiedToken) {
-        // Verify Token Validity
-        const verifiedToken = jwt.verify(unverifiedToken, EDOM_PUBLIC_KEY);
-        if (typeof verifiedToken === "object") {
-            // Check Token Contents and Return
-            const payload: authToken = verifiedToken;
-            if (payload.id) {
-                return payload;
-            }
-        }
-    };
-
-    return defaultContext;
-}
 
 const AuthContext = createContext(defaultContext);
 
 const AuthProvider: FC = ({children}) => {
     const [auth, setAuth] = useState(defaultContext);
 
-    const handleAuth = (refreshToken?: boolean, tokenValue?: string) => {
-        let authorization = defaultContext;
+    const handleAuth = () => {
+        const authorization = defaultContext;
+        authorization.authData = authVerifyToken();
 
-        if (refreshToken && tokenValue) {
-            authorization.authData = sessionStoreToken(tokenValue);
-        } else {
-            authorization.authData = sessionTokenVerify();
-        }
         setAuth(authorization)
     };
 
@@ -119,7 +104,6 @@ const AuthProvider: FC = ({children}) => {
         </AuthContext.Provider>
     );
 };
-
 
 const useAuth = () => {
     const context = useContext(AuthContext);

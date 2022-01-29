@@ -112,7 +112,7 @@ const UserRegister = () => {
             if (!handleAuth) {
                 console.log("Error: Auth Handling Function Returned Undefined")
             } else {
-                handleAuth(true, headers['auth-token']);
+                handleAuth();
             }
             // setAlertValues({open: true, text: "Login Successful!", severity: "success"});
             

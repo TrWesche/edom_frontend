@@ -17,26 +17,22 @@ const fetchUserProfile = (username: string, authData: authToken | undefined) => 
         dispatch(startFetchUserProfile());
         // console.log("Fetch User Profile Called");
         try {
-            const token = sessionStorage.getItem("authToken");
-            // console.log(token);
-            if (!token) {
-                throw new Error ("Auth Token Not Provided");
-            };
-
             // console.log(authData);
             if (!authData?.username) {
                 // console.log("User Auth Data Malformed");
-                throw new Error ("User Auth Data Malformed");
+                throw new Error ("Current User Authentication Data Malformed | User Not Logged In");
             };
 
             let data;
             if (username && username === authData.username) {
+                // If target user is self, try to fetch data for own account
                 console.log("Getting User Data - Secure");
-                const result = await apiEDOM.getUserSecure(token);
+                const result = await apiEDOM.getUserSecure();
                 data = result.data;
             } else {
+                // If target is other user, fetch data for other user based on username
                 console.log("Getting User Data - Public");
-                const result = await apiEDOM.getUserPublic(token, username);
+                const result = await apiEDOM.getUserPublic(username);
                 data = result.data;
             };
             

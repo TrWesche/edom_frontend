@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import redUserSecure from "./reducers/redUserSecure";
+import redUser from "./reducers/redUser";
 
 const reducerGlobal = combineReducers({ 
-    redUserSecure
+    redUser
 });
 
 export default reducerGlobal;

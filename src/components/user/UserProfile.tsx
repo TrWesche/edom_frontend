@@ -24,7 +24,7 @@ import {
 import { UserObjectProps, PageStatusValues } from '../../interfaces/globalInterfaces';
 import { useAuth } from '../../providers/authProvider';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
-import { fetchUserProfile } from '../../redux/actions/actUserSecure';
+import { fetchUserProfile } from '../../redux/actions/actUser';
 
 interface UserProfileProps {
     data: UserObjectProps

@@ -9,17 +9,17 @@ const apiURL = process.env.REACT_APP_EDOM_API_URL;
 
 class apiEDOM {
     // Control Functions
-    static async getJson(endpoint: string, params?: object, authToken?: string) {
+    static async getJson(endpoint: string, params?: object) {
         try {
             const axiosConfig: AxiosRequestConfig = {
                 method: 'get',
                 baseURL: apiURL,
                 url: endpoint,
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
+                // headers: {
+                //     'Authorization': `Bearer ${authToken}`
+                // },
                 params: params ? params : {},
-                withCredentials: authToken ? true : false,
+                // withCredentials: authToken ? true : false,
                 responseType: 'json'
             }
 
@@ -31,17 +31,17 @@ class apiEDOM {
         }
     };
 
-    static async postJson(endpoint: string, data: object, authToken?: string) {
+    static async postJson(endpoint: string, data: object) {
         try {
             const axiosConfig: AxiosRequestConfig = {
                 method: 'post',
                 baseURL: apiURL,
                 url: endpoint,
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
+                // headers: {
+                //     'Authorization': `Bearer ${authToken}`
+                // },
                 data: data,
-                withCredentials: authToken ? true : false,
+                // withCredentials: authToken ? true : false,
                 responseType: 'json'
             }
 
@@ -53,17 +53,17 @@ class apiEDOM {
         }
     };
 
-    static async patchJson(endpoint: string, data: object, authToken?: string) {
+    static async patchJson(endpoint: string, data: object) {
         try {
             const axiosConfig: AxiosRequestConfig = {
                 method: 'patch',
                 baseURL: apiURL,
                 url: endpoint,
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
+                // headers: {
+                //     'Authorization': `Bearer ${authToken}`
+                // },
                 data: data,
-                withCredentials: authToken ? true : false,
+                // withCredentials: authToken ? true : false,
                 responseType: 'json'
             }
 
@@ -75,17 +75,17 @@ class apiEDOM {
         }
     };
 
-    static async deleteJson(endpoint: string, data: object, authToken?: string) {
+    static async deleteJson(endpoint: string, data: object) {
         try {
             const axiosConfig: AxiosRequestConfig = {
                 method: 'delete',
                 baseURL: apiURL,
                 url: endpoint,
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
+                // headers: {
+                //     'Authorization': `Bearer ${authToken}`
+                // },
                 data: data,
-                withCredentials: authToken ? true : false,
+                // withCredentials: authToken ? true : false,
                 responseType: 'json'
             }
 
@@ -108,18 +108,18 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserSecure(authToken: string) {
-        const response = await this.getJson(`/users/profile`, {}, authToken);
+    static async getUserSecure() {
+        const response = await this.getJson(`/users/profile`, {});
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserPublic(authToken: string, username: string) {
-        const response = await this.getJson(`/users/up/${username}`, {username}, authToken);
+    static async getUserPublic(username: string) {
+        const response = await this.getJson(`/users/up/${username}`, {username});
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateUserSecure(updateData: UserObjectProps, authToken: string) {
-        const response = await this.patchJson(`/users/update`, updateData, authToken);
+    static async updateUserSecure(updateData: UserObjectProps) {
+        const response = await this.patchJson(`/users/update`, updateData);
         return {headers: response.headers, data: response.data};
     };
 };
