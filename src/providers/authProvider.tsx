@@ -3,7 +3,7 @@
 // https://stackoverflow.com/questions/65889422/context-provider-in-typescript#:~:text=Generally%20you%20would%20want%20to%20type%20your%20context%2C,the%20consumer%20of%20LoadContext%20the%20types%20are%20known.
 // https://www.becomebetterprogrammer.com/typescript-pass-function-as-a-parameter/#:~:text=Similar%20to%20JavaScript%2C%20to%20pass%20a%20function%20as,calling%20the%20foo%20function%20in%20the%20following%20example%3A
 
-import { createContext, useState, useContext, ReactChildren, FC } from "react";
+import { createContext, useState, useContext, useEffect, FC } from "react";
 import * as jwt from "jsonwebtoken";
 import { EDOM_PUBLIC_KEY } from "../config/config";
 
@@ -15,12 +15,7 @@ export interface authToken extends jwt.JwtPayload {
     roles?: Array<object>
 };
 
-interface context {
-    authData?: authToken
-    handleAuth?: Function
-};
-
-const defaultContext: context = {
+const defaultAuth: authToken = {
     authData: {
         id: "",
         username: "Visitor",
@@ -30,6 +25,16 @@ const defaultContext: context = {
             }
         ]
     }
+};
+
+interface context {
+    authData: authToken
+    updateAuth?: Function
+};
+
+const defaultContext: context = {
+    authData: defaultAuth,
+    updateAuth: undefined
 };
 
 
@@ -75,28 +80,34 @@ const authVerifyToken = () => {
     const sessionToken = getCookie("sid");
 
     if (sessionToken) {
-        const verifiedToken = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
+        const verifiedToken: authToken | string = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
         if (typeof verifiedToken === "object") {
             return verifiedToken;
         };
     };
     
-    return defaultContext;
+    return defaultAuth;
 };
 
 const AuthContext = createContext(defaultContext);
 
 const AuthProvider: FC = ({children}) => {
-    const [auth, setAuth] = useState(defaultContext);
+    const [auth, setAuth] = useState(defaultAuth);
 
     const handleAuth = () => {
-        const authorization = defaultContext;
-        authorization.authData = authVerifyToken();
-
+        const authorization = authVerifyToken();
         setAuth(authorization)
     };
 
-    const data = {...auth, handleAuth};
+    useEffect(() => {
+        console.log("Auth Refresh Called");
+        handleAuth();
+    }, []);
+
+    const data: context = {
+        authData: auth,
+        updateAuth: handleAuth
+    }
 
     return (
         <AuthContext.Provider value={data}>

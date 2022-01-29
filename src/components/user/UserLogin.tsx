@@ -45,7 +45,7 @@ interface AlertValueObjectProps {
 const UserLogin = () => {
     const navigate = useNavigate();
 
-    const { authData, handleAuth } = useAuth();
+    const { authData, updateAuth } = useAuth();
 
     // Page States
     const onLoadFormValues: FormObjectProps = {
@@ -102,15 +102,15 @@ const UserLogin = () => {
         event.preventDefault();
 
         try {
-            const {headers, data} = await apiEDOM.loginUser(formValues);
+            await apiEDOM.loginUser(formValues);
             // console.log(headers);
             // console.log(data);
             // sessionStoreToken(headers['auth-token']);
             
-            if (!handleAuth) {
+            if (!updateAuth) {
                 console.log("Error: Auth Handling Function Returned Undefined")
             } else {
-                handleAuth();
+                updateAuth();
             }
             // setAlertValues({open: true, text: "Login Successful!", severity: "success"});
             

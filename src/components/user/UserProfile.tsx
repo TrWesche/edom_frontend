@@ -133,7 +133,7 @@ const PageLoadHandler = (props: {data: UserObjectProps, pagestatus: PageStatusVa
 
 const UserProfile = () => {
     const dispatch = useDispatch();
-    const { authData, handleAuth } = useAuth();
+    const { authData } = useAuth();
     const params: any = useParams();
 
     const onLoadPageState: PageStatusValues = 'loading';

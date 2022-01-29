@@ -43,7 +43,7 @@ interface AlertValueObjectProps {
 const UserRegister = () => {
     const navigate = useNavigate();
 
-    const { authData, handleAuth } = useAuth();
+    const { authData, updateAuth } = useAuth();
 
     // Page States
     const onLoadFormValues: FormObjectProps = {
@@ -109,10 +109,10 @@ const UserRegister = () => {
             // console.log(data);
             // sessionStoreToken(headers['auth-token']);
             
-            if (!handleAuth) {
+            if (!updateAuth) {
                 console.log("Error: Auth Handling Function Returned Undefined")
             } else {
-                handleAuth();
+                updateAuth();
             }
             // setAlertValues({open: true, text: "Login Successful!", severity: "success"});
             
