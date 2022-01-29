@@ -15,11 +15,8 @@ class apiEDOM {
                 method: 'get',
                 baseURL: apiURL,
                 url: endpoint,
-                // headers: {
-                //     'Authorization': `Bearer ${authToken}`
-                // },
                 params: params ? params : {},
-                // withCredentials: authToken ? true : false,
+                withCredentials: true,
                 responseType: 'json'
             }
 
@@ -37,11 +34,8 @@ class apiEDOM {
                 method: 'post',
                 baseURL: apiURL,
                 url: endpoint,
-                // headers: {
-                //     'Authorization': `Bearer ${authToken}`
-                // },
                 data: data,
-                // withCredentials: authToken ? true : false,
+                withCredentials: true,
                 responseType: 'json'
             }
 
@@ -59,11 +53,8 @@ class apiEDOM {
                 method: 'patch',
                 baseURL: apiURL,
                 url: endpoint,
-                // headers: {
-                //     'Authorization': `Bearer ${authToken}`
-                // },
                 data: data,
-                // withCredentials: authToken ? true : false,
+                withCredentials: true,
                 responseType: 'json'
             }
 
@@ -81,11 +72,8 @@ class apiEDOM {
                 method: 'delete',
                 baseURL: apiURL,
                 url: endpoint,
-                // headers: {
-                //     'Authorization': `Bearer ${authToken}`
-                // },
                 data: data,
-                // withCredentials: authToken ? true : false,
+                withCredentials: true,
                 responseType: 'json'
             }
 
