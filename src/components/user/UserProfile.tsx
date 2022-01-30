@@ -21,21 +21,21 @@ import {
 } from "@mui/icons-material";
 
 // Typescript Interface Imports
-import { UserObjectProps, PageStatusValues } from '../../interfaces/globalInterfaces';
+import { UserObjectProps } from '../../interfaces/globalInterfaces';
 import { useAuth } from '../../providers/authProvider';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { fetchUserProfile } from '../../redux/actions/actUser';
 
 interface UserProfileProps {
-    data: UserObjectProps
-    pagestatus: PageStatusValues
+    user: UserObjectProps
+    isProcessing: boolean
+    error?: boolean
 };
 
-const PageLoadHandler = (props: {data: UserObjectProps, pagestatus: PageStatusValues}) => {
-    console.log("Page Load Handler Called");
+const PageLoadHandler = (props: {data: UserObjectProps, isProcessing: boolean, reduxError: boolean}) => {
     const navigate = useNavigate();
 
-    const { data, pagestatus } = props; 
+    const { data, isProcessing, reduxError } = props; 
 
     const pageLoading = () => {
         return (
@@ -74,8 +74,9 @@ const PageLoadHandler = (props: {data: UserObjectProps, pagestatus: PageStatusVa
                     </Grid>
                     <Grid item xs={8}>
                         <Stack>
-                            <Typography>Username</Typography>
-                            <Typography>First Name + Last Name</Typography>
+                            <Typography>{data.username ? data.username : "Loading..."}</Typography>
+                            <Typography>{data.first_name ? data.first_name : ""} {data.last_name ? data.last_name : ""}</Typography>
+                            <Typography>{data.email ? data.email : ""}</Typography>
                         </Stack>
                     </Grid>
                 </Grid>
@@ -102,31 +103,30 @@ const PageLoadHandler = (props: {data: UserObjectProps, pagestatus: PageStatusVa
         );
     };
 
-    switch (pagestatus) {
-        case 'loading':
-            return (
-                <React.Fragment>
-                    {pageLoading()};
-                </React.Fragment>
-            );
-        case 'loaded':
-            return (
-                <React.Fragment>
-                    {pageLoaded()};
-                </React.Fragment>
-            );
-        case 'error':
-            return (
-                <React.Fragment>
-                    {pageLoadError()};
-                </React.Fragment>
-            );
-        default:
-            return (
-                <React.Fragment>
-                    {pageLoadError()};
-                </React.Fragment>
-            );
+    if (reduxError) {
+        return (
+            <React.Fragment>
+                {pageLoadError()};
+            </React.Fragment>
+        );
+    } else if (isProcessing) {
+        return (
+            <React.Fragment>
+                {pageLoading()};
+            </React.Fragment>
+        );
+    } else if (!isProcessing) {
+        return (
+            <React.Fragment>
+                {pageLoaded()};
+            </React.Fragment>
+        );
+    } else {
+        return (
+            <React.Fragment>
+                {pageLoadError()};
+            </React.Fragment>
+        );
     };
 };
 
@@ -135,38 +135,20 @@ const UserProfile = () => {
     const dispatch = useDispatch();
     const { authData } = useAuth();
     const params: any = useParams();
-
-    const onLoadPageState: PageStatusValues = 'loading';
-    const [pageState, setPageState] = useState<PageStatusValues>(onLoadPageState);
     
-    const currentUser: UserObjectProps = useSelector((store: RootStateOrAny) => store?.currentUser);
+    const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
     useEffect(() => {
         dispatch(fetchUserProfile(params.username, authData));
     }, [dispatch]);
 
-    useEffect(() => {
-        setPageState(pageLoadStatus());
-    }, [currentUser]);
 
-
-    const pageLoadStatus = () => {
-        console.log("Page Load Status Handle Called");
-        console.log(currentUser);
-        let loadStatus: PageStatusValues;
-        if (!currentUser || !currentUser.username) {
-            loadStatus = 'loading';
-        } else if (currentUser && currentUser.username) {
-            loadStatus = 'loaded';
-        } else {
-            loadStatus = 'error';
-        }
-
-        return loadStatus;
-    }
+    const data: UserObjectProps = reduxPayload.user;
+    const isProcessing = reduxPayload.isProcessing;
+    const reduxError = reduxPayload.error ? reduxPayload.error : false;
 
     return (
         <Grid container spacing={2}>
-            <PageLoadHandler data={currentUser} pagestatus={pageState} />
+            <PageLoadHandler data={data} isProcessing={isProcessing} reduxError={reduxError} />
         </Grid>
     )
 };
