@@ -9,22 +9,25 @@ import { EDOM_PUBLIC_KEY } from "../config/config";
 
 // TODO: Update Backend to Match Version Below
 // Start Temporary ---- Until New Version of Backend JWT Token Formation Completed
+// Need to add "Logged In" Boolean for Basic Checks
 export interface authToken extends jwt.JwtPayload {
+    logged_in?: boolean
+    init?: boolean
     id?: string
     username?: string
     roles?: Array<object>
 };
 
 const defaultAuth: authToken = {
-    authData: {
-        id: "",
-        username: "Visitor",
-        roles: [
-            {
-                "name": "visitor"
-            }
-        ]
-    }
+    logged_in: false,
+    init: false,
+    id: "",
+    username: "Visitor",
+    roles: [
+        {
+            "name": "visitor"
+        }
+    ]
 };
 
 interface context {
@@ -82,11 +85,14 @@ const authVerifyToken = () => {
     if (sessionToken) {
         const verifiedToken: authToken | string = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
         if (typeof verifiedToken === "object") {
-            return verifiedToken;
+            const returnToken = {...verifiedToken, logged_in: true};
+            return returnToken;
         };
     };
     
-    return defaultAuth;
+
+    const defaultInit = {...defaultAuth, init: true};
+    return defaultInit;
 };
 
 const AuthContext = createContext(defaultContext);

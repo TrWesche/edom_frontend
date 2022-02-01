@@ -1,6 +1,6 @@
 // React Imports
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Material UI Styling System Imports
 import { AlertColor, Avatar, Skeleton, Stack, styled } from '@mui/material'
@@ -34,11 +34,8 @@ interface UserProfileProps {
 };
 
 
-const PageLoadHandler = (props: {authData: authToken, data: UserObjectProps, isProcessing: boolean, reduxError: boolean}) => {
-    const navigate = useNavigate();
-    const { alertSetter } = useAlert();
-
-    const { authData, data, isProcessing, reduxError } = props; 
+const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined, data: UserObjectProps, isProcessing: boolean, reduxError: boolean}) => {
+    const { authData, navigate, alertSetter, data, isProcessing, reduxError } = props; 
 
     const pageLoading = () => {
         return (
@@ -121,12 +118,14 @@ const PageLoadHandler = (props: {authData: authToken, data: UserObjectProps, isP
     };
 
     // User Logged In Check
-    if (!authData.id || authData.id === '') {
+    if (!authData.logged_in && authData.init) {
+        console.log(authData);
+        console.log("User Not Logged In?");
         if (alertSetter) {
             alertSetter({open: true, content: "Please Login to Continue.", severity: "error"})
         };
         navigate('/');
-    }
+    };
 
     if (reduxError) {
         return (
@@ -157,8 +156,12 @@ const PageLoadHandler = (props: {authData: authToken, data: UserObjectProps, isP
 
 
 const UserProfile = () => {
+    // React / Redux Function Instantiations
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    // Context Providers
+    const { alertSetter } = useAlert();
     const { authData } = useAuth();
     
     const params: any = useParams();
@@ -175,7 +178,14 @@ const UserProfile = () => {
 
     return (
         <Grid container spacing={2}>
-            <PageLoadHandler authData={authData} data={data} isProcessing={isProcessing} reduxError={reduxError} />
+            <PageLoadHandler 
+                authData={authData}
+                navigate={navigate}
+                alertSetter={alertSetter}
+                data={data} 
+                isProcessing={isProcessing} 
+                reduxError={reduxError} 
+            />
         </Grid>
     )
 };
