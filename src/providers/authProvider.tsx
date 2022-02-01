@@ -107,7 +107,7 @@ const AuthProvider: FC = ({children}) => {
     const data: context = {
         authData: auth,
         updateAuth: handleAuth
-    }
+    };
 
     return (
         <AuthContext.Provider value={data}>

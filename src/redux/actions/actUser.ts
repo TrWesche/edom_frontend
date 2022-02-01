@@ -33,6 +33,7 @@ const fetchUserProfile = (username: string, authData: authToken | undefined) => 
             
             dispatch(gotUserProfile(data));
         } catch (error) {
+            console.log("Redux Error Caught");
             dispatch(gotError());
         }
     }

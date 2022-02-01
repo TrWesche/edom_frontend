@@ -25,19 +25,13 @@ import {
 } from "@mui/icons-material";
 
 // Typescript Interface Imports
-import { UserObjectProps } from '../../interfaces/globalInterfaces';
+import { UserObjectProps, AlertValueObjectProps } from '../../interfaces/globalInterfaces';
 import apiEDOM from '../../utils/apiEDOM';
 import { useAuth } from '../../providers/authProvider';
 
 
 interface FormObjectProps extends UserObjectProps {
     showPassword: boolean
-};
-
-interface AlertValueObjectProps {
-    open: boolean
-    content: string
-    severity: AlertColor | undefined
 };
 
 const UserRegister = () => {

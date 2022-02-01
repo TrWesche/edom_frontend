@@ -10,13 +10,16 @@ import baseTheme from '../styles/baseTheme';
 
 // Authorization Imports
 import { AuthProvider } from "../providers/authProvider";
+import { AlertProvider } from '../providers/alertProvider';
 
 function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
                 <ThemeProvider theme={baseTheme}>
-                    <RouterMain/>
+                    <AlertProvider>
+                        <RouterMain/>
+                    </AlertProvider>
                 </ThemeProvider>
             </BrowserRouter>
         </AuthProvider>

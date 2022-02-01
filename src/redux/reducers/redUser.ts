@@ -23,7 +23,7 @@ const targetUser = (state = INITIAL_STATE, action: reduxAction) => {
             targetUser = {...action.payload, isProcessing: true};  
             return targetUser;
         case ERROR:
-            return {...state, error: true};
+            return {...state, isProcessing: false, error: true};
         default:
             return state;
     }

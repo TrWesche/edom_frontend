@@ -22,9 +22,10 @@ import {
 
 // Typescript Interface Imports
 import { UserObjectProps } from '../../interfaces/globalInterfaces';
-import { useAuth } from '../../providers/authProvider';
+import { authToken, useAuth } from '../../providers/authProvider';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { fetchUserProfile } from '../../redux/actions/actUser';
+import { useAlert } from '../../providers/alertProvider';
 
 interface UserProfileProps {
     user: UserObjectProps
@@ -32,10 +33,12 @@ interface UserProfileProps {
     error?: boolean
 };
 
-const PageLoadHandler = (props: {data: UserObjectProps, isProcessing: boolean, reduxError: boolean}) => {
-    const navigate = useNavigate();
 
-    const { data, isProcessing, reduxError } = props; 
+const PageLoadHandler = (props: {authData: authToken, data: UserObjectProps, isProcessing: boolean, reduxError: boolean}) => {
+    const navigate = useNavigate();
+    const { alertSetter } = useAlert();
+
+    const { authData, data, isProcessing, reduxError } = props; 
 
     const pageLoading = () => {
         return (
@@ -61,6 +64,24 @@ const PageLoadHandler = (props: {data: UserObjectProps, isProcessing: boolean, r
         );
     };
 
+    const dataLoaded = () => {
+        if (data !== undefined) {
+            return (
+                <Stack>
+                    <Typography>{data.username ? data.username : "Failed to Retrieve Username"}</Typography>
+                    <Typography>{data.first_name} {data.last_name}</Typography>
+                    <Typography>{data.email ? data.email : ""}</Typography>
+                </Stack>
+            )
+        } else {
+            return (
+                <Stack>
+                    <Typography>Failed to Load User</Typography>
+                </Stack>
+            )
+        }
+    }
+
     const pageLoaded = () => {
         return (
             <React.Fragment>
@@ -73,11 +94,7 @@ const PageLoadHandler = (props: {data: UserObjectProps, isProcessing: boolean, r
                         />
                     </Grid>
                     <Grid item xs={8}>
-                        <Stack>
-                            <Typography>{data.username ? data.username : "Loading..."}</Typography>
-                            <Typography>{data.first_name ? data.first_name : ""} {data.last_name ? data.last_name : ""}</Typography>
-                            <Typography>{data.email ? data.email : ""}</Typography>
-                        </Stack>
+                        {dataLoaded()}
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -102,6 +119,14 @@ const PageLoadHandler = (props: {data: UserObjectProps, isProcessing: boolean, r
             </React.Fragment>
         );
     };
+
+    // User Logged In Check
+    if (!authData.id || authData.id === '') {
+        if (alertSetter) {
+            alertSetter({open: true, content: "Please Login to Continue.", severity: "error"})
+        };
+        navigate('/');
+    }
 
     if (reduxError) {
         return (
@@ -132,8 +157,10 @@ const PageLoadHandler = (props: {data: UserObjectProps, isProcessing: boolean, r
 
 
 const UserProfile = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { authData } = useAuth();
+    
     const params: any = useParams();
     
     const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
@@ -148,7 +175,7 @@ const UserProfile = () => {
 
     return (
         <Grid container spacing={2}>
-            <PageLoadHandler data={data} isProcessing={isProcessing} reduxError={reduxError} />
+            <PageLoadHandler authData={authData} data={data} isProcessing={isProcessing} reduxError={reduxError} />
         </Grid>
     )
 };

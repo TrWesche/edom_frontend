@@ -1,4 +1,4 @@
-export type PageStatusValues = "loading"|"loaded"|"error"
+import { AlertColor } from '@mui/material'
 
 export interface UserObjectProps {
     id?: string
@@ -12,4 +12,10 @@ export interface UserObjectProps {
 export interface UserLoginProps {
     username?: string
     password?: string
+};
+
+export interface AlertValueObjectProps {
+    open: boolean
+    content: string
+    severity: AlertColor | undefined
 };
