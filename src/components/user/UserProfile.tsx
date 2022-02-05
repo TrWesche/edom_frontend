@@ -1,24 +1,21 @@
 // React Imports
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Material UI Styling System Imports
-import { AlertColor, Avatar, Skeleton, Stack, styled } from '@mui/material'
+import { Avatar, Skeleton, Stack } from '@mui/material'
 
 import {
     Grid,
     Typography,
-    IconButton,
-    Button,
-    Link,
-    Snackbar,
-    Alert
+    Paper,
+    Box
 } from "@mui/material";
 
-import {
-    Visibility,
-    VisibilityOff
-} from "@mui/icons-material";
+// import {
+//     Visibility,
+//     VisibilityOff
+// } from "@mui/icons-material";
 
 // Typescript Interface Imports
 import { UserObjectProps } from '../../interfaces/globalInterfaces';
@@ -39,25 +36,31 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoading = () => {
         return (
-            <React.Fragment>
-                <Grid item xs={12}>
-                    <Grid item xs={4}>
+            <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                <Box  sx={{
+                    display: 'grid',
+                    width: '100%',
+                    gridTemplateColumns: 'repeat(6, 1fr)',
+                    gap: 1,
+                    gridTemplateRows: 'auto',
+                    gridTemplateAreas: `
+                        "avatar details details details details details"
+                        "info info info info info info"
+                    `,
+                    }}
+                >
+                    <Box sx={{ gridArea: 'avatar'}}>
                         <Skeleton variant="circular" width={152} height={152} />
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Skeleton variant="rectangular" width="80%" height={118} />
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Skeleton variant="rectangular" width="80%" height={118} />
-                </Grid>
-                <Grid item xs={12}>
-                    <Skeleton variant="rectangular" width="80%" height={118} />
-                </Grid>
-                <Grid item xs={12}>
-                    <Skeleton variant="rectangular" width="80%" height={118} />
-                </Grid>
-            </React.Fragment>
+                    </Box>
+                    <Box sx={{ gridArea: 'details'}}>
+                        <Skeleton variant="rectangular" height={152} />
+                    </Box>
+
+                    <Box sx={{ gridArea: 'info'}}>
+                        <Skeleton variant="rectangular" height={400} />
+                    </Box>
+                </Box>
+            </Paper>
         );
     };
 
@@ -65,15 +68,15 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
         if (data !== undefined) {
             return (
                 <Stack>
-                    <Typography>{data.username ? data.username : "Failed to Retrieve Username"}</Typography>
-                    <Typography>{data.first_name} {data.last_name}</Typography>
-                    <Typography>{data.email ? data.email : ""}</Typography>
+                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.username ? data.username : "Failed to Retrieve Username"}</Typography>
+                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.first_name} {data.last_name}</Typography>
+                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.email ? data.email : ""}</Typography>
                 </Stack>
             )
         } else {
             return (
                 <Stack>
-                    <Typography>Failed to Load User</Typography>
+                    <Typography></Typography>
                 </Stack>
             )
         }
@@ -81,39 +84,96 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoaded = () => {
         return (
-            <React.Fragment>
-                <Grid item xs={12}>
-                    <Grid item xs={4}>
+            <Paper elevation={2} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                <Box  sx={{
+                    display: 'grid',
+                    width: '100%',
+                    gridTemplateColumns: 'repeat(6, 1fr)',
+                    gap: 1,
+                    gridTemplateRows: 'auto',
+                    gridTemplateAreas: `
+                        "avatar details details details details details"
+                        "about about about about about about"
+                        "groups groups groups groups groups groups"
+                        "rooms rooms rooms rooms rooms rooms"
+                        "equip equip equip equip equip equip"
+                    `,
+                    }}
+                >
+                    <Box sx={{ gridArea: 'avatar'}}>
                         <Avatar 
                             alt="User Image"
                             src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
                             sx={{ width: 152, height: 152 }}
                         />
-                    </Grid>
-                    <Grid item xs={8}>
+                    </Box>
+                    <Box sx={{ gridArea: 'details' }}>
                         {dataLoaded()}
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography>Groups</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography>Rooms</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography>Equipment</Typography>
-                </Grid>
-            </React.Fragment>
+                    </Box>
+                
+                
+                    <Box sx={{ gridArea: 'about'}}>
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            bgcolor={'grey.A200'}
+                            padding={"0.25rem"}
+                            borderRadius={"0.25rem"}
+                        >
+                            About Me
+                        </Typography>
+                    </Box>
+                    <Box sx={{ gridArea: 'groups'}}>
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            bgcolor={'grey.A200'}
+                            padding={"0.25rem"}
+                            borderRadius={"0.25rem"}
+                        >
+                            Groups
+                        </Typography>
+                    </Box>
+                    <Box sx={{ gridArea: 'rooms'}}>
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            bgcolor={'grey.A200'}
+                            padding={"0.25rem"}
+                            borderRadius={"0.25rem"}
+                        >
+                            Rooms
+                        </Typography>
+                    </Box>
+                    <Box sx={{ gridArea: 'equip'}}>
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            bgcolor={'grey.A200'}
+                            padding={"0.25rem"}
+                            borderRadius={"0.25rem"}
+                        >
+                            Equipment
+                        </Typography>
+                    </Box>
+                    
+                </Box>
+
+            </Paper>
         );
     };
 
     const pageLoadError = () => {
         return (
-            <React.Fragment>
+            <Paper>
                 <Grid item xs={12}>
                     <Typography>Something went wrong.</Typography>
                 </Grid>
-            </React.Fragment>
+            </Paper>
         );
     };
 
@@ -130,25 +190,25 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
     if (reduxError) {
         return (
             <React.Fragment>
-                {pageLoadError()};
+                {pageLoadError()}
             </React.Fragment>
         );
     } else if (isProcessing) {
         return (
             <React.Fragment>
-                {pageLoading()};
+                {pageLoading()}
             </React.Fragment>
         );
     } else if (!isProcessing) {
         return (
             <React.Fragment>
-                {pageLoaded()};
+                {pageLoaded()}
             </React.Fragment>
         );
     } else {
         return (
             <React.Fragment>
-                {pageLoadError()};
+                {pageLoadError()}
             </React.Fragment>
         );
     };
@@ -177,7 +237,7 @@ const UserProfile = () => {
     const reduxError = reduxPayload.error ? reduxPayload.error : false;
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
             <PageLoadHandler 
                 authData={authData}
                 navigate={navigate}

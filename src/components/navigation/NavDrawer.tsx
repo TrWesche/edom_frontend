@@ -6,7 +6,7 @@ import {
     Divider,
     ListItem,
     ListItemText,
-
+    Typography,
     IconButton,
     ListItemIcon
 } from '@mui/material'
@@ -56,13 +56,16 @@ function NavDrawer ({ drawerWidth, open, handleDrawerClose }: NavDrawerProps) {
             <IconButton onClick={handleDrawerClose}>
                 {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
             </IconButton>
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                    EDOM
+            </Typography>
         </DrawerHeader>
         <Divider />
         <List>
-            {['Home', 'Explore', 'FAQ', 'Device Management'].map((text, index) => (
+            {['Home', 'Browse', 'FAQ', 'Device Management'].map((text, index) => (
                 <ListItem button key={text}>
                     <ListItemIcon>
-                        {index % 2 === 0 ? <MoveToInbox /> : <Mail />}
+                        {index % 2 === 0 ? <MoveToInbox color="secondary" /> : <Mail color="secondary" />}
                     </ListItemIcon>
                     <ListItemText primary={text} />
                 </ListItem>
