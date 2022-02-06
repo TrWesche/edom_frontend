@@ -10,18 +10,10 @@ import {
     Grid,
     Paper,
     Box,
-    Button,
     Typography,
     Stack,
-    Skeleton,
-    Container
+    Skeleton
 } from "@mui/material"
-
-import {
-    PrecisionManufacturing,
-    Forum,
-    Chat
-} from '@mui/icons-material';
 
 // Providers
 import { authToken, useAuth } from '../../providers/authProvider';
@@ -82,6 +74,7 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoaded = () => {
         return (
+
             <Box  sx={{
                 display: 'grid',
                 width: '100%',
@@ -204,7 +197,7 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
 
 
-const Home = () => {
+const AuthenticatedHome = () => {
     // React / Redux Function Instantiations
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -230,85 +223,35 @@ const Home = () => {
                 gap: 1,
                 gridTemplateRows: 'auto',
                 gridTemplateAreas: `
-                    "hero hero hero hero hero hero"
-                    "scuttle scuttle discord discord blog blog"
-                    "login login login login login login" 
-                    "example example example example example example"
+                    "avatar details details details details details"
+                    "info info info info info info"
                 `,
                 }}
             >
-                <Box sx={{
-                    gridArea: 'hero',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    // backgroundImage: 'url(https://static.vecteezy.com/system/resources/previews/000/686/771/original/modern-colorful-wave-banner-template-background-vector.jpg)',
-                    // backgroundRepeat: 'no-repeat',
-                    // backgroundAttachment: 'fixed',
-                    // backgroundSize: 'cover',
-                    // backgroundClip: 'border-box'
-                    // backgroundColor: 'grey.A100'
-                }}>
-                    <Grid container>
-                        <Grid item xs={12} sm={6} justifyContent={'center'}>
-                            <Typography variant='h2'>
-                                Welcome to EDOM
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Typography>
-                                To be replaced with SVG
-                            </Typography>
-                        </Grid>
-                    </Grid>
+                <Box sx={{ gridArea: 'avatar'}}>
+                    <Skeleton variant="circular" width={152} height={152} />
+                </Box>
+                <Box sx={{ gridArea: 'details'}}>
+                    <Skeleton variant="rectangular" height={152} />
                 </Box>
 
-                <Box sx={{display: 'flex', gridArea: 'scuttle', justifyContent: 'center'}}>
-                    <Button variant="contained" startIcon={<PrecisionManufacturing />}>
-                        SCUTTLE
-                    </Button>
-                </Box>
-
-                <Box sx={{display: 'flex', gridArea: 'discord', justifyContent: 'center'}}>
-                    <Button variant="contained" startIcon={<Chat />}>
-                        Discord
-                    </Button>
-                </Box>
-
-                <Box sx={{display: 'flex', gridArea: 'blog', justifyContent: 'center'}}>
-                    <Button variant="contained" startIcon={<Forum />}>
-                        Forums
-                    </Button>
-                </Box>
-
-                <Box sx={{display: 'flex', gridArea: 'login', justifyContent: 'center'}}>
-                    <Typography>
-                        New to EDOM?  Sign Up!
-                    </Typography>
-                    <Typography>
-                        Returning User? Sign In!
-                    </Typography>
-                </Box>
-
-                <Box sx={{display: 'flex', gridArea: 'example', justifyContent: 'center'}}>
-                    <Box>
-                        <Typography>
-                            Sample Group
-                        </Typography>
-                    </Box>
-                    <Box>
-                        <Typography>
-                            Sample Room
-                        </Typography>
-                    </Box>
-                    <Box>
-                        <Typography>
-                            Sample Equipment
-                        </Typography>
-                    </Box>
+                <Box sx={{ gridArea: 'info'}}>
+                    <Skeleton variant="rectangular" height={400} />
                 </Box>
             </Box>
+
+            <Grid item xs={12}>
+                <Typography>Welcome to EDO!</Typography>
+                <Typography>The Edge Device Orchestration Platform</Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Typography>Left Home Column</Typography>
+            </Grid>
+            <Grid item xs={6} md={6}>
+                <Typography>Right Home Column</Typography>
+            </Grid>
         </Grid>
     )
 }
 
-export default Home
+export default AuthenticatedHome;
