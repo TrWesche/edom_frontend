@@ -19,25 +19,25 @@ import {
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean,
-    drawerWidth: number
+    drawerwidth: number
 };
 
 interface NavBarProps {
-    drawerWidth: number,
+    drawerwidth: number,
     open: boolean,
     handleDrawerOpen: () => void
 }
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-    })<AppBarProps>(({ theme, open, drawerWidth }) => ({
+    })<AppBarProps>(({ theme, open, drawerwidth: drawerwidth }) => ({
         transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
+        width: `calc(100% - ${drawerwidth}px)`,
+        marginLeft: `${drawerwidth}px`,
         transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
@@ -46,9 +46,9 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 
-const NavBar = ( {handleDrawerOpen, open, drawerWidth}: NavBarProps ) => {
+const NavBar = ( {handleDrawerOpen, open, drawerwidth}: NavBarProps ) => {
     return (
-        <AppBar position="fixed" open={open} drawerWidth={drawerWidth} color="primary">
+        <AppBar position="fixed" open={open} drawerwidth={drawerwidth} color="primary">
             <Toolbar>
                 <IconButton
                     color="inherit"

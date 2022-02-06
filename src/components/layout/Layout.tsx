@@ -10,7 +10,7 @@ import {
 import NavBar from "../navigation/NavBar";
 import NavDrawer from "../navigation/NavDrawer";
 
-const drawerWidth = 240;
+const drawerwidth = 240;
 
 interface MainProps {
     open: boolean
@@ -25,7 +25,7 @@ const Main = styled('main', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: `-${drawerWidth}px`,
+        marginLeft: `-${drawerwidth}px`,
         ...(open && {
             transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
@@ -47,8 +47,8 @@ const Layout = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <NavBar drawerWidth={drawerWidth} open={open} handleDrawerOpen={handleDrawerOpen} />
-            <NavDrawer drawerWidth={drawerWidth} open={open} handleDrawerClose={handleDrawerClose} />
+            <NavBar drawerwidth={drawerwidth} open={open} handleDrawerOpen={handleDrawerOpen} />
+            <NavDrawer drawerwidth={drawerwidth} open={open} handleDrawerClose={handleDrawerClose} />
             <Main open={open}>
                 <Offset />
                 <Outlet />

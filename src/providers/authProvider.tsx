@@ -81,18 +81,21 @@ const getCookie = (key: string) => {
 const authVerifyToken = () => {
     // Verify Token Before Storing
     const sessionToken = getCookie("sid");
-
-    if (sessionToken) {
-        const verifiedToken: authToken | string = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
-        if (typeof verifiedToken === "object") {
-            const returnToken = {...verifiedToken, logged_in: true};
-            return returnToken;
+    try {
+        if (sessionToken) {
+            const verifiedToken: authToken | string = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
+            if (typeof verifiedToken === "object") {
+                const returnToken = {...verifiedToken, logged_in: true};
+                return returnToken;
+            };
         };
-    };
-    
 
-    const defaultInit = {...defaultAuth, init: true};
-    return defaultInit;
+        const defaultInit = {...defaultAuth, init: true};
+        return defaultInit;
+    } catch (error) {
+        const defaultInit = {...defaultAuth, init: true};
+        return defaultInit;    
+    }
 };
 
 const AuthContext = createContext(defaultContext);

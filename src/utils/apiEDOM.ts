@@ -86,6 +86,8 @@ class apiEDOM {
     };
 
     // Process Functions
+
+    // User Functions
     static async registerUser(userData: UserObjectProps) {
         const response = await this.postJson(`/users/register`, userData);
         return {headers: response.headers, data: response.data};
@@ -108,6 +110,13 @@ class apiEDOM {
 
     static async updateUserSecure(updateData: UserObjectProps) {
         const response = await this.patchJson(`/users/update`, updateData);
+        return {headers: response.headers, data: response.data};
+    };
+
+
+    // Group Functions
+    static async getGroupListPublic(queryString: string) {
+        const response = await this.getJson(`/groups/list${queryString}`);
         return {headers: response.headers, data: response.data};
     };
 };

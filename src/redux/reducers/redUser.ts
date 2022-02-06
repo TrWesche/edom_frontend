@@ -25,7 +25,7 @@ const targetUser = (state = INITIAL_STATE, action: reduxAction) => {
         case ERROR:
             return {...state, isProcessing: false, error: true};
         default:
-            return state;
+            return {...state, isProcessing: false};
     }
 }
 

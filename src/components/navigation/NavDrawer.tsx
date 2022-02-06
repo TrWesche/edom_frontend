@@ -21,7 +21,7 @@ import {
 
 
 interface NavDrawerProps {
-    drawerWidth: number,
+    drawerwidth: number,
     open: boolean,
     handleDrawerClose: () => void
 }
@@ -35,16 +35,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-function NavDrawer ({ drawerWidth, open, handleDrawerClose }: NavDrawerProps) {
+function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
   const theme = useTheme();
 
   return (
     <Drawer
         sx={{
-            width: drawerWidth,
+            width: drawerwidth,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-                width: drawerWidth,
+                width: drawerwidth,
                 boxSizing: 'border-box',
             },
         }}
