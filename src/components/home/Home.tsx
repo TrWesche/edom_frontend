@@ -1,6 +1,6 @@
 // React
 import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams, useHref } from 'react-router-dom';
 
 // Redux
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
@@ -203,6 +203,18 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
 
 
+interface ButtonClickEvent extends React.FormEvent<HTMLButtonElement> {
+    target: ButtonClickTarget
+};
+
+interface ButtonClickTarget extends EventTarget {
+    href?: string
+};
+
+// interface ButtonClickData {
+//     root?: string
+// }
+
 
 const Home = () => {
     // React / Redux Function Instantiations
@@ -215,11 +227,29 @@ const Home = () => {
     
     const params: any = useParams();
 
-    const reduxGroupList: Array<GroupObjectProps> = useSelector((store: RootStateOrAny) => store?.groupList);
-    const reduxRoomList: Array<RoomObjectProps> = useSelector((store: RootStateOrAny) => store?.roomList);
-    useEffect(() => {
-        dispatch(fetchGroupList());
-    }, [dispatch]);
+    // const reduxGroupList: Array<GroupObjectProps> = useSelector((store: RootStateOrAny) => store?.groupList);
+    // const reduxRoomList: Array<RoomObjectProps> = useSelector((store: RootStateOrAny) => store?.roomList);
+
+
+    // useEffect(() => {
+    //     dispatch(fetchGroupList());
+    // }, [dispatch]);
+
+    const handleButtonClick = (e: ButtonClickEvent) => {
+        e.preventDefault();
+        
+        if (e.target.href !== undefined) {
+            const destURL = new URL(e.target.href);
+            if (destURL.hostname !== "localhost") { // TODO: This should be replaced with a variable
+                window.open(e.target.href, '_blank');
+            } else {
+                navigate(`${destURL.pathname}${destURL.search}`);
+            }
+        } else {
+            console.log("Error, destination not defined")
+        }
+    }
+    
 
     return (
         <Grid justifyContent={'center'} width={'100%'}>
@@ -232,7 +262,6 @@ const Home = () => {
                 gridTemplateAreas: `
                     "hero hero hero hero hero hero"
                     "scuttle scuttle discord discord blog blog"
-                    "login login login login login login" 
                     "example example example example example example"
                 `,
                 }}
@@ -241,71 +270,73 @@ const Home = () => {
                     gridArea: 'hero',
                     display: 'flex',
                     justifyContent: 'center',
-                    // backgroundImage: 'url(https://static.vecteezy.com/system/resources/previews/000/686/771/original/modern-colorful-wave-banner-template-background-vector.jpg)',
-                    // backgroundRepeat: 'no-repeat',
-                    // backgroundAttachment: 'fixed',
-                    // backgroundSize: 'cover',
-                    // backgroundClip: 'border-box'
-                    // backgroundColor: 'grey.A100'
                 }}>
                     <Grid container>
-                        <Grid item xs={12} sm={6} justifyContent={'center'}>
-                            <Typography variant='h2'>
-                                Welcome to EDOM
+                        <Grid item xs={12} sm={6}>
+                            <Typography display={'flex'} variant='h2' align='center' color={'primary.dark'}>
+                                Connect, Control, Create
                             </Typography>
+                            <Typography display={'flex'} variant='h6' align='center' color={'secondary.dark'}>
+                                The Connectivity Solution for Managing and
+                                Orchestrating Devices on the Edge
+                            </Typography>
+                            <Button 
+                                href='/login' 
+                                variant="contained" 
+                                color="primary"
+                                startIcon={<Chat />}
+                                onClick={handleButtonClick}
+                            >
+                                Sign In
+                            </Button>
+                            <Button 
+                                href='/register' 
+                                variant="contained" 
+                                color="secondary"
+                                startIcon={<Chat />}
+                                onClick={handleButtonClick}
+                            >
+                                Sign Up
+                            </Button>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Typography>
-                                To be replaced with SVG
-                            </Typography>
+                            <img 
+                                src='https://picturepark.com/data/cutting-edge-large.png'
+                                alt='Hero Image'
+                                height='400px'
+                            />
                         </Grid>
                     </Grid>
                 </Box>
 
                 <Box sx={{display: 'flex', gridArea: 'scuttle', justifyContent: 'center'}}>
-                    <Button variant="contained" startIcon={<PrecisionManufacturing />}>
+                    <Button 
+                        href='https://www.scuttlerobot.org/' 
+                        variant="contained" 
+                        startIcon={<PrecisionManufacturing />} 
+                        onClick={handleButtonClick}
+                    >
                         SCUTTLE
                     </Button>
                 </Box>
 
                 <Box sx={{display: 'flex', gridArea: 'discord', justifyContent: 'center'}}>
-                    <Button variant="contained" startIcon={<Chat />}>
+                    <Button 
+                        href='https://discord.gg/8q6MFRcW79' 
+                        variant="contained" 
+                        startIcon={<Chat />}
+                        onClick={handleButtonClick}
+                    >
                         Discord
                     </Button>
                 </Box>
 
                 <Box sx={{display: 'flex', gridArea: 'blog', justifyContent: 'center'}}>
-                    <Button variant="contained" startIcon={<Forum />}>
+                    <Button disabled variant="contained" startIcon={<Forum />}>
                         Forums
                     </Button>
                 </Box>
 
-                <Box sx={{display: 'flex', gridArea: 'login', justifyContent: 'center'}}>
-                    <Typography>
-                        New to EDOM?  Sign Up!
-                    </Typography>
-                    <Typography>
-                        Returning User? Sign In!
-                    </Typography>
-                </Box>
-
-                <Box sx={{display: 'flex', gridArea: 'example', justifyContent: 'center'}}>
-                    <Box>
-                        <Typography>
-                            Sample Group
-                        </Typography>
-                    </Box>
-                    <Box>
-                        <Typography>
-                            Sample Room
-                        </Typography>
-                    </Box>
-                    <Box>
-                        <Typography>
-                            Sample Equipment
-                        </Typography>
-                    </Box>
-                </Box>
             </Box>
         </Grid>
     )
