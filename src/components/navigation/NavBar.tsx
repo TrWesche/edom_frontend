@@ -48,7 +48,9 @@ const AppBar = styled(MuiAppBar, {
 
 const NavBar = ( {handleDrawerOpen, open, drawerwidth}: NavBarProps ) => {
     return (
-        <AppBar position="fixed" open={open} drawerwidth={drawerwidth} color="primary">
+        <AppBar position="fixed" open={open} drawerwidth={drawerwidth} sx={{
+            backgroundColor: "background.paper"
+        }} >
             <Toolbar>
                 <IconButton
                     color="inherit"

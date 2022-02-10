@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 
 import {
@@ -33,6 +33,7 @@ const Main = styled('main', {
             }),
             marginLeft: 0,
         }),
+        // backgroundColor: theme.palette.primary.dark
     }));
 
 const Offset = styled('div')(({ theme }) => ({
@@ -41,12 +42,28 @@ const Offset = styled('div')(({ theme }) => ({
 }));
 
 const Layout = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [dimensions, setDimensions] = React.useState({ 
+        height: window.innerHeight,
+        width: window.innerWidth
+    });
+      
+    useEffect(() => {
+        function handleResize() {
+            setDimensions({
+                height: window.innerHeight,
+                width: window.innerWidth
+            });
+        }
+        window.addEventListener('resize', handleResize)
+    });
+        
+
     const handleDrawerOpen = () => {setOpen(true);};
     const handleDrawerClose = () => {setOpen(false);};
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }} bgcolor={'background.default'} minHeight={`${dimensions.height}px`} minWidth={`${dimensions.width}px`}>
             <NavBar drawerwidth={drawerwidth} open={open} handleDrawerOpen={handleDrawerOpen} />
             <NavDrawer drawerwidth={drawerwidth} open={open} handleDrawerClose={handleDrawerClose} />
             <Main open={open}>

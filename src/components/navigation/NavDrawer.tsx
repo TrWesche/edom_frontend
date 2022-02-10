@@ -46,6 +46,10 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
             '& .MuiDrawer-paper': {
                 width: drawerwidth,
                 boxSizing: 'border-box',
+                // backgroundColor: 'primary',
+                // borderRightWidth: '1px',
+                // borderRightStyle: 'solid',
+                // borderRightColor: 'primary.dark'
             },
         }}
         variant="persistent"
@@ -60,7 +64,9 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
                     EDOM
             </Typography>
         </DrawerHeader>
-        <Divider />
+        <Divider sx={{
+            borderColor: 'primary.dark'
+        }}/>
         <List>
             {['Home', 'Browse', 'FAQ', 'Device Management'].map((text, index) => (
                 <ListItem button key={text}>

@@ -252,92 +252,89 @@ const Home = () => {
     
 
     return (
-        <Grid justifyContent={'center'} width={'100%'}>
-            <Box  sx={{
-                display: 'grid',
-                width: '100%',
-                gridTemplateColumns: 'repeat(6, 1fr)',
-                gap: 1,
-                gridTemplateRows: 'auto',
-                gridTemplateAreas: `
-                    "hero hero hero hero hero hero"
-                    "scuttle scuttle discord discord blog blog"
-                    "example example example example example example"
-                `,
-                }}
-            >
-                <Box sx={{
-                    gridArea: 'hero',
-                    display: 'flex',
-                    justifyContent: 'center',
-                }}>
-                    <Grid container>
-                        <Grid item xs={12} sm={6}>
-                            <Typography display={'flex'} variant='h2' align='center' color={'primary.dark'}>
-                                Connect, Control, Create
-                            </Typography>
-                            <Typography display={'flex'} variant='h6' align='center' color={'secondary.dark'}>
-                                The Connectivity Solution for Managing and
-                                Orchestrating Devices on the Edge
-                            </Typography>
+        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
+            <Grid item container maxWidth={'1200px'}>
+
+                <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+                    <Grid item xs={12} md={4} flexDirection='column' display={'flex'} justifyContent={'center'}>
+                        <Typography display={'flex'} variant='h2' align='center' color={'text.primary'} margin='0.25rem'>
+                            Connect, Control, Create
+                        </Typography>
+                        <Typography display={'flex'} variant='h6' align='center' color={'secondary.light'} margin='0.25rem'>
+                            The Connectivity Solution for Managing and
+                            Orchestrating Devices on the Edge
+                        </Typography>
+                        <Box display={'flex'} justifyContent={'center'}>
                             <Button 
                                 href='/login' 
                                 variant="contained" 
                                 color="primary"
-                                startIcon={<Chat />}
                                 onClick={handleButtonClick}
+                                sx={{
+                                    margin: '0.25rem',
+                                    width: '150px'
+                                }}
                             >
                                 Sign In
                             </Button>
+                        </Box>
+
+                        <Box display={'flex'} justifyContent={'center'}>
                             <Button 
                                 href='/register' 
                                 variant="contained" 
                                 color="secondary"
-                                startIcon={<Chat />}
                                 onClick={handleButtonClick}
+                                sx={{
+                                    margin: '0.25rem',
+                                    width: '150px'
+                                }}
                             >
                                 Sign Up
                             </Button>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <img 
-                                src='https://picturepark.com/data/cutting-edge-large.png'
-                                alt='Hero Image'
-                                height='400px'
-                            />
-                        </Grid>
+                        </Box>
                     </Grid>
-                </Box>
 
-                <Box sx={{display: 'flex', gridArea: 'scuttle', justifyContent: 'center'}}>
-                    <Button 
-                        href='https://www.scuttlerobot.org/' 
-                        variant="contained" 
-                        startIcon={<PrecisionManufacturing />} 
-                        onClick={handleButtonClick}
-                    >
-                        SCUTTLE
-                    </Button>
-                </Box>
+                    <Grid item xs={12} md={8} display={'flex'} justifyContent={'center'}>
+                        <img 
+                            src='https://picturepark.com/data/cutting-edge-large.png'
+                            alt='Hero Image'
+                            height='400px'
+                        />
+                    </Grid>
+                </Grid>
 
-                <Box sx={{display: 'flex', gridArea: 'discord', justifyContent: 'center'}}>
-                    <Button 
-                        href='https://discord.gg/8q6MFRcW79' 
-                        variant="contained" 
-                        startIcon={<Chat />}
-                        onClick={handleButtonClick}
-                    >
-                        Discord
-                    </Button>
-                </Box>
+                <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+                    <Grid item xs={4} display={'flex'} justifyContent={'center'}>
+                        <Button 
+                            href='https://www.scuttlerobot.org/' 
+                            variant="contained" 
+                            startIcon={<PrecisionManufacturing />} 
+                            onClick={handleButtonClick}
+                        >
+                            SCUTTLE
+                        </Button>
+                    </Grid>
 
-                <Box sx={{display: 'flex', gridArea: 'blog', justifyContent: 'center'}}>
-                    <Button disabled variant="contained" startIcon={<Forum />}>
-                        Forums
-                    </Button>
-                </Box>
+                    <Grid item xs={4} display={'flex'} justifyContent={'center'}>
+                        <Button 
+                            href='https://discord.gg/8q6MFRcW79' 
+                            variant="contained" 
+                            startIcon={<Chat />}
+                            onClick={handleButtonClick}
+                        >
+                            Discord
+                        </Button>
+                    </Grid>
 
-            </Box>
+                    <Grid item xs={4} display={'flex'} justifyContent={'center'}>
+                        <Button disabled variant="contained" startIcon={<Forum />}>
+                            Forums
+                        </Button>
+                    </Grid>
+                </Grid>
+
+            </Grid>
         </Grid>
     )
 }
