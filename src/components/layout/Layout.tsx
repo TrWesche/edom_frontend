@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { Outlet } from "react-router";
 
 import {
@@ -33,7 +33,6 @@ const Main = styled('main', {
             }),
             marginLeft: 0,
         }),
-        // backgroundColor: theme.palette.primary.dark
     }));
 
 const Offset = styled('div')(({ theme }) => ({
@@ -41,24 +40,31 @@ const Offset = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar
 }));
 
-const Layout = () => {
-    const [open, setOpen] = useState(false);
-    const [dimensions, setDimensions] = React.useState({ 
-        height: window.innerHeight,
-        width: window.innerWidth
-    });
-      
-    useEffect(() => {
-        function handleResize() {
-            setDimensions({
+const useWindowSize = () => {
+    const [size, setSize] = useState(
+        {
+            height: 0,
+            width: 0
+        }
+    );
+    useLayoutEffect(() => {
+        function updateSize() {
+            setSize({
                 height: window.innerHeight,
                 width: window.innerWidth
             });
         }
-        window.addEventListener('resize', handleResize)
-    });
-        
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+};
 
+const Layout = () => {
+    const [open, setOpen] = useState(false);
+    const dimensions = useWindowSize();
+        
     const handleDrawerOpen = () => {setOpen(true);};
     const handleDrawerClose = () => {setOpen(false);};
 

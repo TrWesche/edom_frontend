@@ -126,62 +126,71 @@ const UserLogin = () => {
     };
 
     return (
-        <Grid container spacing={2}>
+        <Grid container justifyContent={'center'} marginTop={'1rem'}>
             {handleAlertOpen()}
-            <Grid container spacing={2} className={"container-class"}>
-                <Grid item xs={12}>
-                <Typography className={"typography-class"} variant="h6" noWrap>
-                    Join the EDOM Community
-                </Typography>
-                </Grid>
-            
-                <Grid item xs={12}>
-                <form onSubmit={handleSubmit}>
-                    <Grid item xs={12}>
-                        <FormControl className={"form-control-class"} variant="outlined">
-                            <OutlinedInput
-                                required
-                                id="username"
-                                value={formValues.username}
-                                onChange={handleChange('username')}
-                                aria-describedby="user-username-helper-text"
-                                inputProps={{
-                                    'aria-label': 'username',
+            <Grid container className={"container-class"}>
+                <Grid container item xs={12} justifyContent={'center'}>
+                    <form onSubmit={handleSubmit}>
+                        <Grid item display={'flex'} flexDirection={'column'} xs={12}>
+                            <FormControl className={"form-control-class"} variant="outlined">
+                                <OutlinedInput
+                                    required
+                                    id="username"
+                                    value={formValues.username}
+                                    onChange={handleChange('username')}
+                                    aria-describedby="user-username-helper-text"
+                                    inputProps={{
+                                        'aria-label': 'username',
+                                    }}
+                                    sx={{
+                                        backgroundColor: 'primary.light'
+                                    }}
+                                />
+                                <FormHelperText id="user-username-helper-text">Username</FormHelperText>
+                            </FormControl>
+
+                            <FormControl className={"form-control-class"} variant="outlined">
+                                <OutlinedInput
+                                    required
+                                    id="user-password"
+                                    type={formValues.showPassword ? 'text' : 'password'}
+                                    value={formValues.password}
+                                    onChange={handleChange('password')}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {formValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    sx={{
+                                        backgroundColor: 'primary.light'
+                                    }}
+                                />
+                                <FormHelperText id="user-lastname-helper-text">Password</FormHelperText>
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item display={'flex'} justifyContent={'center'} xs={12}>
+                            <Button 
+                                type="submit" 
+                                aria-label="user login" 
+                                variant="contained" 
+                                color="primary"
+                                sx={{
+                                    margin: '0.25rem',
+                                    width: '150px'
                                 }}
-                            />
-                            <FormHelperText id="user-username-helper-text">Username*</FormHelperText>
-                        </FormControl>
-
-                        <FormControl className={"form-control-class"} variant="outlined">
-                            <OutlinedInput
-                                required
-                                id="user-password"
-                                type={formValues.showPassword ? 'text' : 'password'}
-                                value={formValues.password}
-                                onChange={handleChange('password')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {formValues.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
-                            <FormHelperText id="user-lastname-helper-text">Password*</FormHelperText>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                    <Button type="submit" aria-label="create user account" variant="contained" color="primary">
-                        Login
-                    </Button>
-                    </Grid>
-                </form>
+                            >
+                                Sign In
+                            </Button>
+                        </Grid>
+                    </form>
                 </Grid>
             </Grid>
         </Grid>

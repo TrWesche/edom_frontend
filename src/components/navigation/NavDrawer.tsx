@@ -45,11 +45,7 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
             flexShrink: 0,
             '& .MuiDrawer-paper': {
                 width: drawerwidth,
-                boxSizing: 'border-box',
-                // backgroundColor: 'primary',
-                // borderRightWidth: '1px',
-                // borderRightStyle: 'solid',
-                // borderRightColor: 'primary.dark'
+                boxSizing: 'border-box'
             },
         }}
         variant="persistent"

@@ -67,7 +67,7 @@ const theme = createTheme({
         divider: '#314768',
         text: {
             primary: "#F4F4F4",
-            secondary: '#444444',
+            secondary: '#A4A4A4',
         },
         background: {
             default: "#151D2A",
