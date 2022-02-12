@@ -16,37 +16,11 @@ import {
     Chat
 } from '@mui/icons-material';
 
-
+import HandleButtonClick from '../../utils/HandleButtonClick';
 import UserLogin from "../user/UserLogin";
 
-interface ButtonClickEvent extends React.FormEvent<HTMLButtonElement> {
-    target: ButtonClickTarget
-};
 
-interface ButtonClickTarget extends EventTarget {
-    href?: string
-};
-
-
-const AnonymousHome = () => {
-    // React / Redux Function Instantiations
-    const navigate = useNavigate();
-
-    const handleButtonClick = (e: ButtonClickEvent) => {
-        e.preventDefault();
-        
-        if (e.target.href !== undefined) {
-            const destURL = new URL(e.target.href);
-            if (destURL.hostname !== "localhost") { // TODO: This should be replaced with a variable
-                window.open(e.target.href, '_blank');
-            } else {
-                navigate(`${destURL.pathname}${destURL.search}`);
-            }
-        } else {
-            console.log("Error, destination not defined")
-        }
-    }
-    
+const AnonymousHome = () => {   
     return (
         <React.Fragment>
             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
@@ -68,7 +42,7 @@ const AnonymousHome = () => {
                             href='/register' 
                             variant="contained" 
                             color="secondary"
-                            onClick={handleButtonClick}
+                            onClick={HandleButtonClick}
                             sx={{
                                 margin: '0.25rem',
                                 width: '150px'
@@ -94,7 +68,7 @@ const AnonymousHome = () => {
                         href='https://www.scuttlerobot.org/' 
                         variant="contained" 
                         startIcon={<PrecisionManufacturing />} 
-                        onClick={handleButtonClick}
+                        onClick={HandleButtonClick}
                     >
                         SCUTTLE
                     </Button>
@@ -105,7 +79,7 @@ const AnonymousHome = () => {
                         href='https://discord.gg/8q6MFRcW79' 
                         variant="contained" 
                         startIcon={<Chat />}
-                        onClick={handleButtonClick}
+                        onClick={HandleButtonClick}
                     >
                         Discord
                     </Button>
@@ -121,4 +95,4 @@ const AnonymousHome = () => {
     )
 }
 
-export default AnonymousHome
+export default AnonymousHome;

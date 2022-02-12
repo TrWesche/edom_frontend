@@ -1,6 +1,6 @@
 // React
 import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams, useHref } from 'react-router-dom';
 
 // Redux
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
@@ -10,140 +10,288 @@ import {
     Grid,
     Paper,
     Box,
+    Button,
     Typography,
     Stack,
-    Skeleton
+    Skeleton,
+    Container,
+    Card,
+    CardActionArea,
+    CardContent,
+    CardActions,
+    CardMedia
 } from "@mui/material"
+
+import {
+    PrecisionManufacturing,
+    Forum,
+    Chat
+} from '@mui/icons-material';
 
 // Providers
 import { authToken, useAuth } from '../../providers/authProvider';
 import { useAlert } from '../../providers/alertProvider';
 
-// Interface Impors
+import HandleButtonClick from '../../utils/HandleButtonClick';
+
+// Interface Imports
 import { GroupObjectProps, RoomObjectProps } from '../../interfaces/globalInterfaces';
 import { fetchGroupList } from '../../redux/actions/actGroupList';
 
-const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined, data: any, isProcessing: boolean, reduxError: boolean}) => {
-    const { authData, navigate, alertSetter, data, isProcessing, reduxError } = props; 
 
-    const pageLoading = () => {
+interface GroupListProps {
+    groups: Array<GroupObjectProps>
+    isProcessing: boolean
+    error?: boolean
+};
+
+interface RoomListProps {
+    rooms: Array<RoomObjectProps>
+    isProcessing: boolean
+    error?: boolean
+};
+
+interface ReduxDataPayload {
+    groups: GroupListProps
+    rooms: RoomListProps
+};
+
+
+const HomePageHeader = () => {
+    return (
+        <React.Fragment>
+            <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+                <Grid item xs={12} flexDirection='column' display={'flex'} justifyContent={'center'}>
+                    <Typography display={'flex'} variant='h2' align='center' color={'text.primary'} margin='0.25rem'>
+                        What's New!
+                    </Typography>
+                    <Typography display={'flex'} variant='h6' align='center' color={'secondary.light'} margin='0.25rem'>
+                        EDOM buildout is coming together!  Be on the lookout for alpha's of the Group, Equipment and Room Management Pages soon!
+                    </Typography>
+                </Grid>
+            </Grid>
+
+            <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+                <Grid item xs={4} display={'flex'} justifyContent={'center'}>
+                    <Button 
+                        href='https://www.scuttlerobot.org/' 
+                        variant="contained" 
+                        startIcon={<PrecisionManufacturing />} 
+                        onClick={HandleButtonClick}
+                    >
+                        SCUTTLE
+                    </Button>
+                </Grid>
+
+                <Grid item xs={4} display={'flex'} justifyContent={'center'}>
+                    <Button 
+                        href='https://discord.gg/8q6MFRcW79' 
+                        variant="contained" 
+                        startIcon={<Chat />}
+                        onClick={HandleButtonClick}
+                    >
+                        Discord
+                    </Button>
+                </Grid>
+
+                <Grid item xs={4} display={'flex'} justifyContent={'center'}>
+                    <Button disabled variant="contained" startIcon={<Forum />}>
+                        Forums
+                    </Button>
+                </Grid>
+            </Grid>
+        </React.Fragment>
+    )
+};
+
+const GroupCard = (data: GroupObjectProps) => {
+    return (
+        <Card sx={{ maxWidth: 345 }}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    src="https://www.scuttlerobot.org/images/virtuemart/product/Scuttle-Render-Assembled-Base-1280x720.jpg"
+                    alt="Scuttle Robot Picture"
+                />
+                <CardContent
+                    sx={{
+                        height: '200px',
+                        textOverflow: 'ellipsis' 
+                    }}
+                >
+                    <Typography gutterBottom variant="h5" component="div">
+                        {data.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Group Headline
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <Button size="small" color="primary">
+                    Management Actions Area?
+                </Button>
+            </CardActions>
+        </Card>          
+    )
+};
+
+const GroupCardSkeleton = () => {
+    return (
+        <Box sx={{
+            maxWidth: "345"
+        }}>
+            <Skeleton height="140px"/>
+            <Skeleton height="200px"/>
+        </Box>
+    )
+};
+
+const HorizontalGroupList = (listid: string, displayqty: number, list: GroupListProps) => {
+    const loadingState = () => {
+        const skeletonArray = new Array(displayqty);
+
         return (
-            <Box  sx={{
-                display: 'grid',
-                width: '100%',
-                gridTemplateColumns: 'repeat(6, 1fr)',
-                gap: 1,
-                gridTemplateRows: 'auto',
-                gridTemplateAreas: `
-                    "avatar details details details details details"
-                    "info info info info info info"
-                `,
-                }}
-            >
-                <Box sx={{ gridArea: 'avatar'}}>
-                    <Skeleton variant="circular" width={152} height={152} />
-                </Box>
-                <Box sx={{ gridArea: 'details'}}>
-                    <Skeleton variant="rectangular" height={152} />
-                </Box>
-
-                <Box sx={{ gridArea: 'info'}}>
-                    <Skeleton variant="rectangular" height={400} />
-                </Box>
-            </Box>
+            <Grid container spacing={2}>
+                {skeletonArray.map((val, idx) => {
+                    return (
+                        <Grid item xs={12} key={`${listid}-${idx}`}>
+                            {GroupCardSkeleton()}
+                        </Grid>   
+                    );
+                })}
+            </Grid>
         );
-    };
+    }
 
-    const dataLoaded = () => {
-        if (data !== undefined) {
+    const displayMore = () => {
+        if (list.groups.length > displayqty) {
             return (
-                <Stack>
-                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.username ? data.username : "Failed to Retrieve Username"}</Typography>
-                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.first_name} {data.last_name}</Typography>
-                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.email ? data.email : ""}</Typography>
-                </Stack>
-            )
-        } else {
-            return (
-                <Stack>
-                    <Typography></Typography>
-                </Stack>
+                <Grid item xs={12} key={`${listid}-more`}>
+                    <p>View More</p>
+                </Grid>
             )
         }
-    }
+    };
+
+    return (
+        <Grid container spacing={2}>
+            {list.groups.map(data => {
+                return (
+                    <Grid item xs={12} key={`${listid}-${data.id}`}>
+                        {GroupCard(data)}
+                    </Grid>    
+                )
+            })}
+            {displayMore()}  
+        </Grid>
+    );
+};
+
+const RoomCard = (data: RoomObjectProps) => {
+    return (
+        <Card sx={{ maxWidth: 345 }}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    src="https://www.scuttlerobot.org/images/virtuemart/product/Scuttle-Render-Assembled-Base-1280x720.jpg"
+                    alt="Scuttle Robot Picture"
+                />
+                <CardContent
+                    sx={{
+                        height: '200px',
+                        textOverflow: 'ellipsis' 
+                    }}
+                >
+                    <Typography gutterBottom variant="h5" component="div">
+                        {data.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {data.category}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Room Headline
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <Button size="small" color="primary">
+                    Management Actions Area?
+                </Button>
+            </CardActions>
+        </Card>          
+    )
+};
+
+const HorizontalRoomList = (listid: string, displayqty: number, list: RoomListProps) => {
+    // const displayMore = () => {
+    //     if (list.length > displayqty) {
+    //         return (
+    //             <Grid item xs={12} key={`${listid}-more`}>
+    //                 <p>View More</p>
+    //             </Grid>
+    //         )
+    //     }
+    // };
+
+    // return (
+    //     <Grid container spacing={2}>
+    //         {list.map(data => {
+    //             return (
+    //                 <Grid item xs={12} key={`${listid}-${data.id}`}>
+    //                     {RoomCard(data)}
+    //                 </Grid>    
+    //             )
+    //         })}
+    //         {displayMore()}  
+    //     </Grid>
+    // );
+
+    return (
+        <Grid container spacing={2}>
+            <Typography>
+                Under Development
+            </Typography>
+        </Grid>
+    )
+};
+
+const PageLoadHandler = (props: {
+        authData: authToken, 
+        navigate: NavigateFunction, 
+        alertSetter: Function | undefined, 
+        reduxData: ReduxDataPayload}) => {
+    const { authData, navigate, alertSetter, reduxData } = props; 
+
+    // const pageLoading = () => {
+    //     return (
+    //         <React.Fragment>
+    //             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+    //                 <Skeleton variant="rectangular" height={350} />
+    //             </Grid>
+
+    //             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+    //                 <Skeleton variant="rectangular" height={500} />
+    //             </Grid>
+
+    //             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+    //                 <Skeleton variant="rectangular" height={500} />
+    //             </Grid>
+    //         </React.Fragment>
+    //     );
+    // };
+
 
     const pageLoaded = () => {
         return (
-
-            <Box  sx={{
-                display: 'grid',
-                width: '100%',
-                gridTemplateColumns: 'repeat(6, 1fr)',
-                gap: 1,
-                gridTemplateRows: 'auto',
-                gridTemplateAreas: `
-                    "avatar details details details details details"
-                    "about about about about about about"
-                    "groups groups groups groups groups groups"
-                    "rooms rooms rooms rooms rooms rooms"
-                    "equip equip equip equip equip equip"
-                `,
-                }}
-            >
-                <Box sx={{ gridArea: 'details' }}>
-                    {dataLoaded()}
-                </Box>
+            <React.Fragment>
+                {HomePageHeader()}
+                {HorizontalGroupList("featured-groups", 3, reduxData.groups)}
+                {HorizontalRoomList("featured-rooms", 3, reduxData.rooms)}
+            </React.Fragment>
             
-            
-                <Box sx={{ gridArea: 'about'}}>
-                    <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
-                        padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
-                    >
-                        About Me
-                    </Typography>
-                </Box>
-                <Box sx={{ gridArea: 'groups'}}>
-                    <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
-                        padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
-                    >
-                        Groups
-                    </Typography>
-                </Box>
-                <Box sx={{ gridArea: 'rooms'}}>
-                    <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
-                        padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
-                    >
-                        Rooms
-                    </Typography>
-                </Box>
-                <Box sx={{ gridArea: 'equip'}}>
-                    <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
-                        padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
-                    >
-                        Equipment
-                    </Typography>
-                </Box>
-            </Box>
         );
     };
 
@@ -167,34 +315,12 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
         navigate('/');
     };
 
-    if (reduxError) {
-        return (
-            <React.Fragment>
-                {pageLoadError()}
-            </React.Fragment>
-        );
-    } else if (isProcessing) {
-        return (
-            <React.Fragment>
-                {pageLoading()}
-            </React.Fragment>
-        );
-    } else if (!isProcessing) {
-        return (
-            <React.Fragment>
-                {pageLoaded()}
-            </React.Fragment>
-        );
-    } else {
-        return (
-            <React.Fragment>
-                {pageLoadError()}
-            </React.Fragment>
-        );
-    };
+    return (
+        <React.Fragment>
+            {pageLoaded()}
+        </React.Fragment>
+    );
 };
-
-
 
 
 const AuthenticatedHome = () => {
@@ -208,50 +334,30 @@ const AuthenticatedHome = () => {
     
     const params: any = useParams();
 
-    const reduxGroupList: Array<GroupObjectProps> = useSelector((store: RootStateOrAny) => store?.groupList);
-    const reduxRoomList: Array<RoomObjectProps> = useSelector((store: RootStateOrAny) => store?.roomList);
+    const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.groupList);
+    const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.roomList);
+
+
     useEffect(() => {
         dispatch(fetchGroupList());
+        // dispatch(fetchRoomList());
     }, [dispatch]);
 
+    const reduxData: ReduxDataPayload = {
+        groups: reduxGroupList,
+        rooms: reduxRoomList
+    };
+
     return (
-        <Grid justifyContent={'center'} width={'100%'}>
-            <Box  sx={{
-                display: 'grid',
-                width: '100%',
-                gridTemplateColumns: 'repeat(6, 1fr)',
-                gap: 1,
-                gridTemplateRows: 'auto',
-                gridTemplateAreas: `
-                    "avatar details details details details details"
-                    "info info info info info info"
-                `,
-                }}
-            >
-                <Box sx={{ gridArea: 'avatar'}}>
-                    <Skeleton variant="circular" width={152} height={152} />
-                </Box>
-                <Box sx={{ gridArea: 'details'}}>
-                    <Skeleton variant="rectangular" height={152} />
-                </Box>
-
-                <Box sx={{ gridArea: 'info'}}>
-                    <Skeleton variant="rectangular" height={400} />
-                </Box>
-            </Box>
-
-            <Grid item xs={12}>
-                <Typography>Welcome to EDO!</Typography>
-                <Typography>The Edge Device Orchestration Platform</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Typography>Left Home Column</Typography>
-            </Grid>
-            <Grid item xs={6} md={6}>
-                <Typography>Right Home Column</Typography>
-            </Grid>
+        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
+            <PageLoadHandler 
+                authData={authData}
+                navigate={navigate}
+                alertSetter={alertSetter}
+                reduxData={reduxData}
+            />
         </Grid>
     )
 }
 
-export default AuthenticatedHome;
+export default AuthenticatedHome
