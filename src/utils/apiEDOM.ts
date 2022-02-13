@@ -119,6 +119,14 @@ class apiEDOM {
         const response = await this.getJson(`/groups/list${queryString}`);
         return {headers: response.headers, data: response.data};
     };
+
+
+    // Room Functions
+    static async getRoomListPublic(queryString: string) {
+        const response = await this.getJson(`/rooms/list${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
 };
 
 export default apiEDOM;

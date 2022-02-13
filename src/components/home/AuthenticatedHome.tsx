@@ -33,10 +33,11 @@ import HandleButtonClick from '../../utils/HandleButtonClick';
 // Interface Imports
 import { GroupObjectProps, RoomObjectProps } from '../../interfaces/globalInterfaces';
 import { fetchGroupList } from '../../redux/actions/actGroupList';
+import { fetchRoomList } from '../../redux/actions/actRoomList';
 
 
 interface GroupListProps {
-    groups: Array<GroupObjectProps>
+    group: Array<GroupObjectProps>
     isProcessing: boolean
     error?: boolean
 };
@@ -112,7 +113,7 @@ const GroupCard = (data: GroupObjectProps) => {
                 />
                 <CardContent
                     sx={{
-                        height: '200px',
+                        height: '100px',
                         textOverflow: 'ellipsis' 
                     }}
                 >
@@ -120,7 +121,7 @@ const GroupCard = (data: GroupObjectProps) => {
                         {data.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Group Headline
+                        {data.headline}
                     </Typography>
                 </CardContent>
             </CardActionArea>
@@ -139,7 +140,7 @@ const GroupCardSkeleton = () => {
             maxWidth: "345"
         }}>
             <Skeleton height="140px"/>
-            <Skeleton height="200px"/>
+            <Skeleton height="100px"/>
         </Box>
     )
 };
@@ -149,7 +150,7 @@ const HorizontalGroupList = (listid: string, displayqty: number, list: GroupList
         const skeletonArray = new Array(displayqty);
 
         return (
-            <Grid container spacing={2}>
+            <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
                         <Grid item xs={12} key={`${listid}-${idx}`}>
@@ -157,24 +158,24 @@ const HorizontalGroupList = (listid: string, displayqty: number, list: GroupList
                         </Grid>   
                     );
                 })}
-            </Grid>
+            </React.Fragment>
         );
     };
 
     const stateError = () => {
         return (
-            <Grid container spacing={2}>
+            <React.Fragment>
                 <Typography>
                     Uh oh... Something went wrong.
                 </Typography>
-            </Grid>
+            </React.Fragment>
         );
     };
 
     const stateLoaded = () => {
         return (
-            <Grid container spacing={2}>
-                {list.groups.map(data => {
+            <React.Fragment>
+                {list.group.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
                             {GroupCard(data)}
@@ -182,12 +183,12 @@ const HorizontalGroupList = (listid: string, displayqty: number, list: GroupList
                     )
                 })}
                 {displayMore()}  
-            </Grid>
+            </React.Fragment>
         );
     };
 
     const displayMore = () => {
-        if (list.groups.length > displayqty) {
+        if (list.group.length > displayqty) {
             return (
                 <Grid item xs={12} key={`${listid}-more`}>
                     <p>View More</p>
@@ -196,32 +197,31 @@ const HorizontalGroupList = (listid: string, displayqty: number, list: GroupList
         }
     };
 
-    if (list === undefined) {
+    if (list === undefined || list.group === undefined) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateLoading()}
-            </React.Fragment>
+            </Grid>
         )
     };
 
-    
     if (list.error) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateError()}
-            </React.Fragment>
+            </Grid>
         );
     } else if (list.isProcessing) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateLoading()}
-            </React.Fragment>
+            </Grid>
         )
     } else if (!list.isProcessing) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateLoaded()}
-            </React.Fragment>
+            </Grid>
         )
     };
 };
@@ -238,7 +238,7 @@ const RoomCard = (data: RoomObjectProps) => {
                 />
                 <CardContent
                     sx={{
-                        height: '200px',
+                        height: '100px',
                         textOverflow: 'ellipsis' 
                     }}
                 >
@@ -268,7 +268,7 @@ const RoomCardSkeleton = () => {
             maxWidth: "345"
         }}>
             <Skeleton height="140px"/>
-            <Skeleton height="200px"/>
+            <Skeleton height="100px"/>
         </Box>
     )
 };
@@ -278,7 +278,7 @@ const HorizontalRoomList = (listid: string, displayqty: number, list: RoomListPr
         const skeletonArray = new Array(displayqty);
 
         return (
-            <Grid container spacing={2}>
+            <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
                         <Grid item xs={12} key={`${listid}-${idx}`}>
@@ -286,23 +286,23 @@ const HorizontalRoomList = (listid: string, displayqty: number, list: RoomListPr
                         </Grid>   
                     );
                 })}
-            </Grid>
+            </React.Fragment>
         );
     };
 
     const stateError = () => {
         return (
-            <Grid container spacing={2}>
+            <React.Fragment>
                 <Typography>
                     Uh oh... Something went wrong.
                 </Typography>
-            </Grid>
+            </React.Fragment>
         );
     };
 
     const stateLoaded = () => {
         return (
-            <Grid container spacing={2}>
+            <React.Fragment>
                 {list.rooms.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
@@ -311,7 +311,7 @@ const HorizontalRoomList = (listid: string, displayqty: number, list: RoomListPr
                     )
                 })}
                 {displayMore()}  
-            </Grid>
+            </React.Fragment>
         );
     };
 
@@ -325,23 +325,31 @@ const HorizontalRoomList = (listid: string, displayqty: number, list: RoomListPr
         }
     };
 
+    if (list === undefined || list.rooms === undefined) {
+        return (
+            <Grid container item>
+                {stateLoading()}
+            </Grid>
+        )
+    };
+
     if (list.error) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateError()}
-            </React.Fragment>
+            </Grid>
         );
     } else if (list.isProcessing) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateLoading()}
-            </React.Fragment>
+            </Grid>
         )
     } else if (!list.isProcessing) {
         return (
-            <React.Fragment>
+            <Grid container item>
                 {stateLoaded()}
-            </React.Fragment>
+            </Grid>
         )
     };
 };
@@ -352,54 +360,25 @@ const PageLoadHandler = (props: {
         reduxData: ReduxDataPayload}) => {
     const { authData, alertSetter, reduxData } = props; 
 
-    // const pageLoading = () => {
-    //     return (
-    //         <React.Fragment>
-    //             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
-    //                 <Skeleton variant="rectangular" height={350} />
-    //             </Grid>
-
-    //             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
-    //                 <Skeleton variant="rectangular" height={500} />
-    //             </Grid>
-
-    //             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
-    //                 <Skeleton variant="rectangular" height={500} />
-    //             </Grid>
-    //         </React.Fragment>
-    //     );
-    // };
-
 
     const pageLoaded = () => {
+        console.log(reduxData);
         return (
             <React.Fragment>
                 {HomePageHeader()}
                 {HorizontalGroupList("featured-groups", 3, reduxData.groups)}
-                {/* {HorizontalRoomList("featured-rooms", 3, reduxData.rooms)} */}
+                {HorizontalRoomList("featured-rooms", 3, reduxData.rooms)}
             </React.Fragment>
             
         );
     };
 
-    // const pageLoadError = () => {
-    //     return (
-    //         <Paper>
-    //             <Grid item xs={12}>
-    //                 <Typography>Something went wrong.</Typography>
-    //             </Grid>
-    //         </Paper>
-    //     );
-    // };
 
     // User Logged In Check
     if (!authData.logged_in && authData.init) {
-        // console.log(authData);
-        // console.log("User Not Logged In?");
         if (alertSetter) {
             alertSetter({open: true, content: "Please Login to Continue.", severity: "error"})
         };
-        // navigate('/');
     };
 
     return (
@@ -416,15 +395,13 @@ const AuthenticatedHome = (props: {authData: authToken, navigate: NavigateFuncti
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
     
-    // const params: any = useParams();
-
-    const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.groupList);
-    const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.roomList);
+    const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
+    const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
 
 
     useEffect(() => {
         dispatch(fetchGroupList());
-        // dispatch(fetchRoomList());
+        dispatch(fetchRoomList());
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {

@@ -1,11 +1,11 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
 import { Dispatch } from "redux";
-import { GroupObjectProps, QueryStringFilterProps } from "../../interfaces/globalInterfaces";
+import { RoomObjectProps, QueryStringFilterProps } from "../../interfaces/globalInterfaces";
 
 import apiEDOM from "../../utils/apiEDOM";
 import {
-    GROUP_LIST_ACTIONS,
+    ROOM_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
@@ -28,15 +28,15 @@ export const queryStringFilterPrep = (filters: Array<QueryStringFilterProps> | u
 };
 
 
-const fetchGroupList = (filters?: Array<QueryStringFilterProps>) => {
+const fetchRoomList = (filters?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
-        dispatch(startFetchGroupList());
+        dispatch(startFetchRoomList());
         try {
             const queryString = queryStringFilterPrep(filters);
-            const result = await apiEDOM.getGroupListPublic(queryString);
+            const result = await apiEDOM.getRoomListPublic(queryString);
             const data = result.data;
             
-            dispatch(gotGroupList(data));
+            dispatch(gotRoomList(data));
         } catch (error) {
             console.log("Redux Error Caught");
             dispatch(gotError());
@@ -44,15 +44,15 @@ const fetchGroupList = (filters?: Array<QueryStringFilterProps>) => {
     }
 };
 
-const startFetchGroupList = () => {
+const startFetchRoomList = () => {
     return ({
-        type: GROUP_LIST_ACTIONS.START_GROUP_LIST_LOAD
+        type: ROOM_LIST_ACTIONS.START_ROOM_LIST_LOAD
     });
 };
 
-const gotGroupList = (data: Array<GroupObjectProps | undefined>) => {
+const gotRoomList = (data: Array<RoomObjectProps | undefined>) => {
     return ({
-        type: GROUP_LIST_ACTIONS.FINISH_GROUP_LIST_LOAD,
+        type: ROOM_LIST_ACTIONS.FINISH_ROOM_LIST_LOAD,
         payload: data
     })
 };
@@ -64,5 +64,5 @@ const gotError = () => {
 };
 
 export {
-    fetchGroupList
+    fetchRoomList
 };

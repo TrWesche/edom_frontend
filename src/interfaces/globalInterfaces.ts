@@ -20,6 +20,7 @@ export interface GroupObjectProps {
     id?: string
     name?: string
     image?: string
+    headline?: string
 };
 
 export interface RoomObjectProps {
@@ -27,6 +28,7 @@ export interface RoomObjectProps {
     name?: string
     category: string
     image?: string
+    headline?: string
 };
 
 
