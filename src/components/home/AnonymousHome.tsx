@@ -1,6 +1,6 @@
 // React
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
 
 // Material UI
 import {
@@ -19,8 +19,10 @@ import {
 import HandleButtonClick from '../../utils/HandleButtonClick';
 import UserLogin from "../user/UserLogin";
 
+// Providers
+import { authToken } from '../../providers/authProvider';
 
-const AnonymousHome = () => {   
+const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined}) => {   
     return (
         <React.Fragment>
             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>

@@ -11,7 +11,7 @@ interface reduxAction extends Action {
     payload?: object
 }
 
-const targetUser = (state = INITIAL_STATE, action: reduxAction) => {
+const redGroupList = (state = INITIAL_STATE, action: reduxAction) => {
     let groupList;
     switch (action.type){
         case GROUP_LIST_ACTIONS.START_GROUP_LIST_LOAD:
@@ -27,4 +27,4 @@ const targetUser = (state = INITIAL_STATE, action: reduxAction) => {
     }
 }
 
-export default targetUser;
+export default redGroupList;

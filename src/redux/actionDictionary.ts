@@ -10,7 +10,7 @@ export class USER_ACTIONS {
 // Group Viewing Actions
 export class GROUP_LIST_ACTIONS {
     static START_GROUP_LIST_LOAD = 'START_GROUP_LIST_LOAD';
-    static FINISH_GROUP_LIST_LOAD = 'START_GROUP_LIST_LOAD';
+    static FINISH_GROUP_LIST_LOAD = 'FINISH_GROUP_LIST_LOAD';
 };
 
 // Room Viewing Actions

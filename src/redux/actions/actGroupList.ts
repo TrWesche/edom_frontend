@@ -36,6 +36,7 @@ const fetchGroupList = (filters?: Array<QueryStringFilterProps>) => {
             const result = await apiEDOM.getGroupListPublic(queryString);
             const data = result.data;
             
+            console.log(data);
             dispatch(gotGroupList(data));
         } catch (error) {
             console.log("Redux Error Caught");

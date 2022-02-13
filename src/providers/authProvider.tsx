@@ -85,7 +85,7 @@ const authVerifyToken = () => {
         if (sessionToken) {
             const verifiedToken: authToken | string = jwt.verify(sessionToken, EDOM_PUBLIC_KEY);
             if (typeof verifiedToken === "object") {
-                const returnToken = {...verifiedToken, logged_in: true};
+                const returnToken = {...verifiedToken, logged_in: true, init: true};
                 return returnToken;
             };
         };
