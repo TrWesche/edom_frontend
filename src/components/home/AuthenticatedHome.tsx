@@ -8,15 +8,8 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 // Material UI
 import {
     Grid,
-    Box,
     Button,
-    Typography,
-    Skeleton,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardActions,
-    CardMedia
+    Typography
 } from "@mui/material"
 
 import {
@@ -31,22 +24,13 @@ import { authToken } from '../../providers/authProvider';
 import HandleButtonClick from '../../utils/HandleButtonClick';
 
 // Interface Imports
-import { GroupObjectProps, RoomObjectProps } from '../../interfaces/globalInterfaces';
 import { fetchGroupList } from '../../redux/actions/actGroupList';
 import { fetchRoomList } from '../../redux/actions/actRoomList';
 
 
-interface GroupListProps {
-    group: Array<GroupObjectProps>
-    isProcessing: boolean
-    error?: boolean
-};
+import GroupCardListHorizontal, { GroupListProps } from "../building_blocks/group/GroupCardListHorizontal";
+import RoomCardListHorizontal, { RoomListProps } from "../building_blocks/room/RoomCardListHorizontal";
 
-interface RoomListProps {
-    rooms: Array<RoomObjectProps>
-    isProcessing: boolean
-    error?: boolean
-};
 
 interface ReduxDataPayload {
     groups: GroupListProps
@@ -101,258 +85,6 @@ const HomePageHeader = () => {
     )
 };
 
-const GroupCard = (data: GroupObjectProps) => {
-    return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    src="https://www.scuttlerobot.org/images/virtuemart/product/Scuttle-Render-Assembled-Base-1280x720.jpg"
-                    alt="Scuttle Robot Picture"
-                />
-                <CardContent
-                    sx={{
-                        height: '100px',
-                        textOverflow: 'ellipsis' 
-                    }}
-                >
-                    <Typography gutterBottom variant="h5" component="div">
-                        {data.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {data.headline}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary">
-                    Management Actions Area?
-                </Button>
-            </CardActions>
-        </Card>          
-    )
-};
-
-const GroupCardSkeleton = () => {
-    return (
-        <Box sx={{
-            maxWidth: "345"
-        }}>
-            <Skeleton height="140px"/>
-            <Skeleton height="100px"/>
-        </Box>
-    )
-};
-
-const HorizontalGroupList = (listid: string, displayqty: number, list: GroupListProps) => {
-    const stateLoading = () => {
-        const skeletonArray = new Array(displayqty);
-
-        return (
-            <React.Fragment>
-                {skeletonArray.map((val, idx) => {
-                    return (
-                        <Grid item xs={12} key={`${listid}-${idx}`}>
-                            {GroupCardSkeleton()}
-                        </Grid>   
-                    );
-                })}
-            </React.Fragment>
-        );
-    };
-
-    const stateError = () => {
-        return (
-            <React.Fragment>
-                <Typography>
-                    Uh oh... Something went wrong.
-                </Typography>
-            </React.Fragment>
-        );
-    };
-
-    const stateLoaded = () => {
-        return (
-            <React.Fragment>
-                {list.group.map(data => {
-                    return (
-                        <Grid item xs={4} key={`${listid}-${data.id}`}>
-                            {GroupCard(data)}
-                        </Grid>    
-                    )
-                })}
-                {displayMore()}  
-            </React.Fragment>
-        );
-    };
-
-    const displayMore = () => {
-        if (list.group.length > displayqty) {
-            return (
-                <Grid item xs={12} key={`${listid}-more`}>
-                    <p>View More</p>
-                </Grid>
-            )
-        }
-    };
-
-    if (list === undefined || list.group === undefined) {
-        return (
-            <Grid container item>
-                {stateLoading()}
-            </Grid>
-        )
-    };
-
-    if (list.error) {
-        return (
-            <Grid container item>
-                {stateError()}
-            </Grid>
-        );
-    } else if (list.isProcessing) {
-        return (
-            <Grid container item>
-                {stateLoading()}
-            </Grid>
-        )
-    } else if (!list.isProcessing) {
-        return (
-            <Grid container item>
-                {stateLoaded()}
-            </Grid>
-        )
-    };
-};
-
-const RoomCard = (data: RoomObjectProps) => {
-    return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    src="https://www.scuttlerobot.org/images/virtuemart/product/Scuttle-Render-Assembled-Base-1280x720.jpg"
-                    alt="Scuttle Robot Picture"
-                />
-                <CardContent
-                    sx={{
-                        height: '100px',
-                        textOverflow: 'ellipsis' 
-                    }}
-                >
-                    <Typography gutterBottom variant="h5" component="div">
-                        {data.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {data.category}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Room Headline
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary">
-                    Management Actions Area?
-                </Button>
-            </CardActions>
-        </Card>          
-    )
-};
-
-const RoomCardSkeleton = () => {
-    return (
-        <Box sx={{
-            maxWidth: "345"
-        }}>
-            <Skeleton height="140px"/>
-            <Skeleton height="100px"/>
-        </Box>
-    )
-};
-
-const HorizontalRoomList = (listid: string, displayqty: number, list: RoomListProps) => {
-    const stateLoading = () => {
-        const skeletonArray = new Array(displayqty);
-
-        return (
-            <React.Fragment>
-                {skeletonArray.map((val, idx) => {
-                    return (
-                        <Grid item xs={12} key={`${listid}-${idx}`}>
-                            {RoomCardSkeleton()}
-                        </Grid>   
-                    );
-                })}
-            </React.Fragment>
-        );
-    };
-
-    const stateError = () => {
-        return (
-            <React.Fragment>
-                <Typography>
-                    Uh oh... Something went wrong.
-                </Typography>
-            </React.Fragment>
-        );
-    };
-
-    const stateLoaded = () => {
-        return (
-            <React.Fragment>
-                {list.rooms.map(data => {
-                    return (
-                        <Grid item xs={4} key={`${listid}-${data.id}`}>
-                            {RoomCard(data)}
-                        </Grid>    
-                    )
-                })}
-                {displayMore()}  
-            </React.Fragment>
-        );
-    };
-
-    const displayMore = () => {
-        if (list.rooms.length > displayqty) {
-            return (
-                <Grid item xs={12} key={`${listid}-more`}>
-                    <p>View More</p>
-                </Grid>
-            )
-        }
-    };
-
-    if (list === undefined || list.rooms === undefined) {
-        return (
-            <Grid container item>
-                {stateLoading()}
-            </Grid>
-        )
-    };
-
-    if (list.error) {
-        return (
-            <Grid container item>
-                {stateError()}
-            </Grid>
-        );
-    } else if (list.isProcessing) {
-        return (
-            <Grid container item>
-                {stateLoading()}
-            </Grid>
-        )
-    } else if (!list.isProcessing) {
-        return (
-            <Grid container item>
-                {stateLoaded()}
-            </Grid>
-        )
-    };
-};
 
 const PageLoadHandler = (props: {
         authData: authToken, 
@@ -362,12 +94,17 @@ const PageLoadHandler = (props: {
 
 
     const pageLoaded = () => {
-        console.log(reduxData);
         return (
             <React.Fragment>
                 {HomePageHeader()}
-                {HorizontalGroupList("featured-groups", 3, reduxData.groups)}
-                {HorizontalRoomList("featured-rooms", 3, reduxData.rooms)}
+                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
+                    <Typography variant='h4' color={'text.primary'}>Featured Groups</Typography>
+                </Grid>
+                {GroupCardListHorizontal("featured-groups", 3, reduxData.groups)}
+                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
+                    <Typography variant='h4' color={'text.primary'}>Featured Rooms</Typography>
+                </Grid>
+                {RoomCardListHorizontal("featured-rooms", 3, reduxData.rooms)}
             </React.Fragment>
             
         );
