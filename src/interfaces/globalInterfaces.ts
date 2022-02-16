@@ -12,14 +12,19 @@ export interface UserObjectPropsPrivate extends UserObjectProps {
     last_name?: string
 };
 
+export interface GroupUserObjectProps extends UserObjectProps {
+    group?: GroupObjectProps
+    roles?: Array<GroupRoleProps>
+};
+
 export interface UserLoginProps {
     username?: string
     password?: string
 };
 
-
 export interface GroupObjectProps {
     id?: string
+    public?: boolean
     name?: string
     image?: string
     headline?: string
@@ -27,6 +32,7 @@ export interface GroupObjectProps {
 
 export interface RoomObjectProps {
     id?: string
+    public?: boolean
     name?: string
     category: string
     image?: string
@@ -35,9 +41,9 @@ export interface RoomObjectProps {
     user?: UserObjectProps
 };
 
-
 export interface EquipObjectProps {
     id?: string
+    public?: boolean
     name?: string
     configuration?: string
     category: string
@@ -47,6 +53,18 @@ export interface EquipObjectProps {
     user?: UserObjectProps
 };
 
+
+export interface GroupRoleProps {
+    id?: string
+    name?: string
+    permissions?: Array<GroupPermissionProps>
+};
+
+
+export interface GroupPermissionProps {
+    id?: string
+    name?: string
+};
 
 export interface AlertValueObjectProps {
     open: boolean
