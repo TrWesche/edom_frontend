@@ -2,7 +2,10 @@ import axios, { AxiosRequestConfig } from "axios";
 
 import { 
     UserObjectProps,
-    UserLoginProps
+    UserObjectPropsPrivate,
+    UserLoginProps,
+    RoomObjectProps,
+    GroupObjectProps
 } from '../interfaces/globalInterfaces'
 
 const apiURL = process.env.REACT_APP_EDOM_API_URL;
@@ -88,7 +91,7 @@ class apiEDOM {
     // Process Functions
 
     // User Functions
-    static async registerUser(userData: UserObjectProps) {
+    static async registerUser(userData: UserObjectPropsPrivate) {
         const response = await this.postJson(`/users/register`, userData);
         return {headers: response.headers, data: response.data};
     };
@@ -108,25 +111,64 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateUserSecure(updateData: UserObjectProps) {
+    static async updateUserSecure(updateData: UserObjectPropsPrivate) {
         const response = await this.patchJson(`/users/update`, updateData);
         return {headers: response.headers, data: response.data};
     };
 
 
     // Group Functions
-    static async getGroupListPublic(queryString: string) {
+    static async getGroupList(queryString: string) {
         const response = await this.getJson(`/groups/list${queryString}`);
         return {headers: response.headers, data: response.data};
     };
 
+    static async getGroup(id: string) {
+        const response = await this.getJson(`/groups/${id}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async createGroup(data: GroupObjectProps) {
+        const response = await this.postJson(`/rooms`, data);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async updateGroup(data: GroupObjectProps) {
+        const response = await this.patchJson(`/rooms`, data);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async deleteGroup(data: GroupObjectProps) {
+        const response = await this.deleteJson(`/rooms`, data);
+        return {headers: response.headers, data: response.data};
+    }; 
+
 
     // Room Functions
-    static async getRoomListPublic(queryString: string) {
+    static async getRoomList(queryString: string) {
         const response = await this.getJson(`/rooms/list${queryString}`);
         return {headers: response.headers, data: response.data};
     };
 
+    static async getRoom(id: string) {
+        const response = await this.getJson(`/rooms/${id}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async createRoom(data: RoomObjectProps) {
+        const response = await this.postJson(`/rooms`, data);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async updateRoom(data: RoomObjectProps) {
+        const response = await this.patchJson(`/rooms`, data);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async deleteRoom(data: RoomObjectProps) {
+        const response = await this.deleteJson(`/rooms`, data);
+        return {headers: response.headers, data: response.data};
+    }; 
 };
 
 export default apiEDOM;

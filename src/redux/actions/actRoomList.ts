@@ -33,7 +33,7 @@ const fetchRoomList = (filters?: Array<QueryStringFilterProps>) => {
         dispatch(startFetchRoomList());
         try {
             const queryString = queryStringFilterPrep(filters);
-            const result = await apiEDOM.getRoomListPublic(queryString);
+            const result = await apiEDOM.getRoomList(queryString);
             const data = result.data;
             
             dispatch(gotRoomList(data));

@@ -1,7 +1,7 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
 import { Dispatch } from "redux";
-import { UserObjectProps } from "../../interfaces/globalInterfaces";
+import { UserObjectProps, UserObjectPropsPrivate } from "../../interfaces/globalInterfaces";
 import { authToken} from "../../providers/authProvider";
 
 import apiEDOM from "../../utils/apiEDOM";
@@ -25,13 +25,14 @@ const fetchUserProfile = (username: string, authData: authToken | undefined) => 
                 // If target user is self, try to fetch data for own account
                 const result = await apiEDOM.getUserSecure();
                 data = result.data;
+                dispatch(gotUserProfilePrivate(data));
             } else {
                 // If target is other user, fetch data for other user based on username
                 const result = await apiEDOM.getUserPublic(username);
                 data = result.data;
+                dispatch(gotUserProfilePublic(data));
             };
             
-            dispatch(gotUserProfile(data));
         } catch (error) {
             console.log("Redux Error Caught");
             dispatch(gotError());
@@ -45,13 +46,19 @@ const startFetchUserProfile = () => {
     });
 };
 
-const gotUserProfile = (userData: UserObjectProps) => {
+const gotUserProfilePublic = (userData: UserObjectProps) => {
     return ({
-        type: USER_ACTIONS.FINISH_PROFILE_LOAD,
+        type: USER_ACTIONS.FINISH_PROFILE_LOAD_PUBLIC,
         payload: userData
     })
 };
 
+const gotUserProfilePrivate = (userData: UserObjectPropsPrivate) => {
+    return ({
+        type: USER_ACTIONS.FINISH_PROFILE_LOAD_PRIVATE,
+        payload: userData
+    })
+};
 
 // export const updateUserProfile = ({ updateValues }) => {
 //     return async function (dispatch: Dispatch) {

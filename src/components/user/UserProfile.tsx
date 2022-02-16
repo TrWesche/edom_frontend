@@ -18,20 +18,21 @@ import {
 // } from "@mui/icons-material";
 
 // Typescript Interface Imports
-import { UserObjectProps } from '../../interfaces/globalInterfaces';
+import { UserObjectPropsPrivate } from '../../interfaces/globalInterfaces';
 import { authToken, useAuth } from '../../providers/authProvider';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { fetchUserProfile } from '../../redux/actions/actUser';
 import { useAlert } from '../../providers/alertProvider';
 
+// TODO: This will need to have a Private / Public Component
 interface UserProfileProps {
-    user: UserObjectProps
+    user: UserObjectPropsPrivate
     isProcessing: boolean
     error?: boolean
 };
 
 
-const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined, data: UserObjectProps, isProcessing: boolean, reduxError: boolean}) => {
+const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined, data: UserObjectPropsPrivate, isProcessing: boolean, reduxError: boolean}) => {
     const { authData, navigate, alertSetter, data, isProcessing, reduxError } = props; 
 
     const pageLoading = () => {
@@ -232,7 +233,7 @@ const UserProfile = () => {
     }, [dispatch]);
 
 
-    const data: UserObjectProps = reduxPayload.user;
+    const data: UserObjectPropsPrivate = reduxPayload.user;
     const isProcessing = reduxPayload.isProcessing;
     const reduxError = reduxPayload.error ? reduxPayload.error : false;
 

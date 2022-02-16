@@ -33,7 +33,7 @@ const fetchGroupList = (filters?: Array<QueryStringFilterProps>) => {
         dispatch(startFetchGroupList());
         try {
             const queryString = queryStringFilterPrep(filters);
-            const result = await apiEDOM.getGroupListPublic(queryString);
+            const result = await apiEDOM.getGroupList(queryString);
             const data = result.data;
             
             dispatch(gotGroupList(data));
