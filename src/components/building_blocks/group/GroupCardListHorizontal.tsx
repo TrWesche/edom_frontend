@@ -18,6 +18,7 @@ export interface GroupListProps {
     error?: boolean
 };
 
+// TODO: Update with quantity of rows, quantity of columns, pagination/more/none selection
 const GroupCardListHorizontal = (listid: string, displayqty: number, list: GroupListProps) => {
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty);
@@ -26,7 +27,7 @@ const GroupCardListHorizontal = (listid: string, displayqty: number, list: Group
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
-                        <Grid item xs={12} key={`${listid}-${idx}`}>
+                        <Grid item xs={4} key={`${listid}-${idx}`}>
                             {GroupCardSkeleton()}
                         </Grid>   
                     );
