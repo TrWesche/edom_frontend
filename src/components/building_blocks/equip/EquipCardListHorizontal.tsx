@@ -13,7 +13,7 @@ import EquipCardSkeleton from './EquipCardSkeleton';
 import EquipCard from './EquipCard';
 
 export interface EquipListProps {
-    group: Array<EquipObjectProps>
+    equip: Array<EquipObjectProps>
     isProcessing: boolean
     error?: boolean
 };
@@ -48,7 +48,7 @@ const EquipCardListHorizontal = (listid: string, displayqty: number, list: Equip
     const stateLoaded = () => {
         return (
             <React.Fragment>
-                {list.group.map(data => {
+                {list.equip.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
                             {EquipCard(data)}
@@ -61,7 +61,7 @@ const EquipCardListHorizontal = (listid: string, displayqty: number, list: Equip
     };
 
     const displayMore = () => {
-        if (list.group.length > displayqty) {
+        if (list.equip.length > displayqty) {
             return (
                 <Grid item xs={12} key={`${listid}-more`}>
                     <p>View More</p>
@@ -70,7 +70,7 @@ const EquipCardListHorizontal = (listid: string, displayqty: number, list: Equip
         }
     };
 
-    if (list === undefined || list.group === undefined) {
+    if (list === undefined || list.equip === undefined) {
         return (
             <Grid container item>
                 {stateLoading()}
