@@ -180,8 +180,8 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     // User Logged In Check
     if (!authData.logged_in && authData.init) {
-        console.log(authData);
-        console.log("User Not Logged In?");
+        // console.log(authData);
+        // console.log("User Not Logged In?");
         if (alertSetter) {
             alertSetter({open: true, content: "Please Login to Continue.", severity: "error"})
         };

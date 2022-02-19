@@ -19,6 +19,10 @@ import UserRegister from "../components/user/UserRegister";
 import GroupDirectory from "../components/group/GroupDirectory";
 import GroupProfile from "../components/group/GroupProfile";
 import GroupManagement from "../components/group/GroupManagement";
+import ExploreHome from "../components/explore/exploreHome";
+import ExploreGroups from "../components/explore/exploreGroups";
+import ExploreRooms from "../components/explore/exploreRooms";
+import ExploreEquip from "../components/explore/exploreEquip";
 
 
 const RouterMain = () => {
@@ -26,6 +30,13 @@ const RouterMain = () => {
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
+
+                <Route path="explore" element={< ExploreHome />} />
+                <Route path="explore/groups" element={< ExploreGroups />} />
+                <Route path="explore/rooms" element={< ExploreRooms />} />
+                <Route path="explore/equip" element={< ExploreEquip />} />
+
+
                 <Route path="equip" element={< EquipDirectory />} />
                 <Route path="equip/:equipID" element={<EquipProfile />} />
                 <Route path="equip/:equipID/session" element={<EquipSession />} />
