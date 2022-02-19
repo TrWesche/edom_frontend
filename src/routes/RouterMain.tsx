@@ -49,8 +49,8 @@ const RouterMain = () => {
                 <Route path="groups/:groupID" element={<GroupProfile />} />
                 <Route path="groups/:groupID/gm" element={<GroupManagement />} />
             
-                <Route path="room" element={<RoomDirectory />} />
-                <Route path="room/:roomID" element={<RoomSession />} />
+                <Route path="rooms" element={<RoomDirectory />} />
+                <Route path="rooms/:roomID" element={<RoomSession />} />
 
                 <Route path="login" element={<UserLogin />} />
                 <Route path="register" element={<UserRegister />} />

@@ -49,9 +49,12 @@ const useWindowSize = () => {
     );
     useLayoutEffect(() => {
         function updateSize() {
+            // console.log("Size Update", window.innerHeight, window.innerWidth);
+            const scrollBarWidth = document.getElementsByTagName('html')[0].clientWidth;
+            // console.log(document.getElementsByTagName('html')[0].clientWidth);
             setSize({
                 height: window.innerHeight,
-                width: window.innerWidth
+                width: window.innerWidth - scrollBarWidth
             });
         }
         window.addEventListener('resize', updateSize);

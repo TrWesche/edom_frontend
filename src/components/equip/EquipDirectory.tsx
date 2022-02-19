@@ -23,7 +23,7 @@ const RobotDirectory = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography>This will be the Robot Directory Page!</Typography>
+                <Typography>This will be the User's Robot Directory Page!</Typography>
                 <Typography>How Exciting!</Typography>
             </Grid>
             <Grid item xs={4}>

@@ -128,7 +128,7 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
                 <ListItemIcon>
                     <Group color="secondary" />
                 </ListItemIcon>
-                <ListItemText primary="Groups" />
+                <ListItemText primary="My Groups" />
             </ListItemButton>
 
             <ListItemButton 
@@ -138,7 +138,7 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
                 <ListItemIcon>
                     <MeetingRoom color="secondary" />
                 </ListItemIcon>
-                <ListItemText primary="Rooms" />
+                <ListItemText primary="My Rooms" />
             </ListItemButton>
 
             <ListItemButton 
@@ -148,7 +148,7 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
                 <ListItemIcon>
                     <DeviceHub color="secondary" />
                 </ListItemIcon>
-                <ListItemText primary="Equip" />
+                <ListItemText primary="My Equip" />
             </ListItemButton>
 {/* 
 

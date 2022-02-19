@@ -8,7 +8,7 @@ const RoomDirectory = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography>This is where the Rooms will live!</Typography>
+                <Typography>This is where the Users Rooms will live!</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
                 <Typography>Tag Room 1</Typography>
