@@ -19,7 +19,7 @@ import HandleButtonClick from '../../utils/HandleButtonClick';
 // import { fetchGroupList } from '../../redux/actions/actGroupList';
 
 
-const RobotDirectory = () => {
+const EquipDirectoryUser = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -48,4 +48,4 @@ const RobotDirectory = () => {
     )
 };
 
-export default RobotDirectory;
+export default EquipDirectoryUser;

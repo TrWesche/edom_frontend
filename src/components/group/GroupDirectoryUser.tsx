@@ -4,7 +4,7 @@ import {
 } from "@mui/material"
 
 
-const GroupDirectory = () => {
+const GroupDirectoryUser = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -33,4 +33,4 @@ const GroupDirectory = () => {
     )
 };
 
-export default GroupDirectory;
+export default GroupDirectoryUser;

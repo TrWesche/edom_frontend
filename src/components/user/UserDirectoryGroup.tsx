@@ -4,11 +4,11 @@ import {
 } from "@mui/material"
 
 
-const UserDirectory = () => {
+const UserDirectoryGroup = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Typography>This will be the Member Directory Page!</Typography>
+                <Typography>This will be the Group Member Directory Page!</Typography>
                 <Typography>How Exciting!</Typography>
             </Grid>
             <Grid item xs={4}>
@@ -33,4 +33,4 @@ const UserDirectory = () => {
     )
 };
 
-export default UserDirectory;
+export default UserDirectoryGroup;
