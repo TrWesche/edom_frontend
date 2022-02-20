@@ -57,6 +57,68 @@ const gotRoomList = (data: Array<RoomObjectProps | undefined>) => {
     })
 };
 
+
+
+const fetchRoomListUser = () => {
+    return async function (dispatch: Dispatch) {
+        dispatch(startFetchRoomListUser());
+        try {
+            const result = await apiEDOM.getRoomListUser();
+            const data = result.data;
+            
+            dispatch(gotRoomListUser(data));
+        } catch (error) {
+            console.log("Redux Error Caught");
+            dispatch(gotError());
+        }
+    }
+};
+
+const startFetchRoomListUser = () => {
+    return ({
+        type: ROOM_LIST_ACTIONS.START_USER_ROOM_LIST_LOAD
+    });
+};
+
+const gotRoomListUser = (data: Array<RoomObjectProps | undefined>) => {
+    return ({
+        type: ROOM_LIST_ACTIONS.FINISH_USER_ROOM_LIST_LOAD,
+        payload: data
+    })
+};
+
+
+const fetchRoomListGroup = (groupID: string) => {
+    return async function (dispatch: Dispatch) {
+        dispatch(startFetchRoomListGroup());
+        try {
+
+            const result = await apiEDOM.getRoomListGroup(groupID);
+            const data = result.data;
+            
+            dispatch(gotRoomListGroup(data));
+        } catch (error) {
+            console.log("Redux Error Caught");
+            dispatch(gotError());
+        }
+    }
+};
+
+const startFetchRoomListGroup = () => {
+    return ({
+        type: ROOM_LIST_ACTIONS.START_GROUP_ROOM_LIST_LOAD
+    });
+};
+
+const gotRoomListGroup = (data: Array<RoomObjectProps | undefined>) => {
+    return ({
+        type: ROOM_LIST_ACTIONS.FINISH_GROUP_ROOM_LIST_LOAD,
+        payload: data
+    })
+};
+
+
+
 const gotError = () => {
     return ({
         type: ERROR
@@ -64,5 +126,7 @@ const gotError = () => {
 };
 
 export {
-    fetchRoomList
+    fetchRoomList,
+    fetchRoomListUser,
+    fetchRoomListGroup
 };

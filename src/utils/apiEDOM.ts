@@ -130,6 +130,11 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
+    static async getUserListGroup(groupID: string) {
+        const response = await this.getJson(`/groups/${groupID}/users`);
+        return {headers: response.headers, data: response.data};
+    };
+
     static async getUserPublic(username: string) {
         const response = await this.getJson(`/users/up/${username}`, {username});
         return {headers: response.headers, data: response.data};
@@ -242,6 +247,12 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
+    // TODO: API Endpoint needs to be built
+    static async getGroupListUser(username: string) {
+        const response = await this.getJson(`/users/${username}/groups`);
+        return {headers: response.headers, data: response.data};
+    };
+
 
     //  ____   ___   ___  __  __ 
     // |  _ \ / _ \ / _ \|  \/  |
@@ -276,6 +287,16 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
+    static async getRoomListUser() {
+        const response = await this.getJson(`/users/rooms/list`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getRoomListGroup(groupID: string) {
+        const response = await this.getJson(`/groups/${groupID}/rooms/list`);
+        return {headers: response.headers, data: response.data};
+    };
+
 
     //  _____ ___  _   _ ___ ____  
     // | ____/ _ \| | | |_ _|  _ \ 
@@ -307,6 +328,16 @@ class apiEDOM {
     // General Access Routes
     static async getEquipList(queryString: string) {
         const response = await this.getJson(`/equips/list${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getEquipListUser() {
+        const response = await this.getJson(`/users/equips/list`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getEquipListGroup(groupID: string) {
+        const response = await this.getJson(`/groups/${groupID}/equips/list`);
         return {headers: response.headers, data: response.data};
     };
 };

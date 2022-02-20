@@ -57,6 +57,66 @@ const gotEquipList = (data: Array<EquipObjectProps | undefined>) => {
     })
 };
 
+
+const fetchEquipListUser = () => {
+    return async function (dispatch: Dispatch) {
+        dispatch(startFetchEquipListUser());
+        try {
+            const result = await apiEDOM.getEquipListUser();
+            const data = result.data;
+            
+            dispatch(gotEquipListUser(data));
+        } catch (error) {
+            console.log("Redux Error Caught");
+            dispatch(gotError());
+        }
+    }
+};
+
+const startFetchEquipListUser = () => {
+    return ({
+        type: EQUIP_LIST_ACTIONS.START_USER_EQUIP_LIST_LOAD
+    });
+};
+
+const gotEquipListUser = (data: Array<EquipObjectProps | undefined>) => {
+    return ({
+        type: EQUIP_LIST_ACTIONS.FINISH_USER_EQUIP_LIST_LOAD,
+        payload: data
+    })
+};
+
+
+const fetchEquipListGroup = (groupID: string) => {
+    return async function (dispatch: Dispatch) {
+        dispatch(startFetchEquipListGroup());
+        try {
+
+            const result = await apiEDOM.getEquipListGroup(groupID);
+            const data = result.data;
+            
+            dispatch(gotEquipListGroup(data));
+        } catch (error) {
+            console.log("Redux Error Caught");
+            dispatch(gotError());
+        }
+    }
+};
+
+const startFetchEquipListGroup = () => {
+    return ({
+        type: EQUIP_LIST_ACTIONS.START_GROUP_EQUIP_LIST_LOAD
+    });
+};
+
+const gotEquipListGroup = (data: Array<EquipObjectProps | undefined>) => {
+    return ({
+        type: EQUIP_LIST_ACTIONS.FINISH_GROUP_EQUIP_LIST_LOAD,
+        payload: data
+    })
+};
+
+
 const gotError = () => {
     return ({
         type: ERROR
@@ -64,5 +124,7 @@ const gotError = () => {
 };
 
 export {
-    fetchEquipList
+    fetchEquipList,
+    fetchEquipListUser,
+    fetchEquipListGroup
 };
