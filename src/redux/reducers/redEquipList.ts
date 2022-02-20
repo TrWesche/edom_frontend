@@ -20,8 +20,20 @@ const redEquipList = (state = INITIAL_STATE, action: reduxAction) => {
         case EQUIP_LIST_ACTIONS.FINISH_EQUIP_LIST_LOAD:
             equipLIst = {...action.payload, isProcessing: false};  
             return equipLIst;
+        case EQUIP_LIST_ACTIONS.START_USER_EQUIP_LIST_LOAD:
+            equipLIst = {...state, isProcessing: true};
+            return equipLIst;
+        case EQUIP_LIST_ACTIONS.FINISH_USER_EQUIP_LIST_LOAD:
+            equipLIst = {...action.payload, isProcessing: false};  
+            return equipLIst;
+        case EQUIP_LIST_ACTIONS.START_GROUP_EQUIP_LIST_LOAD:
+            equipLIst = {...state, isProcessing: true};
+            return equipLIst;
+        case EQUIP_LIST_ACTIONS.FINISH_GROUP_EQUIP_LIST_LOAD:
+            equipLIst = {...action.payload, isProcessing: false};  
+            return equipLIst;
         case ERROR:
-            return {...state, isProcessing: false, error: true};
+            return {...INITIAL_STATE, isProcessing: false, error: true};
         default:
             return {...state, isProcessing: false};
     }

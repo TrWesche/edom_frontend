@@ -42,20 +42,20 @@ const fetchUserProfile = (username: string, authData: authToken | undefined) => 
 
 const startFetchUserProfile = () => {
     return ({
-        type: USER_ACTIONS.START_PROFILE_LOAD
+        type: USER_ACTIONS.START_USER_LOAD
     });
 };
 
 const gotUserProfilePublic = (userData: UserObjectProps) => {
     return ({
-        type: USER_ACTIONS.FINISH_PROFILE_LOAD_PUBLIC,
+        type: USER_ACTIONS.FINISH_USER_LOAD_PUBLIC,
         payload: userData
     })
 };
 
 const gotUserProfilePrivate = (userData: UserObjectPropsPrivate) => {
     return ({
-        type: USER_ACTIONS.FINISH_PROFILE_LOAD_PRIVATE,
+        type: USER_ACTIONS.FINISH_USER_LOAD_PRIVATE,
         payload: userData
     })
 };

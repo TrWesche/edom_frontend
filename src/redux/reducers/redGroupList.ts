@@ -20,8 +20,14 @@ const redGroupList = (state = INITIAL_STATE, action: reduxAction) => {
         case GROUP_LIST_ACTIONS.FINISH_GROUP_LIST_LOAD:
             groupList = {...action.payload, isProcessing: false};  
             return groupList;
+        case GROUP_LIST_ACTIONS.START_USER_GROUP_LIST_LOAD:
+            groupList = {...state, isProcessing: true};
+            return groupList;
+        case GROUP_LIST_ACTIONS.FINISH_USER_GROUP_LIST_LOAD:
+            groupList = {...action.payload, isProcessing: false};  
+            return groupList;
         case ERROR:
-            return {...state, isProcessing: false, error: true};
+            return {...INITIAL_STATE, isProcessing: false, error: true};
         default:
             return {...state, isProcessing: false};
     }

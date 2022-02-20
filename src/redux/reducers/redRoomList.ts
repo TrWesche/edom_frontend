@@ -20,8 +20,20 @@ const redRoomList = (state = INITIAL_STATE, action: reduxAction) => {
         case ROOM_LIST_ACTIONS.FINISH_ROOM_LIST_LOAD:
             roomList = {...action.payload, isProcessing: false};  
             return roomList;
+        case ROOM_LIST_ACTIONS.START_USER_ROOM_LIST_LOAD:
+            roomList = {...state, isProcessing: true}
+            return roomList;
+        case ROOM_LIST_ACTIONS.FINISH_USER_ROOM_LIST_LOAD:
+            roomList = {...action.payload, isProcessing: false};  
+            return roomList;
+        case ROOM_LIST_ACTIONS.START_GROUP_ROOM_LIST_LOAD:
+            roomList = {...state, isProcessing: true}
+            return roomList;
+        case ROOM_LIST_ACTIONS.FINISH_GROUP_ROOM_LIST_LOAD:
+            roomList = {...action.payload, isProcessing: false};  
+            return roomList;
         case ERROR:
-            return {...state, isProcessing: false, error: true};
+            return {...INITIAL_STATE, isProcessing: false, error: true};
         default:
             return {...state, isProcessing: false};
     }
