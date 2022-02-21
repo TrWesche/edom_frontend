@@ -20,6 +20,7 @@ export interface GroupListProps {
 
 // TODO: Update with quantity of rows, quantity of columns, pagination/more/none selection
 const GroupCardListHorizontal = (listid: string, displayqty: number, list: GroupListProps) => {
+    console.log(list);
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty);
 

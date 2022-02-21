@@ -58,7 +58,7 @@ const gotGroupList = (data: Array<GroupObjectProps | undefined>) => {
 };
 
 // TODO: API Endpoint need to be built out to support this action
-const fetchGroupListUser = (username: string) => {
+const fetchGroupListUser = () => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchGroupListUser());
         try {
