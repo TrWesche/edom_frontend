@@ -248,8 +248,8 @@ class apiEDOM {
     };
 
     // TODO: API Endpoint needs to be built
-    static async getGroupListUser(username: string) {
-        const response = await this.getJson(`/users/${username}/groups`);
+    static async getGroupListUser() {
+        const response = await this.getJson(`/users/groups`);
         return {headers: response.headers, data: response.data};
     };
 

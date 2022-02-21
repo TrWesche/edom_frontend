@@ -62,7 +62,7 @@ const fetchGroupListUser = (username: string) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchGroupListUser());
         try {
-            const result = await apiEDOM.getGroupListUser(username);
+            const result = await apiEDOM.getGroupListUser();
             const data = result.data;
             
             dispatch(gotGroupListUser(data));
