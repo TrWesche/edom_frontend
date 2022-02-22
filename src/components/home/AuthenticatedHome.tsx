@@ -87,10 +87,11 @@ const HomePageHeader = () => {
 
 
 const PageLoadHandler = (props: {
-        authData: authToken, 
+        authData: authToken,
+        navigate: NavigateFunction,
         alertSetter: Function | undefined, 
         reduxData: ReduxDataPayload}) => {
-    const { authData, alertSetter, reduxData } = props; 
+    const { authData, navigate, alertSetter, reduxData } = props; 
 
 
     const pageLoaded = () => {
@@ -100,7 +101,7 @@ const PageLoadHandler = (props: {
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Featured Groups</Typography>
                 </Grid>
-                {GroupCardListHorizontal("featured-groups", 3, reduxData.groups)}
+                {GroupCardListHorizontal(navigate, "featured-groups", 3, reduxData.groups)}
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Featured Rooms</Typography>
                 </Grid>
@@ -150,6 +151,7 @@ const AuthenticatedHome = (props: {authData: authToken, navigate: NavigateFuncti
         <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
             <PageLoadHandler 
                 authData={authData}
+                navigate={navigate}
                 alertSetter={alertSetter}
                 reduxData={reduxData}
             />

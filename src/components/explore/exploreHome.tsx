@@ -163,7 +163,7 @@ const PageLoadHandler = (props: {
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Featured Groups</Typography>
                 </Grid>
-                {GroupCardListHorizontal("featured-groups", 4, reduxData.groups)}
+                {GroupCardListHorizontal(navigate, "featured-groups", 4, reduxData.groups)}
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Featured Rooms</Typography>
                 </Grid>

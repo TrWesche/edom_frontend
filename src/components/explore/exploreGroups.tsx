@@ -163,7 +163,7 @@ const PageLoadHandler = (props: {
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Groups</Typography>
                 </Grid>
-                {GroupCardListHorizontal("explore-groups", 15, reduxData.groups)}
+                {GroupCardListHorizontal(navigate, "explore-groups", 15, reduxData.groups)}
             </React.Fragment>
             
         );

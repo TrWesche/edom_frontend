@@ -1,5 +1,6 @@
 // React
 import React from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 // Material UI
 import {
@@ -12,6 +13,7 @@ import { GroupObjectProps } from '../../../interfaces/globalInterfaces';
 import GroupCardSkeleton from "./GroupCardSkeleton";
 import GroupCard from "./GroupCard";
 
+
 export interface GroupListProps {
     group: Array<GroupObjectProps>
     isProcessing: boolean
@@ -19,7 +21,7 @@ export interface GroupListProps {
 };
 
 // TODO: Update with quantity of rows, quantity of columns, pagination/more/none selection
-const GroupCardListHorizontal = (listid: string, displayqty: number, list: GroupListProps) => {
+const GroupCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: GroupListProps) => {
     console.log(list);
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty);
@@ -53,7 +55,7 @@ const GroupCardListHorizontal = (listid: string, displayqty: number, list: Group
                 {list.group.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
-                            {GroupCard(data)}
+                            {GroupCard(data, navigate)}
                         </Grid>    
                     )
                 })}
