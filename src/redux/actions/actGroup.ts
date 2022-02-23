@@ -21,7 +21,7 @@ const fetchGroupProfile = (groupID: string, authData: authToken | undefined) => 
             };
 
             const result = await apiEDOM.getGroup(groupID);
-            const data = result.data;
+            const data = result.data.group;
             dispatch(gotGroupProfile(data));
             
         } catch (error) {

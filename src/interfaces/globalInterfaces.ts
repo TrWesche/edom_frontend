@@ -28,6 +28,7 @@ export interface GroupObjectProps {
     name?: string
     image?: string
     headline?: string
+    description?: string
 };
 
 export interface RoomObjectProps {

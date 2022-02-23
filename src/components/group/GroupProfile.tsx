@@ -14,7 +14,8 @@ import {
     CardMedia,
     CardContent,
     Box,
-    Avatar
+    Avatar,
+    Paper
 } from "@mui/material"
 
 
@@ -59,71 +60,121 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 };
 
 
-const GroupProfileHeader = (navigate: NavigateFunction) => {
+const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) => {
+    console.log("Group Data");
+    console.log(data);
     return (
-        <React.Fragment>
+        <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container width={'100%'}>
-                <Box>
+                <Grid item width={'20%'}>
                     <Avatar 
                         alt="User Image"
-                        src="https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1"
+                        src={data.image ? data.image : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
                         sx={{ width: 152, height: 152 }}
                     />
-                </Box>
+                </Grid>
 
-                <Box>
+                <Grid item width={'80%'} justifyContent={'end'}>
                     <Typography 
                         color={'secondary.dark'} 
                         variant='h5' 
                         margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
                         padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
+                        textAlign={"right"}
                     >
-                        Group Name
+                        {data.name}
                     </Typography>
-                </Box>
 
-                <Box>
                     <Typography 
                         color={'secondary.dark'} 
                         variant='h5' 
                         margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
                         padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
+                        textAlign={"right"}
                     >
                         Group Location
                     </Typography>
-                </Box>
+                </Grid>
 
-                <Box>
+                <Grid item width={'100%'}>
+                    <Typography 
+                        color={'primary.light'} 
+                        variant='h6' 
+                        margin={"1.5rem 0rem 0rem 0rem"}
+                        padding={"0.25rem"}
+                    >
+                        Building the future of logistics.
+                    </Typography>
+                </Grid> 
+
+                <Grid item width={'100%'}>
                     <Typography 
                         color={'secondary.dark'} 
-                        variant='h5' 
+                        variant='h6' 
                         margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
                         padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
+                        textAlign={"left"}
                     >
-                        Group Headline
+                        About
                     </Typography>
-                </Box>
+                </Grid>
 
-                <Box>
+                <Grid item width={'100%'}>
                     <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        bgcolor={'grey.A200'}
+                        color={'secondary.light'} 
+                        variant='body1' 
+                        margin={"0rem 0rem 0rem 0rem"}
                         padding={"0.25rem"}
-                        borderRadius={"0.25rem"}
                     >
-                        Group Description
+                        Founded in 2020 we we have been moving quickly to bring the latest and greatest technology to the logistics space.
                     </Typography>
-                </Box>
+                </Grid>
+
+                {data.headline ? 
+                    <Grid item width={'100%'}>
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            padding={"0.25rem"}
+                        >
+                            {data.headline}
+                        </Typography>
+                    </Grid> 
+                    :
+                    <React.Fragment></React.Fragment>
+                }
+
+                {data.description ? 
+                    <React.Fragment>
+                        <Grid item width={'100%'}>
+                            <Typography 
+                                color={'secondary.dark'} 
+                                variant='h5' 
+                                margin={"1rem 0rem 0rem 0rem"}
+                                padding={"0.25rem"}
+                                textAlign={"right"}
+                            >
+                                About
+                            </Typography>
+                        </Grid>
+
+                        <Grid item width={'100%'}>
+                            <Typography 
+                                color={'secondary.dark'} 
+                                variant='h5' 
+                                margin={"1rem 0rem 0rem 0rem"}
+                                padding={"0.25rem"}
+                            >
+                                {data.description}
+                            </Typography>
+                        </Grid>
+                    </React.Fragment>
+                    :
+                    <React.Fragment></React.Fragment>
+                }
             </Grid>
-        </React.Fragment>
+        </Paper>
     )
 };
 
@@ -140,7 +191,7 @@ const PageLoadHandler = (props: {
     const pageLoaded = () => {
         return (
             <React.Fragment>
-                {GroupProfileHeader(navigate)}
+                {GroupProfileHeader(navigate, reduxData.group)}
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Group Users</Typography>
                 </Grid>
@@ -148,7 +199,7 @@ const PageLoadHandler = (props: {
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Group Rooms</Typography>
                 </Grid>
-                {RoomCardListHorizontal("group-equip", 4, reduxData.rooms)}
+                {RoomCardListHorizontal("group-rooms", 4, reduxData.rooms)}
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
                 </Grid>
@@ -211,12 +262,14 @@ const GroupProfile = () => {
 
     return (
         <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
-            <PageLoadHandler 
-                authData={authData}
-                navigate={navigate}
-                alertSetter={alertSetter}
-                reduxData={reduxData}
-            />
+            <Grid item container justifyContent={'center'} maxWidth={'1200px'}>
+                <PageLoadHandler 
+                    authData={authData}
+                    navigate={navigate}
+                    alertSetter={alertSetter}
+                    reduxData={reduxData}
+                />
+            </Grid>
         </Grid>
     )
 };
