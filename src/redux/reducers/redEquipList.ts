@@ -12,26 +12,26 @@ interface reduxAction extends Action {
 }
 
 const redEquipList = (state = INITIAL_STATE, action: reduxAction) => {
-    let equipLIst;
+    let equipList;
     switch (action.type){
         case EQUIP_LIST_ACTIONS.START_EQUIP_LIST_LOAD:
-            equipLIst = {...state, isProcessing: true};
-            return equipLIst;
+            equipList = {...state, isProcessing: true};
+            return equipList;
         case EQUIP_LIST_ACTIONS.FINISH_EQUIP_LIST_LOAD:
-            equipLIst = {...action.payload, isProcessing: false};  
-            return equipLIst;
+            equipList = {...action.payload, isProcessing: false};  
+            return equipList;
         case EQUIP_LIST_ACTIONS.START_USER_EQUIP_LIST_LOAD:
-            equipLIst = {...state, isProcessing: true};
-            return equipLIst;
+            equipList = {...state, isProcessing: true};
+            return equipList;
         case EQUIP_LIST_ACTIONS.FINISH_USER_EQUIP_LIST_LOAD:
-            equipLIst = {...action.payload, isProcessing: false};  
-            return equipLIst;
+            equipList = {...action.payload, isProcessing: false};  
+            return equipList;
         case EQUIP_LIST_ACTIONS.START_GROUP_EQUIP_LIST_LOAD:
-            equipLIst = {...state, isProcessing: true};
-            return equipLIst;
+            equipList = {...state, isProcessing: true};
+            return equipList;
         case EQUIP_LIST_ACTIONS.FINISH_GROUP_EQUIP_LIST_LOAD:
-            equipLIst = {...action.payload, isProcessing: false};  
-            return equipLIst;
+            equipList = {...action.payload, isProcessing: false};  
+            return equipList;
         case ERROR:
             return {...INITIAL_STATE, isProcessing: false, error: true};
         default:

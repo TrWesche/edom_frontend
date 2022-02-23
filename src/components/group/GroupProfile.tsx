@@ -59,14 +59,11 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
     }
 };
 
-
 const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) => {
-    console.log("Group Data");
-    console.log(data);
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
-            <Grid item container width={'100%'}>
-                <Grid item width={'20%'}>
+            <Grid item container xs={12}>
+                <Grid item xs={3}>
                     <Avatar 
                         alt="User Image"
                         src={data.image ? data.image : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
@@ -74,7 +71,7 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
                     />
                 </Grid>
 
-                <Grid item width={'80%'} justifyContent={'end'}>
+                <Grid item xs={9} justifyContent={'end'}>
                     <Typography 
                         color={'secondary.dark'} 
                         variant='h5' 
@@ -96,7 +93,7 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
                     </Typography>
                 </Grid>
 
-                <Grid item width={'100%'}>
+                {/* <Grid item width={'100%'}>
                     <Typography 
                         color={'primary.light'} 
                         variant='h6' 
@@ -110,9 +107,9 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
                 <Grid item width={'100%'}>
                     <Typography 
                         color={'secondary.dark'} 
-                        variant='h6' 
+                        variant='h5' 
                         margin={"1rem 0rem 0rem 0rem"}
-                        padding={"0.25rem"}
+                        padding={"0 0.25rem"}
                         textAlign={"left"}
                     >
                         About
@@ -124,18 +121,18 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
                         color={'secondary.light'} 
                         variant='body1' 
                         margin={"0rem 0rem 0rem 0rem"}
-                        padding={"0.25rem"}
+                        padding={"0 0.25rem 0.25rem 0.25rem"}
                     >
                         Founded in 2020 we we have been moving quickly to bring the latest and greatest technology to the logistics space.
                     </Typography>
-                </Grid>
+                </Grid> */}
 
                 {data.headline ? 
-                    <Grid item width={'100%'}>
+                    <Grid item xs={12}>
                         <Typography 
-                            color={'secondary.dark'} 
-                            variant='h5' 
-                            margin={"1rem 0rem 0rem 0rem"}
+                            color={'primary.light'} 
+                            variant='h6' 
+                            margin={"1.5rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                         >
                             {data.headline}
@@ -147,24 +144,24 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
 
                 {data.description ? 
                     <React.Fragment>
-                        <Grid item width={'100%'}>
+                        <Grid item xs={12}>
                             <Typography 
                                 color={'secondary.dark'} 
                                 variant='h5' 
                                 margin={"1rem 0rem 0rem 0rem"}
-                                padding={"0.25rem"}
-                                textAlign={"right"}
+                                padding={"0 0.25rem"}
+                                textAlign={"left"}
                             >
                                 About
                             </Typography>
                         </Grid>
 
-                        <Grid item width={'100%'}>
+                        <Grid item xs={12}>
                             <Typography 
-                                color={'secondary.dark'} 
-                                variant='h5' 
-                                margin={"1rem 0rem 0rem 0rem"}
-                                padding={"0.25rem"}
+                                color={'secondary.light'} 
+                                variant='body1' 
+                                margin={"0rem 0rem 0rem 0rem"}
+                                padding={"0 0.25rem 0.25rem 0.25rem"}
                             >
                                 {data.description}
                             </Typography>
@@ -178,7 +175,43 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
     )
 };
 
+// const GroupUserSection = (navigate: NavigateFunction, data: UserListProps) => {
 
+// };
+
+const GroupRoomSection = (navigate: NavigateFunction, data: RoomListProps) => {
+    if (data && data.rooms && data.rooms.length !== 0) {
+        return (
+            <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+                <Grid item container xs={12}>
+                    <Grid item xs={12}>
+                        <Typography variant='h4' color={'text.primary'}>Group Rooms</Typography>
+                    </Grid>
+                    <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
+                        {RoomCardListHorizontal("group-rooms", 4, data)}
+                    </Grid>
+                </Grid>
+            </Paper>
+        )
+    }
+};
+
+const GroupEquipSection = (navigate: NavigateFunction, data: EquipListProps) => {
+    if (data && data.equip && data.equip.length !== 0) {
+        return (
+            <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+            <Grid item container xs={12}>
+                <Grid item xs={12}>
+                    <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
+                </Grid>
+                <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
+                    {EquipCardListHorizontal("group-equip", 4, data)}
+                </Grid>
+            </Grid>
+        </Paper>
+        )
+    } 
+};
 
 const PageLoadHandler = (props: {
     authData: authToken, 
@@ -190,20 +223,43 @@ const PageLoadHandler = (props: {
 
     const pageLoaded = () => {
         return (
-            <React.Fragment>
+            <React.Fragment> 
                 {GroupProfileHeader(navigate, reduxData.group)}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
-                    <Typography variant='h4' color={'text.primary'}>Group Users</Typography>
-                </Grid>
-                {/* {UserCardListHorizontal("group-users", 4, reduxData.users)} */}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
-                    <Typography variant='h4' color={'text.primary'}>Group Rooms</Typography>
-                </Grid>
-                {RoomCardListHorizontal("group-rooms", 4, reduxData.rooms)}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
-                    <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
-                </Grid>
-                {EquipCardListHorizontal("group-equip", 4, reduxData.equips)}
+
+                <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid item container xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' color={'text.primary'}>Group Users</Typography>
+                        </Grid>
+                        <Grid item container xs={12}>
+                        {/* {UserCardListHorizontal("group-users", 4, reduxData.users)} */}
+                        </Grid>
+                    </Grid>
+                </Paper>
+
+                {GroupRoomSection(navigate, reduxData.rooms)}
+                {GroupEquipSection(navigate, reduxData.equips)}
+                {/* <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid item container xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' color={'text.primary'}>Group Rooms</Typography>
+                        </Grid>
+                        <Grid item container xs={12}>
+                            {RoomCardListHorizontal("group-rooms", 4, reduxData.rooms)}
+                        </Grid>
+                    </Grid>
+                </Paper>
+
+                <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid item container xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
+                        </Grid>
+                        <Grid item container xs={12}>
+                            {EquipCardListHorizontal("group-equip", 4, reduxData.equips)}
+                        </Grid>
+                    </Grid>
+                </Paper> */}
             </React.Fragment>
             
         );
