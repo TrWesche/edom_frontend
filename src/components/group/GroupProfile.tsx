@@ -31,11 +31,12 @@ import { fetchGroupProfile } from '../../redux/actions/actGroup';
 import { fetchRoomListGroup } from '../../redux/actions/actRoomList';
 import { fetchUserListGroup } from '../../redux/actions/actUserList';
 import RoomCardListHorizontal, { RoomListProps } from '../building_blocks/room/RoomCardListHorizontal';
+import UserCardListHorizontal, { UserListProps } from '../building_blocks/users/UserCardListHorizontal';
 
 
 interface ReduxDataPayload {
     group: GroupObjectProps
-    // users: UserListProps
+    users: UserListProps
     rooms: RoomListProps
     equips: EquipListProps
 };
@@ -175,9 +176,22 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
     )
 };
 
-// const GroupUserSection = (navigate: NavigateFunction, data: UserListProps) => {
-
-// };
+const GroupUserSection = (navigate: NavigateFunction, data: UserListProps) => {
+    if (data && data.users && data.users.length !== 0) {
+        return (
+            <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+            <Grid item container xs={12}>
+                <Grid item xs={12}>
+                    <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
+                </Grid>
+                <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
+                    {UserCardListHorizontal("group-equip", 4, data)}
+                </Grid>
+            </Grid>
+        </Paper>
+        )
+    } 
+};
 
 const GroupRoomSection = (navigate: NavigateFunction, data: RoomListProps) => {
     if (data && data.rooms && data.rooms.length !== 0) {
@@ -225,41 +239,9 @@ const PageLoadHandler = (props: {
         return (
             <React.Fragment> 
                 {GroupProfileHeader(navigate, reduxData.group)}
-
-                <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
-                    <Grid item container xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant='h4' color={'text.primary'}>Group Users</Typography>
-                        </Grid>
-                        <Grid item container xs={12}>
-                        {/* {UserCardListHorizontal("group-users", 4, reduxData.users)} */}
-                        </Grid>
-                    </Grid>
-                </Paper>
-
+                {GroupUserSection(navigate, reduxData.users)}
                 {GroupRoomSection(navigate, reduxData.rooms)}
                 {GroupEquipSection(navigate, reduxData.equips)}
-                {/* <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
-                    <Grid item container xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant='h4' color={'text.primary'}>Group Rooms</Typography>
-                        </Grid>
-                        <Grid item container xs={12}>
-                            {RoomCardListHorizontal("group-rooms", 4, reduxData.rooms)}
-                        </Grid>
-                    </Grid>
-                </Paper>
-
-                <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
-                    <Grid item container xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
-                        </Grid>
-                        <Grid item container xs={12}>
-                            {EquipCardListHorizontal("group-equip", 4, reduxData.equips)}
-                        </Grid>
-                    </Grid>
-                </Paper> */}
             </React.Fragment>
             
         );
@@ -297,21 +279,21 @@ const GroupProfile = () => {
     const dispatch = useDispatch();
 
     const reduxGroup: GroupObjectProps = useSelector((store: RootStateOrAny) => store?.redGroup);
-    // const reduxUserList: UserListProps = useSelector((store: RootStateOrAny) => store?.redUserList);
+    const reduxUserList: UserListProps = useSelector((store: RootStateOrAny) => store?.redUserList);
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
 
     useEffect(() => {
         dispatch(fetchGroupProfile(params.groupID, authData));
-        // dispatch(fetchUserListGroup(params.groupID));
+        dispatch(fetchUserListGroup(params.groupID));
         dispatch(fetchRoomListGroup(params.groupID));
         dispatch(fetchEquipListGroup(params.groupID));
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {
         group: reduxGroup,
-        // users: reduxUserList,
+        users: reduxUserList,
         rooms: reduxRoomList,
         equips: reduxEquipList
     };
