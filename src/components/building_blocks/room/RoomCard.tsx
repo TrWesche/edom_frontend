@@ -1,3 +1,7 @@
+// React
+import { MouseEvent } from 'react';
+import { NavigateFunction } from 'react-router-dom';
+
 // Material UI
 import {
     Button,
@@ -13,11 +17,28 @@ import {
 // Interface Imports
 import { RoomObjectProps } from '../../../interfaces/globalInterfaces';
 
+interface ClickEvent extends MouseEvent<HTMLButtonElement> {
+    target: ClickTarget
+};
 
-const RoomCard = (data: RoomObjectProps) => {
+interface ClickTarget extends EventTarget {
+    href?: string
+};
+
+const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
+    e.preventDefault();
+    // console.log(`Clicked: ${target}`)
+    if (target !== "") {
+        navigate(target);
+    } else {
+        console.log("Error, destination not defined")
+    }
+};
+
+const RoomCard = (data: RoomObjectProps, navigate: NavigateFunction) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
+            <CardActionArea onClick={(e) => handleClick(e, navigate, `/rooms/${data.id}`)}>
                 <CardMedia
                     component="img"
                     height="140"

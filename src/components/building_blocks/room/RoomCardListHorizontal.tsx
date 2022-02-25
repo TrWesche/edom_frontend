@@ -1,5 +1,6 @@
 // React
 import React from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 // Material UI
 import {
@@ -20,7 +21,7 @@ export interface RoomListProps {
     error?: boolean
 };
 
-const RoomCardListHorizontal = (listid: string, displayqty: number, list: RoomListProps) => {
+const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: RoomListProps) => {
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty);
 
@@ -53,7 +54,7 @@ const RoomCardListHorizontal = (listid: string, displayqty: number, list: RoomLi
                 {list.rooms.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
-                            {RoomCard(data)}
+                            {RoomCard(data, navigate)}
                         </Grid>    
                     )
                 })}
