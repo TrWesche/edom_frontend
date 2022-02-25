@@ -1,5 +1,6 @@
 // React
 import React from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 // Material UI
 import {
@@ -20,7 +21,7 @@ export interface UserListProps {
     error?: boolean
 };
 
-const UserCardListHorizontal = (listid: string, displayqty: number, list: UserListProps) => {
+const UserCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: UserListProps) => {
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty);
 
@@ -53,7 +54,7 @@ const UserCardListHorizontal = (listid: string, displayqty: number, list: UserLi
                 {list.users.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
-                            {UserCard(data)}
+                            {UserCard(data, navigate)}
                         </Grid>    
                     )
                 })}

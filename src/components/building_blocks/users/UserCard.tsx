@@ -1,3 +1,7 @@
+// React
+import { MouseEvent } from 'react';
+import { NavigateFunction } from 'react-router-dom';
+
 // Material UI
 import {
     Typography,
@@ -11,11 +15,28 @@ import {
 // Interface Imports
 import { UserObjectProps } from '../../../interfaces/globalInterfaces';
 
+interface ClickEvent extends MouseEvent<HTMLButtonElement> {
+    target: ClickTarget
+};
 
-const UserCard = (data: UserObjectProps) => {
+interface ClickTarget extends EventTarget {
+    href?: string
+};
+
+const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
+    e.preventDefault();
+    // console.log(`Clicked: ${target}`)
+    if (target !== "") {
+        navigate(target);
+    } else {
+        console.log("Error, destination not defined")
+    }
+};
+
+const UserCard = (data: UserObjectProps, navigate: NavigateFunction) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
+            <CardActionArea onClick={(e) => handleClick(e, navigate, `/users/${data.username}`)}>
                 <CardMedia
                     component="img"
                     height="140"

@@ -185,7 +185,7 @@ const GroupUserSection = (navigate: NavigateFunction, data: UserListProps) => {
                     <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
                 </Grid>
                 <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
-                    {UserCardListHorizontal("group-equip", 4, data)}
+                    {UserCardListHorizontal(navigate, "group-equip", 4, data)}
                 </Grid>
             </Grid>
         </Paper>
