@@ -15,13 +15,13 @@ const redGroupList = (state = INITIAL_STATE, action: reduxAction) => {
     let groupList;
     switch (action.type){
         case GROUP_LIST_ACTIONS.START_GROUP_LIST_LOAD:
-            groupList = {...state, isProcessing: true};
+            groupList = {...INITIAL_STATE, isProcessing: true};
             return groupList;
         case GROUP_LIST_ACTIONS.FINISH_GROUP_LIST_LOAD:
             groupList = {...action.payload, isProcessing: false};  
             return groupList;
         case GROUP_LIST_ACTIONS.START_USER_GROUP_LIST_LOAD:
-            groupList = {...state, isProcessing: true};
+            groupList = {...INITIAL_STATE, isProcessing: true};
             return groupList;
         case GROUP_LIST_ACTIONS.FINISH_USER_GROUP_LIST_LOAD:
             groupList = {...action.payload, isProcessing: false};  

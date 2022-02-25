@@ -21,7 +21,7 @@ const redRoom = (state = INITIAL_STATE, action: reduxAction) => {
             return targetRoom;
 
         case ROOM_ACTIONS.START_ROOM_LOAD:
-            targetRoom = {...state, isProcessing: true};
+            targetRoom = {...INITIAL_STATE, isProcessing: true};
             return targetRoom;
         case ROOM_ACTIONS.FINISH_ROOM_LOAD_PRIVATE:
             targetRoom = {...action.payload, isProcessing: false};  

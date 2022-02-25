@@ -21,7 +21,7 @@ const redGroup = (state = INITIAL_STATE, action: reduxAction) => {
             return targetGroup;
 
         case GROUP_ACTIONS.START_GROUP_LOAD:
-            targetGroup = {...state, isProcessing: true};
+            targetGroup = {...INITIAL_STATE, isProcessing: true};
             return targetGroup;
         case GROUP_ACTIONS.FINISH_GROUP_LOAD:
             targetGroup = {...action.payload, isProcessing: false};  

@@ -21,7 +21,7 @@ const redEquip = (state = INITIAL_STATE, action: reduxAction) => {
             return targetEquip;
 
         case EQUIP_ACTIONS.START_EQUIP_LOAD:
-            targetEquip = {...state, isProcessing: true};
+            targetEquip = {...INITIAL_STATE, isProcessing: true};
             return targetEquip;
         case EQUIP_ACTIONS.FINISH_EQUIP_LOAD_PRIVATE:
             targetEquip = {...action.payload, isProcessing: false};  

@@ -15,19 +15,19 @@ const redRoomList = (state = INITIAL_STATE, action: reduxAction) => {
     let roomList;
     switch (action.type){
         case ROOM_LIST_ACTIONS.START_ROOM_LIST_LOAD:
-            roomList = {...state, isProcessing: true};
+            roomList = {...INITIAL_STATE, isProcessing: true};
             return roomList;
         case ROOM_LIST_ACTIONS.FINISH_ROOM_LIST_LOAD:
             roomList = {...action.payload, isProcessing: false};  
             return roomList;
         case ROOM_LIST_ACTIONS.START_USER_ROOM_LIST_LOAD:
-            roomList = {...state, isProcessing: true}
+            roomList = {...INITIAL_STATE, isProcessing: true}
             return roomList;
         case ROOM_LIST_ACTIONS.FINISH_USER_ROOM_LIST_LOAD:
             roomList = {...action.payload, isProcessing: false};  
             return roomList;
         case ROOM_LIST_ACTIONS.START_GROUP_ROOM_LIST_LOAD:
-            roomList = {...state, isProcessing: true}
+            roomList = {...INITIAL_STATE, isProcessing: true}
             return roomList;
         case ROOM_LIST_ACTIONS.FINISH_GROUP_ROOM_LIST_LOAD:
             roomList = {...action.payload, isProcessing: false};  

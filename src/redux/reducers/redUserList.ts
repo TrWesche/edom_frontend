@@ -15,13 +15,13 @@ const redUserList = (state = INITIAL_STATE, action: reduxAction) => {
     let userList;
     switch (action.type){
         case USER_LIST_ACTIONS.START_USER_LIST_LOAD:
-            userList = {...state, isProcessing: true};
+            userList = {...INITIAL_STATE, isProcessing: true};
             return userList;
         case USER_LIST_ACTIONS.FINISH_USER_LIST_LOAD:
             userList = {...action.payload, isProcessing: false};  
             return userList;
         case USER_LIST_ACTIONS.START_GROUP_USER_LIST_LOAD:
-            userList = {...state, isProcessing: true};
+            userList = {...INITIAL_STATE, isProcessing: true};
             return userList;
         case USER_LIST_ACTIONS.FINISH_GROUP_USER_LIST_LOAD:
             userList = {...action.payload, isProcessing: false};  

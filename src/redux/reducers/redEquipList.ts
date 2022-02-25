@@ -15,19 +15,19 @@ const redEquipList = (state = INITIAL_STATE, action: reduxAction) => {
     let equipList;
     switch (action.type){
         case EQUIP_LIST_ACTIONS.START_EQUIP_LIST_LOAD:
-            equipList = {...state, isProcessing: true};
+            equipList = {...INITIAL_STATE, isProcessing: true};
             return equipList;
         case EQUIP_LIST_ACTIONS.FINISH_EQUIP_LIST_LOAD:
             equipList = {...action.payload, isProcessing: false};  
             return equipList;
         case EQUIP_LIST_ACTIONS.START_USER_EQUIP_LIST_LOAD:
-            equipList = {...state, isProcessing: true};
+            equipList = {...INITIAL_STATE, isProcessing: true};
             return equipList;
         case EQUIP_LIST_ACTIONS.FINISH_USER_EQUIP_LIST_LOAD:
             equipList = {...action.payload, isProcessing: false};  
             return equipList;
         case EQUIP_LIST_ACTIONS.START_GROUP_EQUIP_LIST_LOAD:
-            equipList = {...state, isProcessing: true};
+            equipList = {...INITIAL_STATE, isProcessing: true};
             return equipList;
         case EQUIP_LIST_ACTIONS.FINISH_GROUP_EQUIP_LIST_LOAD:
             equipList = {...action.payload, isProcessing: false};  

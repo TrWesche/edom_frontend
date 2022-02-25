@@ -136,7 +136,6 @@ const AuthenticatedHome = (props: {authData: authToken, navigate: NavigateFuncti
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
 
-
     useEffect(() => {
         dispatch(fetchGroupList());
         dispatch(fetchRoomList());
