@@ -11,6 +11,7 @@ import { EquipObjectProps } from '../../../interfaces/globalInterfaces';
 
 import EquipCardSkeleton from './EquipCardSkeleton';
 import EquipCard from './EquipCard';
+import { NavigateFunction } from 'react-router-dom';
 
 export interface EquipListProps {
     equip: Array<EquipObjectProps>
@@ -18,7 +19,7 @@ export interface EquipListProps {
     error?: boolean
 };
 
-const EquipCardListHorizontal = (listid: string, displayqty: number, list: EquipListProps) => {
+const EquipCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: EquipListProps) => {
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty);
 
@@ -26,7 +27,7 @@ const EquipCardListHorizontal = (listid: string, displayqty: number, list: Equip
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
-                        <Grid item xs={12} key={`${listid}-${idx}`}>
+                        <Grid item xs={4} key={`${listid}-${idx}`}>
                             {EquipCardSkeleton()}
                         </Grid>   
                     );
@@ -51,7 +52,7 @@ const EquipCardListHorizontal = (listid: string, displayqty: number, list: Equip
                 {list.equip.map(data => {
                     return (
                         <Grid item xs={4} key={`${listid}-${data.id}`}>
-                            {EquipCard(data)}
+                            {EquipCard(data, navigate)}
                         </Grid>    
                     )
                 })}

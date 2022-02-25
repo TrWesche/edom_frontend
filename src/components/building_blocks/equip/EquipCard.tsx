@@ -1,3 +1,7 @@
+// React
+import { MouseEvent } from 'react';
+import { NavigateFunction } from 'react-router-dom';
+
 import {
     Button,
     Typography,
@@ -10,10 +14,28 @@ import {
 
 import { EquipObjectProps } from '../../../interfaces/globalInterfaces';
 
-const EquipCard = (data: EquipObjectProps) => {
+interface ClickEvent extends MouseEvent<HTMLButtonElement> {
+    target: ClickTarget
+};
+
+interface ClickTarget extends EventTarget {
+    href?: string
+};
+
+const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
+    e.preventDefault();
+    // console.log(`Clicked: ${target}`)
+    if (target !== "") {
+        navigate(target);
+    } else {
+        console.log("Error, destination not defined")
+    }
+};
+
+const EquipCard = (data: EquipObjectProps, navigate: NavigateFunction) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
+            <CardActionArea onClick={(e) => handleClick(e, navigate, `/equip/${data.id}`)}>
                 <CardMedia
                     component="img"
                     height="140"

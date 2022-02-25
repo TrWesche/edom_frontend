@@ -171,7 +171,7 @@ const PageLoadHandler = (props: {
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Featured Equip</Typography>
                 </Grid>
-                {EquipCardListHorizontal("featured-equips", 4, reduxData.equips)}
+                {EquipCardListHorizontal(navigate, "featured-equips", 4, reduxData.equips)}
             </React.Fragment>
             
         );

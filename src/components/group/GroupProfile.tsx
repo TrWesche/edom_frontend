@@ -219,7 +219,7 @@ const GroupEquipSection = (navigate: NavigateFunction, data: EquipListProps) => 
                     <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
                 </Grid>
                 <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
-                    {EquipCardListHorizontal("group-equip", 4, data)}
+                    {EquipCardListHorizontal(navigate, "group-equip", 4, data)}
                 </Grid>
             </Grid>
         </Paper>
