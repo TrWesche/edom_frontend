@@ -1,18 +1,336 @@
+// React
+import React, { useEffect, MouseEvent } from 'react';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+
+// Redux
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+
+// Material UI
 import {
     Grid,
-    Typography
+    Typography,
+    Card,
+    CardActionArea,
+    CardMedia,
+    CardContent,
+    Box,
+    Avatar,
+    Paper,
+    Divider,
+    Button,
+    Stack
 } from "@mui/material"
 
 
-const RoomProfile = () => {
+// Providers
+import { authToken, useAuth } from '../../providers/authProvider';
+import { useAlert } from '../../providers/alertProvider';
+
+// Interface Imports
+import EquipCardListHorizontal, { EquipListProps } from '../building_blocks/equip/EquipCardListHorizontal';
+import { RoomObjectProps } from '../../interfaces/globalInterfaces';
+import { fetchRoomProfile } from '../../redux/actions/actRoom';
+import { fetchEquipListRoom } from '../../redux/actions/actEquipList';
+
+
+interface ReduxDataPayload {
+    Room: RoomObjectProps
+    equips: EquipListProps
+};
+
+
+interface ClickEvent extends MouseEvent<HTMLButtonElement> {
+    target: ClickTarget
+};
+
+interface ClickTarget extends EventTarget {
+    href?: string
+};
+
+const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
+    e.preventDefault();
+    // console.log(`Clicked: ${target}`)
+    if (target !== "") {
+        navigate(target);
+    } else {
+        console.log("Error, destination not defined")
+    }
+};
+
+const RoomProfileHeader = (navigate: NavigateFunction, data: RoomObjectProps) => {
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <Typography>This will be the Room Profile Page!</Typography>
-                <Typography>How Exciting!</Typography>
+        <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+            <Grid item container xs={12}>
+                <Grid item xs={3}>
+                    <Avatar 
+                        alt="Room Image"
+                        src={data.image ? data.image : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
+                        sx={{ width: 152, height: 152 }}
+                    />
+                </Grid>
+
+                <Grid item xs={9} justifyContent={'end'}>
+                    <Typography 
+                        color={'secondary.dark'} 
+                        variant='h5' 
+                        margin={"1rem 0rem 0rem 0rem"}
+                        padding={"0.25rem"}
+                        textAlign={"right"}
+                    >
+                        {data.name}
+                    </Typography>
+
+                    <Typography 
+                        color={'secondary.dark'} 
+                        variant='h5' 
+                        margin={"1rem 0rem 0rem 0rem"}
+                        padding={"0.25rem"}
+                        textAlign={"right"}
+                    >
+                        Room Location
+                    </Typography>
+
+                    <Typography 
+                        color={'secondary.dark'} 
+                        variant='h5' 
+                        margin={"1rem 0rem 0rem 0rem"}
+                        padding={"0.25rem"}
+                        textAlign={"right"}
+                    >
+                        {data.category}
+                    </Typography>
+
+                    {data.group ? 
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            padding={"0.25rem"}
+                            textAlign={"right"}
+                        >
+                            {data.group}
+                        </Typography>
+                        :
+                        <React.Fragment></React.Fragment>
+                    }
+
+
+                    {data.user ? 
+                        <Typography 
+                            color={'secondary.dark'} 
+                            variant='h5' 
+                            margin={"1rem 0rem 0rem 0rem"}
+                            padding={"0.25rem"}
+                            textAlign={"right"}
+                        >
+                            {data.user}
+                        </Typography>
+                        :
+                        <React.Fragment></React.Fragment>
+                    }
+                </Grid>
+
+                {data.headline ? 
+                    <Grid item xs={12}>
+                        <Typography 
+                            color={'primary.light'} 
+                            variant='h6' 
+                            margin={"1.5rem 0rem 0rem 0rem"}
+                            padding={"0.25rem"}
+                        >
+                            {data.headline}
+                        </Typography>
+                    </Grid> 
+                    :
+                    <React.Fragment></React.Fragment>
+                }
+
+                {data.description ? 
+                    <React.Fragment>
+                        <Grid item xs={12}>
+                            <Typography 
+                                color={'secondary.dark'} 
+                                variant='h5' 
+                                margin={"1rem 0rem 0rem 0rem"}
+                                padding={"0 0.25rem"}
+                                textAlign={"left"}
+                            >
+                                About
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Typography 
+                                color={'secondary.light'} 
+                                variant='body1' 
+                                margin={"0rem 0rem 0rem 0rem"}
+                                padding={"0 0.25rem 0.25rem 0.25rem"}
+                            >
+                                {data.description}
+                            </Typography>
+                        </Grid>
+                    </React.Fragment>
+                    :
+                    <React.Fragment></React.Fragment>
+                }
+
+                <Divider flexItem sx={{
+                    margin: '1.5rem 0 0 0',
+                    width: '100%',
+                    borderBottomWidth: '3px'
+                }} />
+
+
+                <Grid item xs={12} sm={6} justifyContent={'space-between'} alignContent={'center'}>
+                    <Button variant="contained" sx={{
+                        display: "flex",
+                        margin: "1rem 0 0 0"
+                    }}>
+                        Join Session
+                    </Button>
+                </Grid>
+
+                <Grid item xs={12} sm={6} justifyContent={'space-between'}>
+                    <Stack justifyContent={'right'}>
+                        <Typography 
+                            display={'flex'}
+                            justifyContent={'flex-end'}
+                            color={'primary.light'} 
+                            variant='h6' 
+                            margin={"0rem 0rem 0rem 0rem"}
+                            padding={"0.1rem"}
+                        >
+                            Room Status
+                        </Typography>
+                        <Typography 
+                            display={'flex'}
+                            justifyContent={'flex-end'}
+                            color={'primary.light'} 
+                            variant='body1' 
+                            margin={"0rem 0rem 0rem 0rem"}
+                            padding={"0.1rem"}
+                        >
+                            Online / Offline
+                        </Typography>
+                        <Typography 
+                            display={'flex'}
+                            justifyContent={'flex-end'}
+                            color={'primary.light'} 
+                            variant='body1' 
+                            margin={"0rem 0rem 0rem 0rem"}
+                            padding={"0.1rem"}
+                        >
+                            Users: 5 / 5
+                        </Typography>
+                        <Typography 
+                            display={'flex'}
+                            justifyContent={'flex-end'}
+                            color={'primary.light'} 
+                            variant='body1' 
+                            margin={"0rem 0rem 0rem 0rem"}
+                            padding={"0.1rem"}
+                        >
+                            Waiting: 3
+                        </Typography>
+                    </Stack>
+
+                </Grid>
+                
             </Grid>
-            <Grid item xs={12}>
-                <Typography>Exciting stuff about the room!</Typography>
+        </Paper>
+    )
+};
+
+
+const RoomEquipSection = (navigate: NavigateFunction, data: EquipListProps) => {
+    if (data && data.equip && data.equip.length !== 0) {
+        return (
+            <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+            <Grid item container xs={12}>
+                <Grid item xs={12}>
+                    <Typography variant='h4' color={'text.primary'}>Room Equip</Typography>
+                </Grid>
+                <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
+                    {EquipCardListHorizontal(navigate, "Room-equip", 4, data)}
+                </Grid>
+            </Grid>
+        </Paper>
+        )
+    } 
+};
+
+const PageLoadHandler = (props: {
+    authData: authToken, 
+    navigate: NavigateFunction,
+    alertSetter: Function | undefined, 
+    reduxData: ReduxDataPayload}) => {
+    const { authData, navigate, alertSetter, reduxData } = props; 
+
+
+    const pageLoaded = () => {
+        return (
+            <React.Fragment> 
+                {RoomProfileHeader(navigate, reduxData.Room)}
+                {RoomEquipSection(navigate, reduxData.equips)}
+            </React.Fragment>
+            
+        );
+    };
+
+
+    // User Logged In Check
+    if (!authData.logged_in && authData.init) {
+        if (alertSetter) {
+            alertSetter({open: true, content: "Please Login to Continue.", severity: "error"})
+        };
+        navigate('/');
+    };
+
+    return (
+        <React.Fragment>
+            {pageLoaded()}
+        </React.Fragment>
+    );
+};
+
+
+
+const RoomProfile = () => {
+    // React / Redux Function Instantiations
+    const navigate = useNavigate();
+
+    // Context Providers
+    const { alertSetter } = useAlert();
+    const { authData } = useAuth();
+
+    const params: any = useParams();
+
+    // React / Redux Function Instantiations
+    const dispatch = useDispatch();
+
+    const reduxRoom: RoomObjectProps = useSelector((store: RootStateOrAny) => store?.redRoom);
+    const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+
+
+    useEffect(() => {
+        dispatch(fetchRoomProfile(params.roomID, authData));
+        dispatch(fetchEquipListRoom(params.roomID));
+    }, [dispatch]);
+
+    const reduxData: ReduxDataPayload = {
+        Room: reduxRoom,
+        equips: reduxEquipList
+    };
+
+    return (
+        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
+            <Grid item container justifyContent={'center'} maxWidth={'1200px'}>
+                <PageLoadHandler 
+                    authData={authData}
+                    navigate={navigate}
+                    alertSetter={alertSetter}
+                    reduxData={reduxData}
+                />
             </Grid>
         </Grid>
     )

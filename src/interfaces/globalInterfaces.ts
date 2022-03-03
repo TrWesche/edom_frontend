@@ -38,6 +38,7 @@ export interface RoomObjectProps {
     category: string
     image?: string
     headline?: string
+    description?: string
     group?: GroupObjectProps
     user?: UserObjectProps
 };

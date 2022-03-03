@@ -23,13 +23,10 @@ const redEquip = (state = INITIAL_STATE, action: reduxAction) => {
         case EQUIP_ACTIONS.START_EQUIP_LOAD:
             targetEquip = {...INITIAL_STATE, isProcessing: true};
             return targetEquip;
-        case EQUIP_ACTIONS.FINISH_EQUIP_LOAD_PRIVATE:
+        case EQUIP_ACTIONS.FINISH_EQUIP_LOAD:
             targetEquip = {...action.payload, isProcessing: false};  
             return targetEquip;
-        case EQUIP_ACTIONS.FINISH_EQUIP_LOAD_PUBLIC:
-            targetEquip = {...action.payload, isProcessing: false};  
-            return targetEquip;
-
+            
         case EQUIP_ACTIONS.START_EQUIP_UPDATE:
             targetEquip = {...state, isProcessing: true};  
             return targetEquip;

@@ -117,6 +117,36 @@ const gotEquipListGroup = (data: Array<EquipObjectProps | undefined>) => {
 };
 
 
+const fetchEquipListRoom = (roomID: string) => {
+    return async function (dispatch: Dispatch) {
+        dispatch(startFetchEquipListRoom());
+        try {
+
+            const result = await apiEDOM.getEquipListRoom(roomID);
+            const data = result.data;
+            
+            dispatch(gotEquipListRoom(data));
+        } catch (error) {
+            console.log("Redux Error Caught");
+            dispatch(gotError());
+        }
+    }
+};
+
+const startFetchEquipListRoom = () => {
+    return ({
+        type: EQUIP_LIST_ACTIONS.START_ROOM_EQUIP_LIST_LOAD
+    });
+};
+
+const gotEquipListRoom = (data: Array<EquipObjectProps | undefined>) => {
+    return ({
+        type: EQUIP_LIST_ACTIONS.FINISH_ROOM_EQUIP_LIST_LOAD,
+        payload: data
+    })
+};
+
+
 const gotError = () => {
     return ({
         type: ERROR
@@ -126,5 +156,6 @@ const gotError = () => {
 export {
     fetchEquipList,
     fetchEquipListUser,
-    fetchEquipListGroup
+    fetchEquipListGroup,
+    fetchEquipListRoom
 };

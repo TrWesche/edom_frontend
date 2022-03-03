@@ -340,6 +340,11 @@ class apiEDOM {
         const response = await this.getJson(`/groups/${groupID}/equips/list`);
         return {headers: response.headers, data: response.data};
     };
+
+    static async getEquipListRoom(roomID: string) {
+        const response = await this.getJson(`/equips/rooms/${roomID}`);
+        return {headers: response.headers, data: response.data};
+    };
 };
 
 export default apiEDOM;
