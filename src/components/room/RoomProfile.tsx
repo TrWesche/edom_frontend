@@ -174,14 +174,29 @@ const RoomProfileHeader = (navigate: NavigateFunction, data: RoomObjectProps) =>
                     <React.Fragment></React.Fragment>
                 }
 
-                <Divider flexItem sx={{
+
+
+                <Divider flexItem textAlign="left" sx={{
                     margin: '1.5rem 0 0 0',
                     width: '100%',
                     borderBottomWidth: '3px'
-                }} />
+                }} /> 
+
+                <Grid item xs={12}>
+                    <Typography 
+                        display={'flex'}
+                        justifyContent={'left'}
+                        color={'text.primary'} 
+                        variant='subtitle1' 
+                        margin={"0rem"}
+                        padding={"0.1rem"}
+                    >
+                        Room Status
+                    </Typography>
+                </Grid>
 
 
-                <Grid item xs={12} sm={6} justifyContent={'space-between'} alignContent={'center'}>
+                <Grid item xs={12} sm={6} justifyContent={'left'}>
                     <Button variant="contained" sx={{
                         display: "flex",
                         margin: "1rem 0 0 0"
@@ -190,52 +205,63 @@ const RoomProfileHeader = (navigate: NavigateFunction, data: RoomObjectProps) =>
                     </Button>
                 </Grid>
 
-                <Grid item xs={12} sm={6} justifyContent={'space-between'}>
-                    <Stack justifyContent={'right'}>
+                <Grid item container xs={12} sm={6} justifyContent={'right'}>
                         <Typography 
                             display={'flex'}
-                            justifyContent={'flex-end'}
+                            justifyContent={'right'}
                             color={'primary.light'} 
                             variant='h6' 
-                            margin={"0rem 0rem 0rem 0rem"}
+                            margin={"0rem"}
                             padding={"0.1rem"}
                         >
-                            Room Status
+                            Online - 5 / 5
                         </Typography>
-                        <Typography 
-                            display={'flex'}
-                            justifyContent={'flex-end'}
-                            color={'primary.light'} 
-                            variant='body1' 
-                            margin={"0rem 0rem 0rem 0rem"}
-                            padding={"0.1rem"}
-                        >
-                            Online / Offline
-                        </Typography>
-                        <Typography 
-                            display={'flex'}
-                            justifyContent={'flex-end'}
-                            color={'primary.light'} 
-                            variant='body1' 
-                            margin={"0rem 0rem 0rem 0rem"}
-                            padding={"0.1rem"}
-                        >
-                            Users: 5 / 5
-                        </Typography>
-                        <Typography 
-                            display={'flex'}
-                            justifyContent={'flex-end'}
-                            color={'primary.light'} 
-                            variant='body1' 
-                            margin={"0rem 0rem 0rem 0rem"}
-                            padding={"0.1rem"}
-                        >
-                            Waiting: 3
-                        </Typography>
-                    </Stack>
-
                 </Grid>
-                
+
+
+
+
+                <Divider flexItem textAlign="left" sx={{
+                    margin: '1.5rem 0 0 0',
+                    width: '100%',
+                    borderBottomWidth: '3px'
+                }} /> 
+
+                <Grid item xs={12}>
+                    <Typography 
+                        display={'flex'}
+                        justifyContent={'left'}
+                        color={'text.primary'} 
+                        variant='subtitle1' 
+                        margin={"0rem 0rem 0rem 0rem"}
+                        padding={"0.1rem"}
+                    >
+                        Room Management
+                    </Typography>
+                </Grid>
+
+                <Grid item xs={12} display={'flex'} flexDirection={'row'} justifyContent={'left'}>
+                    <Button variant="contained" sx={{
+                        display: "flex",
+                        margin: "0.5rem 0"
+                    }}>
+                        Set Room Offline
+                    </Button>
+
+                    <Button variant="contained" sx={{
+                        display: "flex",
+                        margin: "0.5rem 0.5rem"
+                    }}>
+                        Occupany Control
+                    </Button>
+
+                    <Button variant="contained" sx={{
+                        display: "flex",
+                        margin: "0.5rem 0"
+                    }}>
+                        Set Room Private
+                    </Button>
+                </Grid>
             </Grid>
         </Paper>
     )
