@@ -47,7 +47,7 @@ export interface EquipObjectProps {
     id?: string
     public?: boolean
     name?: string
-    configuration?: string
+    configuration?: EquipConfigurationProps
     category: string
     image?: string
     headline?: string
@@ -59,12 +59,12 @@ export interface EquipObjectProps {
 
 
 export interface EquipConfigurationProps {
-    equiptype?: string
     telemetryconfig?: EquipTelemetryChannels
     analoginputs?: EquipAnalogInputChannels
     analogoutputs?: EquipAnalogOutputChannels
     digitalinputs?: EquipDigitalInputChannels
     digitaloutputs?: EquipDigitalOutputChannels
+    controlmap?: EquipRoomControlMap
 };
 
 interface EquipTelemetryChannels {
@@ -116,19 +116,17 @@ interface EquipAnalogInputChannels {
 };
 
 interface EquipAnalogInputProps {
-    identifier?: string
-    description?: string
-    telemetrychannel?: string
-    telemeteryid?: string
-    dataformat?: string
-    scalingfactor?: string
-    uom?: string
-    inrangehigh?: string
-    inrangelow?: string
-    displayrangehigh?: string
-    displayrangelow?: string
-    invaluedisplay?: string
-    invalueraw?: string
+    displayid?: string          // Displayed in Web App - Optional, if not provided Telemetry ID used
+    description?: string        // Input description - Optional
+    telemetrychannel?: string   // Channel identifier from channels defined in EquipTelemetryChannel - Required
+    telemeteryid?: string       // ID used for communication - Required
+    uom?: string                // Unit of Measurements For Display - Optional
+    dataformat?: string         // Incoming Data Type - Required (Real, Dint, Int)
+    decimalplaces?: number      // Decimal Places to Show - Optional, default to 1 place (X.X)
+    roundingbehavior?: string   // Behavior when rounding incoming values - Ceiling, Floor
+    scalingfactor?: number      // Scaling Factor to be applied to the incoming data. - Optional, default no scaling
+    inrangehigh?: number        // High limit of input value
+    inrangelow?: number         // Low limit of input value
 };
 
 interface EquipAnalogOutputChannels {
@@ -167,18 +165,17 @@ interface EquipAnalogOutputChannels {
 };
 
 interface EquipAnalogOutputProps {
-    identifier?: string
-    description?: string
-    telemetrychannel?: string
-    telemeteryid?: string
-    dataformat?: string
-    uom?: string
-    displayrangehigh?: string
-    displayrangelow?: string
-    outvaluedisplay?: string
-    outrangehigh?: string
-    outrangelow?: string
-    outvalueraw?: string
+    displayid?: string          // Displayed in Web App - Optional, if not provided Telemetry ID used
+    description?: string        // Output description - Optional
+    telemetrychannel?: string   // Channel identifier from channels defined in EquipTelemetryChannel - Required
+    telemeteryid?: string       // ID used for communication - Required
+    uom?: string                // Unit of Measurements For Display - Optional
+    dataformat?: string         // Outgoing Data Type - Required (Real, Dint, Int)
+    decimalplaces?: number      // Decimal Places Accuracy Prior to send - Optional, default to 1 place (X.X)
+    roundingbehavior?: string   // Behavior when rounding outgoing values - Ceiling, Floor
+    scalingfactor?: number      // Scaling Factor to be applied to the outgoing value - Optional, default no scaling
+    outrangehigh?: number       // High limit of output value
+    outrangelow?: number        // Low limit of output value
 };
 
 interface EquipDigitalInputChannels {
@@ -217,13 +214,12 @@ interface EquipDigitalInputChannels {
 };
 
 interface EquipDigitalInputProps {
-    identifier?: string
+    displayid?: string
     description?: string
     telemetrychannel?: string
     telemeteryid?: string
     displaytexthigh?: string
     displaytextlow?: string
-    invalueraw?: string
 };
 
 interface EquipDigitalOutputChannels {
@@ -262,13 +258,12 @@ interface EquipDigitalOutputChannels {
 };
 
 interface EquipDigitalOutputProps {
-    identifier?: string
+    displayid?: string
     description?: string
     telemetrychannel?: string
     telemeteryid?: string
     displaytexthigh?: string
     displaytextlow?: string
-    outvalueraw?: string
 };
 
 interface EquipRoomControlMap {
@@ -303,10 +298,16 @@ interface EquipRoomControlMap {
 interface EquipRoomControlProps {
     displaytext?: string
     description?: string
-    useoutputchannel?: boolean
-    outputchanneltype?: boolean
-    outputchannelid?: string
-    outputchannelvalue?: string
+    useoutputs?: boolean
+    outputch1type?: boolean
+    outputch1id?: string
+    outputch1value?: string
+    outputch2type?: boolean
+    outputch2id?: string
+    outputch2value?: string
+    outputch3type?: boolean
+    outputch3id?: string
+    outputch3value?: string
     telemetrychannel?: string
     telemeteryid?: string
     telemetryoutput?: string

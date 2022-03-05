@@ -247,7 +247,7 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: EquipObjectProps) 
                         margin={"0rem 0rem 0rem 0rem"}
                         padding={"0 0.25rem 0.25rem 0.25rem"}
                     >
-                        {data.configuration}
+                        {JSON.stringify(data.configuration)}
                     </Typography>
                 </Grid>
                 
