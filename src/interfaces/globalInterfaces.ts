@@ -65,6 +65,7 @@ export interface EquipConfigurationProps {
     digitalinputs?: EquipDigitalInputChannels
     digitaloutputs?: EquipDigitalOutputChannels
     controlmap?: EquipRoomControlMap
+    datastreams?: EquipDataStreams
 };
 
 interface EquipTelemetryChannels {
@@ -311,6 +312,33 @@ interface EquipRoomControlProps {
     telemetrychannel?: string
     telemeteryid?: string
     telemetryoutput?: string
+};
+
+interface EquipDataStreams {
+    strm001?: EquipDataStreamProps
+    strm002?: EquipDataStreamProps
+    strm003?: EquipDataStreamProps
+    strm004?: EquipDataStreamProps
+    strm005?: EquipDataStreamProps
+};
+
+interface EquipDataStreamProps {
+    displayid?: string              // Displayed in Web App - Optional, if not provided Telemetry ID used
+    description?: string            // Stream description - Optional
+    telemetrychannel?: string       // Channel identifier from channels defined in EquipTelemetryChannel - Required
+    telemeteryid?: string           // ID used for communication - Required
+    trk001?: EquipDataTrackProps
+    trk002?: EquipDataTrackProps
+    trk003?: EquipDataTrackProps
+    trk004?: EquipDataTrackProps
+    trk005?: EquipDataTrackProps
+};
+
+interface EquipDataTrackProps {
+    displayid?: string              // Displayed in Web App - Optional
+    description?: string            // Track Description - Optional
+    trktype?: string                // Required - video, audio
+    trkid?: string                  // Track Identifier
 };
 
 export interface GroupRoleProps {
