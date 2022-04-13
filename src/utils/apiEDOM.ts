@@ -11,7 +11,8 @@ import {
     GroupPermissionProps,
     UserRequestProps,
     GroupRequestProps,
-    RoomEquipProps
+    RoomEquipProps,
+    EquipObjectProps
 } from '../interfaces/globalInterfaces'
 
 const apiURL = process.env.REACT_APP_EDOM_API_URL;
@@ -328,45 +329,36 @@ class apiEDOM {
     // | |__| |_| | |_| || ||  __/ 
     // |_____\__\_\\___/|___|_|   
 
+    // General Access Routes
+    static async getEquipList(queryString: string) {
+        const response = await this.getJson(`/equip/list${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+
     // Access Controlled Routes
     static async getEquip(id: string) {
-        const response = await this.getJson(`/equips/${id}`);
+        const response = await this.getJson(`/equip/${id}`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async createEquip(data: RoomObjectProps) {
-        const response = await this.postJson(`/equips`, data);
+    static async createEquip(data: EquipObjectProps) {
+        const response = await this.postJson(`/equip`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateEquip(data: RoomObjectProps) {
-        const response = await this.patchJson(`/equips`, data);
+    static async updateEquip(id: string, data: EquipObjectProps) {
+        const response = await this.patchJson(`/equip/${id}`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteEquip(data: RoomObjectProps) {
-        const response = await this.deleteJson(`/equips`, data);
+    static async deleteEquip(id: string, data: EquipObjectProps) {
+        const response = await this.deleteJson(`/equip/${id}`, data);
         return {headers: response.headers, data: response.data};
     }; 
 
-    // General Access Routes
-    static async getEquipList(queryString: string) {
-        const response = await this.getJson(`/equips/list${queryString}`);
-        return {headers: response.headers, data: response.data};
-    };
-
-    static async getEquipListUser() {
-        const response = await this.getJson(`/users/equips/list`);
-        return {headers: response.headers, data: response.data};
-    };
-
-    static async getEquipListGroup(groupID: string) {
-        const response = await this.getJson(`/groups/${groupID}/equips/list`);
-        return {headers: response.headers, data: response.data};
-    };
-
-    static async getEquipListRoom(roomID: string) {
-        const response = await this.getJson(`/equips/rooms/${roomID}`);
+    static async getEquipRoom(id: string) {
+        const response = await this.getJson(`/equip/${id}/room`);
         return {headers: response.headers, data: response.data};
     };
 };
