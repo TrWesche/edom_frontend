@@ -21,18 +21,10 @@ const fetchUserProfile = (username: string, authData: authToken | undefined) => 
             };
 
             let data;
-            if (username && username === authData.username) {
-                // If target user is self, try to fetch data for own account
-                const result = await apiEDOM.getUserSecure();
-                data = result.data;
-                dispatch(gotUserProfilePrivate(data));
-            } else {
-                // If target is other user, fetch data for other user based on username
-                const result = await apiEDOM.getUserPublic(username);
-                data = result.data;
-                dispatch(gotUserProfilePublic(data));
-            };
-            
+            const result = await apiEDOM.getUserProfile(username);
+            data = result.data;
+            dispatch(gotUserProfilePublic(data));
+
         } catch (error) {
             console.log("Redux Error Caught");
             dispatch(gotError());

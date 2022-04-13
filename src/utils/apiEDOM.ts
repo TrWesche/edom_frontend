@@ -8,7 +8,9 @@ import {
     GroupObjectProps,
     GroupRoleProps,
     GroupUserObjectProps,
-    GroupPermissionProps
+    GroupPermissionProps,
+    UserRequestProps,
+    GroupRequestProps
 } from '../interfaces/globalInterfaces'
 
 const apiURL = process.env.REACT_APP_EDOM_API_URL;
@@ -98,49 +100,72 @@ class apiEDOM {
     // | |_| |___) | |___|  _ < 
     //  \___/|____/|_____|_| \_\
 
-    // Access Controlled Routes
-    static async registerUser(userData: UserObjectPropsPrivate) {
-        const response = await this.postJson(`/users/register`, userData);
+    // Authentication Routes
+    static async registerUser(input: UserObjectPropsPrivate) {
+        const response = await this.postJson(`/user/register`, input);
         return {headers: response.headers, data: response.data};
     };
 
-    static async loginUser(loginData: UserLoginProps) {
-        const response = await this.postJson(`/users/auth`, loginData);
+    static async loginUser(input: UserLoginProps) {
+        const response = await this.postJson(`/user/auth`, input);
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserSecure() {
-        const response = await this.getJson(`/users/profile`, {});
+    static async logoutUser() {
+        const response = await this.postJson(`/user/logout`, {});
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateUser(updateData: UserObjectPropsPrivate) {
-        const response = await this.patchJson(`/users/update`, updateData);
+    // Data Retrieval / Manipulation Routes
+    static async updateUser(input: UserObjectPropsPrivate) {
+        const response = await this.patchJson(`/user/update`, input);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteUser(updateData: UserObjectPropsPrivate) {
-        const response = await this.deleteJson(`/users/delete`, updateData);
+    static async deleteUser(input: UserObjectPropsPrivate) {
+        const response = await this.deleteJson(`/user/delete`, input);
         return {headers: response.headers, data: response.data};
     };
 
-    // General Access Routes
     static async getUserList(queryString: string) {
-        const response = await this.getJson(`/users/list${queryString}`);
+        const response = await this.getJson(`/user/list${queryString}`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserListGroup(groupID: string) {
-        const response = await this.getJson(`/groups/${groupID}/users`);
+    static async getUserSelf() {
+        const response = await this.getJson(`/user/profile`, {});
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserPublic(username: string) {
-        const response = await this.getJson(`/users/up/${username}`, {username});
+    static async getUserProfile(username: string) {
+        const response = await this.getJson(`/user/dm/${username}`, {username});
         return {headers: response.headers, data: response.data};
     };
 
+    static async getUserGroups(username: string) {
+        const response = await this.getJson(`/user/dm/${username}/group`, {username});
+        return {headers: response.headers, data: response.data};
+    };
 
+    static async getUserRooms(username: string) {
+        const response = await this.getJson(`/user/dm/${username}/room`, {username});
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getUserEquip(username: string) {
+        const response = await this.getJson(`/user/dm/${username}/equip`, {username});
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getRequests() {
+        const response = await this.getJson(`/user/request`, {});
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async createRequest(input: UserRequestProps) {
+        const response = await this.postJson(`/user/request`, input);
+        return {headers: response.headers, data: response.data};
+    };
 
     //   ____ ____   ___  _   _ ____  
     //  / ___|  _ \ / _ \| | | |  _ \ 
@@ -148,110 +173,106 @@ class apiEDOM {
     // | |_| |  _ <| |_| | |_| |  __/ 
     //  \____|_| \_\\___/ \___/|_| 
 
-    // Access Controlled Routes
+    // --- Site Functions
+    static async getGroupList(queryString: string) {
+        const response = await this.getJson(`/group/list${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
 
-    // ---Group Management
+    // --- Core Group Actions
     static async getGroup(id: string) {
-        const response = await this.getJson(`/groups/${id}`);
+        const response = await this.getJson(`/group/${id}`);
         return {headers: response.headers, data: response.data};
     };
 
     static async createGroup(data: GroupObjectProps) {
-        const response = await this.postJson(`/groups`, data);
+        const response = await this.postJson(`/group`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateGroup(data: GroupObjectProps) {
-        const response = await this.patchJson(`/groups`, data);
+    static async updateGroup(id: string, data: GroupObjectProps) {
+        const response = await this.patchJson(`/group/${id}`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteGroup(data: GroupObjectProps) {
-        const response = await this.deleteJson(`/groups`, data);
+    static async deleteGroup(id: string, data: GroupObjectProps) {
+        const response = await this.deleteJson(`/group/${id}`, data);
         return {headers: response.headers, data: response.data};
     }; 
+
+    // --- Group Resource Browse 
+    static async getGroupUsers(id: string, queryString: string) {
+        const response = await this.getJson(`/group/${id}/user${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getGroupRooms(id: string, queryString: string) {
+        const response = await this.getJson(`/group/${id}/room${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async getGroupEquip(id: string, queryString: string) {
+        const response = await this.getJson(`/group/${id}/equip${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    // --- Group Request Control
+    static async getGroupRequests(id: string) {
+        const response = await this.getJson(`/group/${id}/gm/req`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async createGroupRequest(id: string, data: GroupRequestProps) {
+        const response = await this.postJson(`/group/${id}/gm/req`, data);
+        return {headers: response.headers, data: response.data};
+    };
+
 
     // ---Group Role Management
-    static async getGroupRoles(id: string) {
-        const response = await this.getJson(`/groups/${id}/roles`);
+    static async getGroupRoleList(id: string) {
+        const response = await this.getJson(`/group/${id}/gm/role`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async createGroupRole(id: string, data: GroupRoleProps) {
-        const response = await this.postJson(`/groups/${id}/roles`, data);
+    static async getGroupRole(id: string, rolename: string) {
+        const response = await this.getJson(`/group/${id}/gm/role/${rolename}`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteGroupRole(id: string, data: GroupRoleProps) {
-        const response = await this.deleteJson(`/groups/${id}/roles`, data);
+    static async actGroupRole(id: string, data: GroupRoleProps) {
+        const response = await this.postJson(`/group/${id}/roles`, data);
         return {headers: response.headers, data: response.data};
-    }; 
+    };
 
+    
     // ---Group User Management
-    static async getGroupUsers(id: string) {
-        const response = await this.getJson(`/groups/${id}/users`);
+    static async getGroupUsersMgmt(id: string) {
+        const response = await this.getJson(`/group/${id}/gm/user`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async createGroupUser(id: string, data: UserObjectProps) {
-        const response = await this.postJson(`/groups/${id}/users`, data);
+    static async getGroupUser(id: string, username: string) {
+        const response = await this.getJson(`/group/${id}/gm/user/${username}`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteGroupUser(id: string, data: UserObjectProps) {
-        const response = await this.deleteJson(`/groups/${id}/users`, data);
-        return {headers: response.headers, data: response.data};
-    }; 
-
-    // ---Group User Role Management
-    static async getGroupUserRoles(gid: string, uid: string) {
-        const response = await this.getJson(`/groups/${gid}/users/${uid}/roles`);
+    static async actGroupUser(id: string, data: UserObjectProps) {
+        const response = await this.postJson(`/groups/${id}/gm/user`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async createGroupUserRole(gid: string, uid: string, data: GroupUserObjectProps) {
-        const response = await this.postJson(`/groups/${gid}/users/${uid}/roles`, data);
+
+    // ---Permission Management
+    static async getGroupPermissionList(id: string) {
+        const response = await this.getJson(`/groups/${id}/gm/perm`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteGroupUserRole(gid: string, uid: string, data: GroupUserObjectProps) {
-        const response = await this.deleteJson(`/groups/${gid}/users/${uid}/roles`, data);
-        return {headers: response.headers, data: response.data};
-    }; 
-
-    // ---Role Permissions Management
-    static async getGroupRolePermissions(gid: string, pid: string) {
-        const response = await this.getJson(`/groups/${gid}/roles/${pid}`);
+    static async actGroupRolePermission(id: string, data: GroupPermissionProps) {
+        const response = await this.postJson(`/groups/${id}/gm/perm`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async createGroupRolePermission(gid: string, pid: string, data: GroupPermissionProps) {
-        const response = await this.postJson(`/groups/${gid}/roles/${pid}`, data);
-        return {headers: response.headers, data: response.data};
-    };
-
-    static async deleteGroupRolePermission(gid: string, pid: string, data: GroupPermissionProps) {
-        const response = await this.deleteJson(`/groups/${gid}/roles/${pid}`, data);
-        return {headers: response.headers, data: response.data};
-    }; 
-
-    // --- Group Permissions
-    static async getGroupPermissionsList(gid: string) {
-        const response = await this.getJson(`/groups/${gid}/permissions`);
-        return {headers: response.headers, data: response.data};
-    };
-
-    // General Access Routes
-    static async getGroupList(queryString: string) {
-        const response = await this.getJson(`/groups/list${queryString}`);
-        return {headers: response.headers, data: response.data};
-    };
-
-    // TODO: API Endpoint needs to be built
-    static async getGroupListUser() {
-        const response = await this.getJson(`/users/groups`);
-        return {headers: response.headers, data: response.data};
-    };
 
 
     //  ____   ___   ___  __  __ 

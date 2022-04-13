@@ -12,6 +12,18 @@ export interface UserObjectPropsPrivate extends UserObjectProps {
     last_name?: string
 };
 
+export interface UserRequestProps {
+    groupID?: string
+    context: string
+    action: string
+};
+
+export interface GroupRequestProps {
+    users?: Array<string>
+    context: string
+    action: string
+};
+
 export interface GroupUserObjectProps extends UserObjectProps {
     group?: GroupObjectProps
     roles?: Array<GroupRoleProps>
