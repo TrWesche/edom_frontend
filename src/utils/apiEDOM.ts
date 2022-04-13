@@ -10,7 +10,8 @@ import {
     GroupUserObjectProps,
     GroupPermissionProps,
     UserRequestProps,
-    GroupRequestProps
+    GroupRequestProps,
+    RoomEquipProps
 } from '../interfaces/globalInterfaces'
 
 const apiURL = process.env.REACT_APP_EDOM_API_URL;
@@ -281,40 +282,42 @@ class apiEDOM {
     // |  _ <| |_| | |_| | |  | |
     // |_| \_\\___/ \___/|_|  |_|
 
-    // Access Controlled Routes
+    // General Access Routes
+    static async getRoomList(queryString: string) {
+        const response = await this.getJson(`/room/list${queryString}`);
+        return {headers: response.headers, data: response.data};
+    };
+
+    // Core Routes
     static async getRoom(id: string) {
-        const response = await this.getJson(`/rooms/${id}`);
+        const response = await this.getJson(`/room/${id}`);
         return {headers: response.headers, data: response.data};
     };
 
     static async createRoom(data: RoomObjectProps) {
-        const response = await this.postJson(`/rooms`, data);
+        const response = await this.postJson(`/room/create`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateRoom(data: RoomObjectProps) {
-        const response = await this.patchJson(`/rooms`, data);
+    static async updateRoom(id: string, data: RoomObjectProps) {
+        const response = await this.patchJson(`/room/${id}`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteRoom(data: RoomObjectProps) {
-        const response = await this.deleteJson(`/rooms`, data);
+    static async deleteRoom(id: string, data: RoomObjectProps) {
+        const response = await this.deleteJson(`/room/${id}`, data);
         return {headers: response.headers, data: response.data};
     }; 
 
-    // General Access Routes
-    static async getRoomList(queryString: string) {
-        const response = await this.getJson(`/rooms/list${queryString}`);
+
+    // Room Equip Control
+    static async getRoomEquip(id: string, queryString: string) {
+        const response = await this.getJson(`/room/${id}/equip${queryString}`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async getRoomListUser() {
-        const response = await this.getJson(`/users/rooms/list`);
-        return {headers: response.headers, data: response.data};
-    };
-
-    static async getRoomListGroup(groupID: string) {
-        const response = await this.getJson(`/groups/${groupID}/rooms/list`);
+    static async actRoomEquip(id: string, data: RoomEquipProps) {
+        const response = await this.postJson(`/room/${id}/equip`, data);
         return {headers: response.headers, data: response.data};
     };
 

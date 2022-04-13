@@ -55,6 +55,13 @@ export interface RoomObjectProps {
     user?: UserObjectProps
 };
 
+export interface RoomEquipProps {
+    context?: string,
+    action: string,
+    ownerID?: string,
+    equipIDs: Array<string>
+};
+
 export interface EquipObjectProps {
     id?: string
     public?: boolean
