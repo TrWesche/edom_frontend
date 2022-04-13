@@ -1,19 +1,29 @@
+// Library Imports
 import axios, { AxiosRequestConfig } from "axios";
 
+// Typescript Interfaces
 import { 
-    UserObjectProps,
-    UserObjectPropsPrivate,
-    UserLoginProps,
-    RoomObjectProps,
-    GroupObjectProps,
-    GroupRoleProps,
-    GroupUserObjectProps,
-    GroupPermissionProps,
-    UserRequestProps,
-    GroupRequestProps,
-    RoomEquipProps,
-    EquipObjectProps
-} from '../interfaces/globalInterfaces'
+    RequestUserLogin, 
+    RequestUserObject, 
+    RequestUserRequest
+} from "../interfaces/edomUserInterfaces";
+
+import { 
+    RequestGroupObject, 
+    RequestGroupRequest, 
+    RequestGroupRole, 
+    RequestGroupRolePermission, 
+    RequestUserManagement 
+} from "../interfaces/edomGroupInterfaces";
+
+import { 
+    RequestRoomEquip, 
+    RequestRoomObject 
+} from "../interfaces/edomRoomInterfaces";
+
+import { 
+    RequestEquipObject 
+} from "../interfaces/edomEquipInterfaces";
 
 const apiURL = process.env.REACT_APP_EDOM_API_URL;
 
@@ -76,13 +86,12 @@ class apiEDOM {
         }
     };
 
-    static async deleteJson(endpoint: string, data: object) {
+    static async deleteJson(endpoint: string) {
         try {
             const axiosConfig: AxiosRequestConfig = {
                 method: 'delete',
                 baseURL: apiURL,
                 url: endpoint,
-                data: data,
                 withCredentials: true,
                 responseType: 'json'
             }
@@ -103,12 +112,12 @@ class apiEDOM {
     //  \___/|____/|_____|_| \_\
 
     // Authentication Routes
-    static async registerUser(input: UserObjectPropsPrivate) {
+    static async registerUser(input: RequestUserObject) {
         const response = await this.postJson(`/user/register`, input);
         return {headers: response.headers, data: response.data};
     };
 
-    static async loginUser(input: UserLoginProps) {
+    static async loginUser(input: RequestUserLogin) {
         const response = await this.postJson(`/user/auth`, input);
         return {headers: response.headers, data: response.data};
     };
@@ -119,13 +128,13 @@ class apiEDOM {
     };
 
     // Data Retrieval / Manipulation Routes
-    static async updateUser(input: UserObjectPropsPrivate) {
+    static async updateUser(input: RequestUserObject) {
         const response = await this.patchJson(`/user/update`, input);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteUser(input: UserObjectPropsPrivate) {
-        const response = await this.deleteJson(`/user/delete`, input);
+    static async deleteUser() {
+        const response = await this.deleteJson(`/user/delete`);
         return {headers: response.headers, data: response.data};
     };
 
@@ -159,15 +168,17 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async getRequests() {
+    static async getUserRequests() {
         const response = await this.getJson(`/user/request`, {});
         return {headers: response.headers, data: response.data};
     };
 
-    static async createRequest(input: UserRequestProps) {
+    static async createUserRequest(input: RequestUserRequest) {
         const response = await this.postJson(`/user/request`, input);
         return {headers: response.headers, data: response.data};
     };
+
+
 
     //   ____ ____   ___  _   _ ____  
     //  / ___|  _ \ / _ \| | | |  _ \ 
@@ -187,18 +198,18 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async createGroup(data: GroupObjectProps) {
+    static async createGroup(data: RequestGroupObject) {
         const response = await this.postJson(`/group`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateGroup(id: string, data: GroupObjectProps) {
+    static async updateGroup(id: string, data: RequestGroupObject) {
         const response = await this.patchJson(`/group/${id}`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteGroup(id: string, data: GroupObjectProps) {
-        const response = await this.deleteJson(`/group/${id}`, data);
+    static async deleteGroup(id: string) {
+        const response = await this.deleteJson(`/group/${id}`);
         return {headers: response.headers, data: response.data};
     }; 
 
@@ -224,11 +235,10 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async createGroupRequest(id: string, data: GroupRequestProps) {
+    static async createGroupRequest(id: string, data: RequestGroupRequest) {
         const response = await this.postJson(`/group/${id}/gm/req`, data);
         return {headers: response.headers, data: response.data};
     };
-
 
     // ---Group Role Management
     static async getGroupRoleList(id: string) {
@@ -241,12 +251,11 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async actGroupRole(id: string, data: GroupRoleProps) {
+    static async actGroupRole(id: string, data: RequestGroupRole) {
         const response = await this.postJson(`/group/${id}/roles`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    
     // ---Group User Management
     static async getGroupUsersMgmt(id: string) {
         const response = await this.getJson(`/group/${id}/gm/user`);
@@ -258,7 +267,7 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async actGroupUser(id: string, data: UserObjectProps) {
+    static async actGroupUser(id: string, data: RequestUserManagement) {
         const response = await this.postJson(`/groups/${id}/gm/user`, data);
         return {headers: response.headers, data: response.data};
     };
@@ -270,7 +279,7 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async actGroupRolePermission(id: string, data: GroupPermissionProps) {
+    static async actGroupRolePermission(id: string, data: RequestGroupRolePermission) {
         const response = await this.postJson(`/groups/${id}/gm/perm`, data);
         return {headers: response.headers, data: response.data};
     };
@@ -295,21 +304,20 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async createRoom(data: RoomObjectProps) {
+    static async createRoom(data: RequestRoomObject) {
         const response = await this.postJson(`/room/create`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateRoom(id: string, data: RoomObjectProps) {
+    static async updateRoom(id: string, data: RequestRoomObject) {
         const response = await this.patchJson(`/room/${id}`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteRoom(id: string, data: RoomObjectProps) {
-        const response = await this.deleteJson(`/room/${id}`, data);
+    static async deleteRoom(id: string) {
+        const response = await this.deleteJson(`/room/${id}`);
         return {headers: response.headers, data: response.data};
     }; 
-
 
     // Room Equip Control
     static async getRoomEquip(id: string, queryString: string) {
@@ -317,10 +325,11 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async actRoomEquip(id: string, data: RoomEquipProps) {
+    static async actRoomEquip(id: string, data: RequestRoomEquip) {
         const response = await this.postJson(`/room/${id}/equip`, data);
         return {headers: response.headers, data: response.data};
     };
+
 
 
     //  _____ ___  _   _ ___ ____  
@@ -335,25 +344,24 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-
     // Access Controlled Routes
     static async getEquip(id: string) {
         const response = await this.getJson(`/equip/${id}`);
         return {headers: response.headers, data: response.data};
     };
 
-    static async createEquip(data: EquipObjectProps) {
+    static async createEquip(data: RequestEquipObject) {
         const response = await this.postJson(`/equip`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async updateEquip(id: string, data: EquipObjectProps) {
+    static async updateEquip(id: string, data: RequestEquipObject) {
         const response = await this.patchJson(`/equip/${id}`, data);
         return {headers: response.headers, data: response.data};
     };
 
-    static async deleteEquip(id: string, data: EquipObjectProps) {
-        const response = await this.deleteJson(`/equip/${id}`, data);
+    static async deleteEquip(id: string) {
+        const response = await this.deleteJson(`/equip/${id}`);
         return {headers: response.headers, data: response.data};
     }; 
 
