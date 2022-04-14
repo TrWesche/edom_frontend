@@ -1,11 +1,11 @@
 import { Action } from "redux";
-import { GroupObjectProps } from "../../interfaces/globalInterfaces";
+import { ReturnGroupObject } from "../../interfaces/edomGroupInterfaces";
 import {
     GROUP_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
-const INITIAL_STATE: Array<GroupObjectProps | undefined> = [];
+const INITIAL_STATE: Array<ReturnGroupObject | undefined> = [];
 
 interface reduxAction extends Action {
     payload?: object

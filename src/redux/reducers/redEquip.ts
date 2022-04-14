@@ -14,14 +14,14 @@ const redEquip = (state = INITIAL_STATE, action: reduxAction) => {
     let targetEquip;
     switch (action.type){
         case EQUIP_ACTIONS.START_EQUIP_CREATE:
-            targetEquip = {...INITIAL_STATE, isProcessing: true};
+            targetEquip = {isProcessing: true};
             return targetEquip;
         case EQUIP_ACTIONS.FINISH_EQUIP_CREATE:
             targetEquip = {...action.payload, isProcessing: false};  
             return targetEquip;
 
         case EQUIP_ACTIONS.START_EQUIP_LOAD:
-            targetEquip = {...INITIAL_STATE, isProcessing: true};
+            targetEquip = {isProcessing: true};
             return targetEquip;
         case EQUIP_ACTIONS.FINISH_EQUIP_LOAD:
             targetEquip = {...action.payload, isProcessing: false};  
@@ -38,7 +38,7 @@ const redEquip = (state = INITIAL_STATE, action: reduxAction) => {
             targetEquip = {...state, isProcessing: true};
             return targetEquip;
         case EQUIP_ACTIONS.FINISH_EQUIP_DELETE:
-            targetEquip = {...INITIAL_STATE, isProcessing: false};
+            targetEquip = {isProcessing: false};
             return targetEquip;
         
         case ERROR:

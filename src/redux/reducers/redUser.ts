@@ -16,10 +16,7 @@ const targetUser = (state = INITIAL_STATE, action: reduxAction) => {
         case USER_ACTIONS.START_USER_LOAD:
             targetUser = {...INITIAL_STATE, isProcessing: true};
             return targetUser;
-        case USER_ACTIONS.FINISH_USER_LOAD_PRIVATE:
-            targetUser = {...action.payload, isProcessing: false};  
-            return targetUser;
-        case USER_ACTIONS.FINISH_USER_LOAD_PUBLIC:
+        case USER_ACTIONS.FINISH_USER_LOAD:
             targetUser = {...action.payload, isProcessing: false};  
             return targetUser;
         case USER_ACTIONS.START_USER_UPDATE:

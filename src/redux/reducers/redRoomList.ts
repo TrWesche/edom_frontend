@@ -1,11 +1,11 @@
 import { Action } from "redux";
-import { RoomObjectProps } from "../../interfaces/globalInterfaces";
+import { ReturnRoomObject } from "../../interfaces/edomRoomInterfaces";
 import {
     ROOM_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
-const INITIAL_STATE: Array<RoomObjectProps | undefined> = [];
+const INITIAL_STATE: Array<ReturnRoomObject | undefined> = [];
 
 interface reduxAction extends Action {
     payload?: object

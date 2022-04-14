@@ -1,11 +1,11 @@
 import { Action } from "redux";
-import { UserObjectProps } from "../../interfaces/globalInterfaces";
+import { ReturnUserObject } from "../../interfaces/edomUserInterfaces";
 import {
     USER_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
-const INITIAL_STATE: Array<UserObjectProps | undefined> = [];
+const INITIAL_STATE: Array<ReturnUserObject | undefined> = [];
 
 interface reduxAction extends Action {
     payload?: object
