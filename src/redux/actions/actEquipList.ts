@@ -1,38 +1,30 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
+// Libraries
 import { Dispatch } from "redux";
-import { EquipObjectProps, QueryStringFilterProps } from "../../interfaces/globalInterfaces";
 
+// Interfaces
+import { QueryStringFilterProps } from "../../interfaces/globalInterfaces";
+import { ReturnEquipObject } from "../../interfaces/edomEquipInterfaces";
+
+// API
 import apiEDOM from "../../utils/apiEDOM";
+
+// Utilities
+import { formQueryString } from "../../utils/formQueryString";
+
+// Redux Actions
 import {
     EQUIP_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
 
-export const queryStringFilterPrep = (filters: Array<QueryStringFilterProps> | undefined) => {
-    if (filters) {
-        const treatedFilters: Array<string> = [];
-        filters.forEach(kvPair => {
-            if (kvPair.key.length > 0 && kvPair.value.length > 0) {
-                treatedFilters.push(`${kvPair.key}=${kvPair.value}`);
-            };
-        });
-    
-        if (treatedFilters.length > 0) {
-            return `?${treatedFilters.join('&')}`;
-        }
-    }
-
-    return "";
-};
-
-
-const fetchEquipList = (filters?: Array<QueryStringFilterProps>) => {
+const fetchEquipList = (queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchEquipList());
         try {
-            const queryString = queryStringFilterPrep(filters);
+            const queryString = formQueryString(queryParams);
             const result = await apiEDOM.getEquipList(queryString);
             const data = result.data;
             
@@ -50,7 +42,7 @@ const startFetchEquipList = () => {
     });
 };
 
-const gotEquipList = (data: Array<EquipObjectProps | undefined>) => {
+const gotEquipList = (data: Array<ReturnEquipObject | undefined>) => {
     return ({
         type: EQUIP_LIST_ACTIONS.FINISH_EQUIP_LIST_LOAD,
         payload: data
@@ -58,11 +50,12 @@ const gotEquipList = (data: Array<EquipObjectProps | undefined>) => {
 };
 
 
-const fetchEquipListUser = () => {
+const fetchEquipListUser = (username: string, queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchEquipListUser());
         try {
-            const result = await apiEDOM.getEquipListUser();
+            const queryString = formQueryString(queryParams);
+            const result = await apiEDOM.getUserEquip(username, queryString);
             const data = result.data;
             
             dispatch(gotEquipListUser(data));
@@ -79,7 +72,7 @@ const startFetchEquipListUser = () => {
     });
 };
 
-const gotEquipListUser = (data: Array<EquipObjectProps | undefined>) => {
+const gotEquipListUser = (data: Array<ReturnEquipObject | undefined>) => {
     return ({
         type: EQUIP_LIST_ACTIONS.FINISH_USER_EQUIP_LIST_LOAD,
         payload: data
@@ -87,12 +80,12 @@ const gotEquipListUser = (data: Array<EquipObjectProps | undefined>) => {
 };
 
 
-const fetchEquipListGroup = (groupID: string) => {
+const fetchEquipListGroup = (groupID: string, queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchEquipListGroup());
         try {
-
-            const result = await apiEDOM.getEquipListGroup(groupID);
+            const queryString = formQueryString(queryParams);
+            const result = await apiEDOM.getGroupEquip(groupID, queryString);
             const data = result.data;
             
             dispatch(gotEquipListGroup(data));
@@ -109,7 +102,7 @@ const startFetchEquipListGroup = () => {
     });
 };
 
-const gotEquipListGroup = (data: Array<EquipObjectProps | undefined>) => {
+const gotEquipListGroup = (data: Array<ReturnEquipObject | undefined>) => {
     return ({
         type: EQUIP_LIST_ACTIONS.FINISH_GROUP_EQUIP_LIST_LOAD,
         payload: data
@@ -117,12 +110,12 @@ const gotEquipListGroup = (data: Array<EquipObjectProps | undefined>) => {
 };
 
 
-const fetchEquipListRoom = (roomID: string) => {
+const fetchEquipListRoom = (roomID: string, queryParams?:  Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchEquipListRoom());
         try {
-
-            const result = await apiEDOM.getEquipListRoom(roomID);
+            const queryString = formQueryString(queryParams);
+            const result = await apiEDOM.getRoomEquip(roomID, queryString);
             const data = result.data;
             
             dispatch(gotEquipListRoom(data));
@@ -139,7 +132,7 @@ const startFetchEquipListRoom = () => {
     });
 };
 
-const gotEquipListRoom = (data: Array<EquipObjectProps | undefined>) => {
+const gotEquipListRoom = (data: Array<ReturnEquipObject | undefined>) => {
     return ({
         type: EQUIP_LIST_ACTIONS.FINISH_ROOM_EQUIP_LIST_LOAD,
         payload: data

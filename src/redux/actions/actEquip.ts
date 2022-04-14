@@ -1,10 +1,17 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
+// Libraries
 import { Dispatch } from "redux";
-import { EquipObjectProps } from "../../interfaces/globalInterfaces";
-import { authToken} from "../../providers/authProvider";
 
+// Interfaces
+import { ReturnEquipObject } from "../../interfaces/edomEquipInterfaces";
+
+// API
 import apiEDOM from "../../utils/apiEDOM";
+
+// Utilities
+
+// Redux Actions
 import {
     EQUIP_ACTIONS,
     ERROR
@@ -12,14 +19,10 @@ import {
 
 
 
-const fetchEquipProfile = (equipID: string, authData: authToken | undefined) => {
+const fetchEquipProfile = (equipID: string) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchEquipProfile());
         try {
-            if (!authData?.username) {
-                throw new Error ("Current User Authentication Data Malformed | User Not Logged In");
-            };
-
             const result = await apiEDOM.getEquip(equipID);
             const data = result.data.equip;
             dispatch(gotEquipProfile(data));
@@ -37,7 +40,7 @@ const startFetchEquipProfile = () => {
     });
 };
 
-const gotEquipProfile = (equipData: EquipObjectProps) => {
+const gotEquipProfile = (equipData: ReturnEquipObject) => {
     return ({
         type: EQUIP_ACTIONS.FINISH_EQUIP_LOAD,
         payload: equipData

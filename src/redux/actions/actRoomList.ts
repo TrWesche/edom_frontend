@@ -52,7 +52,7 @@ const gotRoomList = (data: Array<ReturnRoomObject | undefined>) => {
 
 
 
-const fetchRoomListUser = (username: string,  queryParams: Array<QueryStringFilterProps>) => {
+const fetchRoomListUser = (username: string,  queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchRoomListUser());
         try {
@@ -82,7 +82,7 @@ const gotRoomListUser = (data: Array<ReturnRoomObject | undefined>) => {
 };
 
 
-const fetchRoomListGroup = (groupID: string, queryParams: Array<QueryStringFilterProps>) => {
+const fetchRoomListGroup = (groupID: string, queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchRoomListGroup());
         try {
