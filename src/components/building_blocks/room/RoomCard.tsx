@@ -15,7 +15,7 @@ import {
 
 
 // Interface Imports
-import { RoomObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
     target: ClickTarget
@@ -35,14 +35,14 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
     }
 };
 
-const RoomCard = (data: RoomObjectProps, navigate: NavigateFunction) => {
+const RoomCard = (data: ReturnRoomObject, navigate: NavigateFunction) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardActionArea onClick={(e) => handleClick(e, navigate, `/rooms/${data.id}`)}>
                 <CardMedia
                     component="img"
                     height="140"
-                    src="https://www.scuttlerobot.org/images/virtuemart/product/Scuttle-Render-Assembled-Base-1280x720.jpg"
+                    src={data.image_url}
                     alt="Scuttle Robot Picture"
                 />
                 <CardContent

@@ -10,13 +10,13 @@ import {
 
 
 // Interface Imports
-import { RoomObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
 
 import RoomCard from './RoomCard';
 import RoomCardSkeleton from './RoomCardSkeleton';
 
 export interface RoomListProps {
-    rooms: Array<RoomObjectProps>
+    rooms: Array<ReturnRoomObject>
     isProcessing: boolean
     error?: boolean
 };

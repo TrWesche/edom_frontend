@@ -12,7 +12,7 @@ import {
     CardMedia
 } from "@mui/material"
 
-import { GroupObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
     target: ClickTarget
@@ -33,14 +33,14 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 };
 
 
-const GroupCard = (data: GroupObjectProps, navigate: NavigateFunction) => {
+const GroupCard = (data: ReturnGroupObject, navigate: NavigateFunction) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardActionArea onClick={(e) => handleClick(e, navigate, `/groups/${data.id}`)}>
                 <CardMedia
                     component="img"
                     height="140"
-                    src="https://www.scuttlerobot.org/images/virtuemart/product/Scuttle-Render-Assembled-Base-1280x720.jpg"
+                    src={data.image_url}
                     alt="Scuttle Robot Picture"
                 />
                 <CardContent
@@ -51,6 +51,9 @@ const GroupCard = (data: GroupObjectProps, navigate: NavigateFunction) => {
                 >
                     <Typography gutterBottom variant="h5" component="div">
                         {data.name}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {data.location}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {data.headline}

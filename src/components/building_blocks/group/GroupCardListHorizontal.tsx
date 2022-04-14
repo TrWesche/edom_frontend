@@ -8,14 +8,14 @@ import {
     Typography
 } from "@mui/material";
 
-import { GroupObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
 
 import GroupCardSkeleton from "./GroupCardSkeleton";
 import GroupCard from "./GroupCard";
 
 
 export interface GroupListProps {
-    group: Array<GroupObjectProps>
+    group: Array<ReturnGroupObject>
     isProcessing: boolean
     error?: boolean
 };

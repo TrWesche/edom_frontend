@@ -13,7 +13,7 @@ import {
 
 
 // Interface Imports
-import { UserObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnUserObject } from '../../../interfaces/edomUserInterfaces';
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
     target: ClickTarget
@@ -33,14 +33,14 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
     }
 };
 
-const UserCard = (data: UserObjectProps, navigate: NavigateFunction) => {
+const UserCard = (data: ReturnUserObject, navigate: NavigateFunction) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea onClick={(e) => handleClick(e, navigate, `/users/${data.username}`)}>
+            <CardActionArea onClick={(e) => handleClick(e, navigate, `/users/${data.username_lowercase}`)}>
                 <CardMedia
                     component="img"
                     height="140"
-                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+                    src={data.image_url}
                     alt={`${data.username} Picture`}
                 />
                 <CardContent
@@ -53,13 +53,13 @@ const UserCard = (data: UserObjectProps, navigate: NavigateFunction) => {
                         {data.username}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        First Name - Last Name
+                        {data.first_name} {data.last_name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Location
+                        {data.location}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        User Headline
+                        {data.headline}
                     </Typography>
                 </CardContent>
             </CardActionArea>

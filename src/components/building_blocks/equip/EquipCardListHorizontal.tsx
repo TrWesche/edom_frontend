@@ -7,14 +7,14 @@ import {
     Typography
 } from "@mui/material";
 
-import { EquipObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
 
 import EquipCardSkeleton from './EquipCardSkeleton';
 import EquipCard from './EquipCard';
 import { NavigateFunction } from 'react-router-dom';
 
 export interface EquipListProps {
-    equip: Array<EquipObjectProps>
+    equip: Array<ReturnEquipObject>
     isProcessing: boolean
     error?: boolean
 };

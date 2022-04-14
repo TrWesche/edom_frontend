@@ -10,13 +10,13 @@ import {
 
 
 // Interface Imports
-import { UserObjectProps } from '../../../interfaces/globalInterfaces';
+import { ReturnUserObject } from '../../../interfaces/edomUserInterfaces';
 
 import UserCard from './UserCard';
 import UserCardSkeleton from './UserCardSkeleton';
 
 export interface UserListProps {
-    users: Array<UserObjectProps>
+    users: Array<ReturnUserObject>
     isProcessing: boolean
     error?: boolean
 };
@@ -53,7 +53,7 @@ const UserCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
             <React.Fragment>
                 {list.users.map(data => {
                     return (
-                        <Grid item xs={4} key={`${listid}-${data.id}`}>
+                        <Grid item xs={4} key={`${listid}-${data.username_lowercase}`}>
                             {UserCard(data, navigate)}
                         </Grid>    
                     )

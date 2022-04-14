@@ -1,4 +1,5 @@
 export interface RequestRoomObject {
+    id: string
     context: string
     ownerid?: string
     name?: string
@@ -10,6 +11,7 @@ export interface RequestRoomObject {
 };
 
 export interface ReturnRoomObject {
+    id?: string
     resolution?: string
     username?: string
     groupid?: string
