@@ -1,10 +1,17 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
+// Libraries
 import { Dispatch } from "redux";
-import { UserObjectProps, UserObjectPropsPrivate } from "../../interfaces/globalInterfaces";
-import { authToken} from "../../providers/authProvider";
 
+// Interfaces
+import { ReturnUserObject } from "../../interfaces/edomUserInterfaces";
+
+// API
 import apiEDOM from "../../utils/apiEDOM";
+
+// Utilities
+
+// Redux Actions
 import {
     USER_ACTIONS,
     ERROR
@@ -12,18 +19,14 @@ import {
 
 
 
-const fetchUserProfile = (username: string, authData: authToken | undefined) => {
+const fetchUserProfile = (username: string) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchUserProfile());
         try {
-            if (!authData?.username) {
-                throw new Error ("Current User Authentication Data Malformed | User Not Logged In");
-            };
-
             let data;
             const result = await apiEDOM.getUserProfile(username);
             data = result.data;
-            dispatch(gotUserProfilePublic(data));
+            dispatch(gotUserProfile(data));
 
         } catch (error) {
             console.log("Redux Error Caught");
@@ -38,19 +41,14 @@ const startFetchUserProfile = () => {
     });
 };
 
-const gotUserProfilePublic = (userData: UserObjectProps) => {
+const gotUserProfile = (userData: ReturnUserObject) => {
     return ({
-        type: USER_ACTIONS.FINISH_USER_LOAD_PUBLIC,
+        type: USER_ACTIONS.FINISH_USER_LOAD,
         payload: userData
     })
 };
 
-const gotUserProfilePrivate = (userData: UserObjectPropsPrivate) => {
-    return ({
-        type: USER_ACTIONS.FINISH_USER_LOAD_PRIVATE,
-        payload: userData
-    })
-};
+
 
 // export const updateUserProfile = ({ updateValues }) => {
 //     return async function (dispatch: Dispatch) {

@@ -1,38 +1,31 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
+// Libraries
 import { Dispatch } from "redux";
-import { UserObjectProps, QueryStringFilterProps } from "../../interfaces/globalInterfaces";
 
+// Interfaces
+import { QueryStringFilterProps } from "../../interfaces/globalInterfaces";
+import { ReturnUserObject } from "../../interfaces/edomUserInterfaces";
+
+// API
 import apiEDOM from "../../utils/apiEDOM";
+
+// Utilities
+import { formQueryString } from "../../utils/formQueryString";
+
+// Redux Actions
 import {
     USER_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
 
-export const queryStringFilterPrep = (filters: Array<QueryStringFilterProps> | undefined) => {
-    if (filters) {
-        const treatedFilters: Array<string> = [];
-        filters.forEach(kvPair => {
-            if (kvPair.key.length > 0 && kvPair.value.length > 0) {
-                treatedFilters.push(`${kvPair.key}=${kvPair.value}`);
-            };
-        });
-    
-        if (treatedFilters.length > 0) {
-            return `?${treatedFilters.join('&')}`;
-        }
-    }
 
-    return "";
-};
-
-
-const fetchUserList = (filters?: Array<QueryStringFilterProps>) => {
+const fetchUserList = (queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchUserList());
         try {
-            const queryString = queryStringFilterPrep(filters);
+            const queryString = formQueryString(queryParams);
             const result = await apiEDOM.getUserList(queryString);
             const data = result.data;
             
@@ -50,7 +43,7 @@ const startFetchUserList = () => {
     });
 };
 
-const gotUserList = (data: Array<UserObjectProps | undefined>) => {
+const gotUserList = (data: Array<ReturnUserObject | undefined>) => {
     return ({
         type: USER_LIST_ACTIONS.FINISH_USER_LIST_LOAD,
         payload: data
@@ -58,12 +51,12 @@ const gotUserList = (data: Array<UserObjectProps | undefined>) => {
 };
 
 
-const fetchUserListGroup = (groupID: string) => {
+const fetchUserListGroup = (groupID: string, queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchUserListGroup());
         try {
-
-            const result = await apiEDOM.getUserListGroup(groupID);
+            const queryString = formQueryString(queryParams);
+            const result = await apiEDOM.getGroupUsers(groupID, queryString);
             const data = result.data;
             
             dispatch(gotUserListGroup(data));
@@ -80,7 +73,7 @@ const startFetchUserListGroup = () => {
     });
 };
 
-const gotUserListGroup = (data: Array<UserObjectProps | undefined>) => {
+const gotUserListGroup = (data: Array<ReturnUserObject | undefined>) => {
     return ({
         type: USER_LIST_ACTIONS.FINISH_GROUP_USER_LIST_LOAD,
         payload: data
