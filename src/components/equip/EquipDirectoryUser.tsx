@@ -1,6 +1,6 @@
 // React
 import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Redux
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
@@ -193,7 +193,8 @@ const EquipDirectoryUser = () => {
     // Context Providers
     const { alertSetter } = useAlert();
     const { authData } = useAuth();
-    
+
+    const params: any = useParams();
 
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
@@ -201,7 +202,7 @@ const EquipDirectoryUser = () => {
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
     useEffect(() => {
-        dispatch(fetchEquipListUser());
+        dispatch(fetchEquipListUser(params.username));
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {

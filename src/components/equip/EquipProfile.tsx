@@ -18,7 +18,8 @@ import {
     Paper,
     Divider,
     Button,
-    Stack
+    Stack,
+    Link
 } from "@mui/material"
 
 
@@ -27,12 +28,12 @@ import { authToken, useAuth } from '../../providers/authProvider';
 import { useAlert } from '../../providers/alertProvider';
 
 // Interface Imports
-import { EquipObjectProps } from '../../interfaces/globalInterfaces';
+import { ReturnEquipObject } from '../../interfaces/edomEquipInterfaces';
 import { fetchEquipProfile } from '../../redux/actions/actEquip';
 
 
 interface ReduxDataPayload {
-    Equip: EquipObjectProps
+    Equip: ReturnEquipObject
 };
 
 
@@ -54,14 +55,14 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
     }
 };
 
-const EquipProfileHeader = (navigate: NavigateFunction, data: EquipObjectProps) => {
+const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject) => {
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
                 <Grid item xs={3}>
                     <Avatar 
                         alt="Equip Image"
-                        src={data.image ? data.image : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
+                        src={data.image_url ? data.image_url : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
                         sx={{ width: 152, height: 152 }}
                     />
                 </Grid>
@@ -87,46 +88,50 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: EquipObjectProps) 
                         {data.category}
                     </Typography>
 
-                    {data.group ? 
-                        <Typography 
+                    {data.owner_user ? 
+                        <Link 
                             color={'secondary.dark'} 
                             variant='h5' 
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
+                            href={`/users/${data.owner_user.username_lowercase}`}
                         >
-                            {data.group.name}
-                        </Typography>
+                            {data.owner_user.username}
+                        </Link>
                         :
                         <React.Fragment></React.Fragment>
                     }
 
 
-                    {data.user ? 
-                        <Typography 
+                    {data.owner_group ? 
+                        <Link 
                             color={'secondary.dark'} 
                             variant='h5' 
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
+                            href={`/groups/${data.owner_group.group_id}`}
                         >
-                            {data.user.username}
-                        </Typography>
+                            {data.owner_group.group_name}
+                        </Link>
                         :
                         <React.Fragment></React.Fragment>
                     }
 
 
-                    {data.room ? 
-                        <Typography 
+                    {data.room_associations ? 
+                        <Link 
                             color={'secondary.dark'} 
                             variant='h5' 
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
+                            href={`/rooms/${data.room_associations[0].room_id}`}
+
                         >
-                            {data.room.name}
-                        </Typography>
+                            {data.room_associations[0].room_name}
+                        </Link>
                         :
                         <React.Fragment></React.Fragment>
                     }
@@ -308,11 +313,11 @@ const RoomProfile = () => {
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
 
-    const reduxEquip: EquipObjectProps = useSelector((store: RootStateOrAny) => store?.redEquip);
+    const reduxEquip: ReturnEquipObject = useSelector((store: RootStateOrAny) => store?.redEquip);
 
 
     useEffect(() => {
-        dispatch(fetchEquipProfile(params.equipID, authData));
+        dispatch(fetchEquipProfile(params.equipID));
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {

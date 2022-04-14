@@ -40,27 +40,26 @@ const RouterMain = () => {
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
+                <Route path="explore" element={<ExploreHome />} />
 
                 <Route path="users" element={<UserDirectorySite />} />
                 <Route path="users/:username" element={<UserProfile />} />
-                <Route path="uam" element={<UserAccountManagement />} />
+                <Route path="users/:username/equip" element={<EquipDirectoryUser />} />
+                <Route path="users/:username/rooms" element={<RoomDirectoryUser />} />
+                <Route path="users/:username/groups" element={<GroupDirectoryUser />} />
+                <Route path="dm" element={<UserAccountManagement />} />
 
-                <Route path="explore" element={< ExploreHome />} />
-                <Route path="explore/groups" element={< ExploreGroups />} />
-                <Route path="explore/rooms" element={< ExploreRooms />} />
-                <Route path="explore/equip" element={< ExploreEquip />} />
-
-                <Route path="groups" element={<GroupDirectoryUser />} />
+                <Route path="groups" element={<ExploreGroups />} />
                 <Route path="groups/:groupID" element={<GroupProfile />} />
-                <Route path="groups/:groupID/mgmt" element={<GroupManagement />} />
                 <Route path="groups/:groupID/users" element={<UserDirectoryGroup />} />
                 <Route path="groups/:groupID/equip" element={<EquipDirectoryGroup />} />
                 <Route path="groups/:groupID/rooms" element={<RoomDirectoryGroup />} />
-
-                <Route path="equip" element={< EquipDirectoryUser />} />
+                <Route path="groups/:groupID/gm" element={<GroupManagement />} />
+                
+                <Route path="equip" element={<ExploreEquip />} />
                 <Route path="equip/:equipID" element={<EquipProfile />} />
 
-                <Route path="rooms" element={<RoomDirectoryUser />} />
+                <Route path="rooms" element={<ExploreRooms />} />
                 <Route path="rooms/:roomID" element={<RoomProfile />} />
                 <Route path="rooms/:roomID/session" element={<RoomSession />} />
 

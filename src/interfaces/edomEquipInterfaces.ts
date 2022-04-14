@@ -21,6 +21,24 @@ export interface ReturnEquipObject {
     image_url?: string
     configuration?: EquipConfigurationProps
     public_equip?: boolean
+    owner_user?: OwnerUser
+    owner_group?: OwnerGroup
+    room_associations?: Array<RoomAssociation>
+};
+
+interface OwnerUser {
+    username: string
+    username_lowercase: string
+};
+
+interface OwnerGroup {
+    group_id: string
+    group_name: string
+};
+
+interface RoomAssociation {
+    room_id: string
+    room_name: string
 };
 
 
