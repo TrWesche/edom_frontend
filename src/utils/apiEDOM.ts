@@ -153,18 +153,18 @@ class apiEDOM {
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserGroups(username: string) {
-        const response = await this.getJson(`/user/dm/${username}/group`, {username});
+    static async getUserGroups(username: string, queryString: string) {
+        const response = await this.getJson(`/user/dm/${username}/group${queryString}`, {username});
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserRooms(username: string) {
-        const response = await this.getJson(`/user/dm/${username}/room`, {username});
+    static async getUserRooms(username: string, queryString: string) {
+        const response = await this.getJson(`/user/dm/${username}/room${queryString}`, {username});
         return {headers: response.headers, data: response.data};
     };
 
-    static async getUserEquip(username: string) {
-        const response = await this.getJson(`/user/dm/${username}/equip`, {username});
+    static async getUserEquip(username: string, queryString: string) {
+        const response = await this.getJson(`/user/dm/${username}/equip${queryString}`, {username});
         return {headers: response.headers, data: response.data};
     };
 

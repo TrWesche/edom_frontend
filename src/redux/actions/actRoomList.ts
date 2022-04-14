@@ -1,38 +1,31 @@
 // https://medium.com/@killerchip0/handling-asynchronous-fetching-of-data-with-react-redux-2aecc65e87af
 
+// Libraries
 import { Dispatch } from "redux";
-import { RoomObjectProps, QueryStringFilterProps } from "../../interfaces/globalInterfaces";
 
+// Interfaces
+import { QueryStringFilterProps } from "../../interfaces/globalInterfaces";
+import { ReturnRoomObject } from "../../interfaces/edomRoomInterfaces";
+
+// API
 import apiEDOM from "../../utils/apiEDOM";
+
+// Utilities
+import { formQueryString } from "../../utils/formQueryString";
+
+// Redux Actions
 import {
     ROOM_LIST_ACTIONS,
     ERROR
 } from "../actionDictionary";
 
 
-export const queryStringFilterPrep = (filters: Array<QueryStringFilterProps> | undefined) => {
-    if (filters) {
-        const treatedFilters: Array<string> = [];
-        filters.forEach(kvPair => {
-            if (kvPair.key.length > 0 && kvPair.value.length > 0) {
-                treatedFilters.push(`${kvPair.key}=${kvPair.value}`);
-            };
-        });
-    
-        if (treatedFilters.length > 0) {
-            return `?${treatedFilters.join('&')}`;
-        }
-    }
 
-    return "";
-};
-
-
-const fetchRoomList = (filters?: Array<QueryStringFilterProps>) => {
+const fetchRoomList = (queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchRoomList());
         try {
-            const queryString = queryStringFilterPrep(filters);
+            const queryString = formQueryString(queryParams);
             const result = await apiEDOM.getRoomList(queryString);
             const data = result.data;
             
@@ -50,7 +43,7 @@ const startFetchRoomList = () => {
     });
 };
 
-const gotRoomList = (data: Array<RoomObjectProps | undefined>) => {
+const gotRoomList = (data: Array<ReturnRoomObject | undefined>) => {
     return ({
         type: ROOM_LIST_ACTIONS.FINISH_ROOM_LIST_LOAD,
         payload: data
@@ -59,11 +52,12 @@ const gotRoomList = (data: Array<RoomObjectProps | undefined>) => {
 
 
 
-const fetchRoomListUser = () => {
+const fetchRoomListUser = (username: string,  queryParams: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchRoomListUser());
         try {
-            const result = await apiEDOM.getRoomListUser();
+            const queryString = formQueryString(queryParams);
+            const result = await apiEDOM.getUserRooms(username, queryString);
             const data = result.data;
             
             dispatch(gotRoomListUser(data));
@@ -80,7 +74,7 @@ const startFetchRoomListUser = () => {
     });
 };
 
-const gotRoomListUser = (data: Array<RoomObjectProps | undefined>) => {
+const gotRoomListUser = (data: Array<ReturnRoomObject | undefined>) => {
     return ({
         type: ROOM_LIST_ACTIONS.FINISH_USER_ROOM_LIST_LOAD,
         payload: data
@@ -88,12 +82,12 @@ const gotRoomListUser = (data: Array<RoomObjectProps | undefined>) => {
 };
 
 
-const fetchRoomListGroup = (groupID: string) => {
+const fetchRoomListGroup = (groupID: string, queryParams: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchRoomListGroup());
         try {
-
-            const result = await apiEDOM.getRoomListGroup(groupID);
+            const queryString = formQueryString(queryParams);
+            const result = await apiEDOM.getGroupRooms(groupID, queryString);
             const data = result.data;
             
             dispatch(gotRoomListGroup(data));
@@ -110,7 +104,7 @@ const startFetchRoomListGroup = () => {
     });
 };
 
-const gotRoomListGroup = (data: Array<RoomObjectProps | undefined>) => {
+const gotRoomListGroup = (data: Array<ReturnRoomObject | undefined>) => {
     return ({
         type: ROOM_LIST_ACTIONS.FINISH_GROUP_ROOM_LIST_LOAD,
         payload: data
