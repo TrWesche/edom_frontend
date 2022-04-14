@@ -1,6 +1,6 @@
 // React
 import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Redux
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
@@ -172,6 +172,7 @@ const GroupDirectoryUser = () => {
     const { alertSetter } = useAlert();
     const { authData } = useAuth();
     
+    const params: any = useParams();
 
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
@@ -179,7 +180,7 @@ const GroupDirectoryUser = () => {
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
 
     useEffect(() => {
-        dispatch(fetchGroupListUser());
+        dispatch(fetchGroupListUser(params.username));
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {

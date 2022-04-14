@@ -24,18 +24,21 @@ import { authToken, useAuth } from '../../providers/authProvider';
 import { useAlert } from '../../providers/alertProvider';
 
 // Interface Imports
+import { ReturnGroupObject } from '../../interfaces/edomGroupInterfaces';
+
+// Component Imports
 import EquipCardListHorizontal, { EquipListProps } from '../building_blocks/equip/EquipCardListHorizontal';
-import {  fetchEquipListGroup } from '../../redux/actions/actEquipList';
-import { GroupObjectProps } from '../../interfaces/globalInterfaces';
-import { fetchGroupProfile } from '../../redux/actions/actGroup';
-import { fetchRoomListGroup } from '../../redux/actions/actRoomList';
-import { fetchUserListGroup } from '../../redux/actions/actUserList';
 import RoomCardListHorizontal, { RoomListProps } from '../building_blocks/room/RoomCardListHorizontal';
 import UserCardListHorizontal, { UserListProps } from '../building_blocks/users/UserCardListHorizontal';
 
+// Redux Action Imports
+import { fetchEquipListGroup } from '../../redux/actions/actEquipList';
+import { fetchGroupProfile } from '../../redux/actions/actGroup';
+import { fetchRoomListGroup } from '../../redux/actions/actRoomList';
+import { fetchUserListGroup } from '../../redux/actions/actUserList';
 
 interface ReduxDataPayload {
-    group: GroupObjectProps
+    group: ReturnGroupObject
     users: UserListProps
     rooms: RoomListProps
     equips: EquipListProps
@@ -60,14 +63,14 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
     }
 };
 
-const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) => {
+const GroupProfileHeader = (navigate: NavigateFunction, data: ReturnGroupObject) => {
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
                 <Grid item xs={3}>
                     <Avatar 
                         alt="User Image"
-                        src={data.image ? data.image : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
+                        src={data.image_url ? data.image_url : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
                         sx={{ width: 152, height: 152 }}
                     />
                 </Grid>
@@ -90,43 +93,9 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: GroupObjectProps) 
                         padding={"0.25rem"}
                         textAlign={"right"}
                     >
-                        Group Location
+                        {data.location}
                     </Typography>
                 </Grid>
-
-                {/* <Grid item width={'100%'}>
-                    <Typography 
-                        color={'primary.light'} 
-                        variant='h6' 
-                        margin={"1.5rem 0rem 0rem 0rem"}
-                        padding={"0.25rem"}
-                    >
-                        Building the future of logistics.
-                    </Typography>
-                </Grid> 
-
-                <Grid item width={'100%'}>
-                    <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        padding={"0 0.25rem"}
-                        textAlign={"left"}
-                    >
-                        About
-                    </Typography>
-                </Grid>
-
-                <Grid item width={'100%'}>
-                    <Typography 
-                        color={'secondary.light'} 
-                        variant='body1' 
-                        margin={"0rem 0rem 0rem 0rem"}
-                        padding={"0 0.25rem 0.25rem 0.25rem"}
-                    >
-                        Founded in 2020 we we have been moving quickly to bring the latest and greatest technology to the logistics space.
-                    </Typography>
-                </Grid> */}
 
                 {data.headline ? 
                     <Grid item xs={12}>
@@ -278,14 +247,14 @@ const GroupProfile = () => {
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
 
-    const reduxGroup: GroupObjectProps = useSelector((store: RootStateOrAny) => store?.redGroup);
+    const reduxGroup: ReturnGroupObject = useSelector((store: RootStateOrAny) => store?.redGroup);
     const reduxUserList: UserListProps = useSelector((store: RootStateOrAny) => store?.redUserList);
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
 
     useEffect(() => {
-        dispatch(fetchGroupProfile(params.groupID, authData));
+        dispatch(fetchGroupProfile(params.groupID));
         dispatch(fetchUserListGroup(params.groupID));
         dispatch(fetchRoomListGroup(params.groupID));
         dispatch(fetchEquipListGroup(params.groupID));
