@@ -18,7 +18,8 @@ import {
     Paper,
     Divider,
     Button,
-    Stack
+    Stack,
+    Link
 } from "@mui/material"
 
 
@@ -28,13 +29,13 @@ import { useAlert } from '../../providers/alertProvider';
 
 // Interface Imports
 import EquipCardListHorizontal, { EquipListProps } from '../building_blocks/equip/EquipCardListHorizontal';
-import { RoomObjectProps } from '../../interfaces/globalInterfaces';
+import { ReturnRoomObject } from '../../interfaces/edomRoomInterfaces';
 import { fetchRoomProfile } from '../../redux/actions/actRoom';
 import { fetchEquipListRoom } from '../../redux/actions/actEquipList';
 
 
 interface ReduxDataPayload {
-    Room: RoomObjectProps
+    Room: ReturnRoomObject
     equips: EquipListProps
 };
 
@@ -47,7 +48,7 @@ interface ClickTarget extends EventTarget {
     href?: string
 };
 
-const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
+const handleClick = (e: React.MouseEvent, navigate: NavigateFunction, target: string) => {
     e.preventDefault();
     // console.log(`Clicked: ${target}`)
     if (target !== "") {
@@ -57,14 +58,14 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
     }
 };
 
-const RoomProfileHeader = (navigate: NavigateFunction, data: RoomObjectProps) => {
+const RoomProfileHeader = (navigate: NavigateFunction, data: ReturnRoomObject) => {
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
                 <Grid item xs={3}>
                     <Avatar 
                         alt="Room Image"
-                        src={data.image ? data.image : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
+                        src={data.image_url ? data.image_url : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
                         sx={{ width: 152, height: 152 }}
                     />
                 </Grid>
@@ -87,44 +88,36 @@ const RoomProfileHeader = (navigate: NavigateFunction, data: RoomObjectProps) =>
                         padding={"0.25rem"}
                         textAlign={"right"}
                     >
-                        Room Location
-                    </Typography>
-
-                    <Typography 
-                        color={'secondary.dark'} 
-                        variant='h5' 
-                        margin={"1rem 0rem 0rem 0rem"}
-                        padding={"0.25rem"}
-                        textAlign={"right"}
-                    >
                         {data.category}
                     </Typography>
 
-                    {data.group ? 
-                        <Typography 
+                    {data.owner_group ? 
+                        <Link 
                             color={'secondary.dark'} 
                             variant='h5' 
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
+                            onClick={(e) => handleClick(e, navigate, `/groups/${data.owner_group ? data.owner_group.group_id : "404"}`)}
                         >
-                            {data.group}
-                        </Typography>
+                            {data.owner_group.group_name}
+                        </Link>
                         :
                         <React.Fragment></React.Fragment>
                     }
 
 
-                    {data.user ? 
-                        <Typography 
+                    {data.owner_user ? 
+                        <Link 
                             color={'secondary.dark'} 
                             variant='h5' 
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
+                            onClick={(e) => handleClick(e, navigate, `/users/${data.owner_user ? data.owner_user.username : "404"}`)}
                         >
-                            {data.user}
-                        </Typography>
+                            {data.owner_user.username}
+                        </Link>
                         :
                         <React.Fragment></React.Fragment>
                     }
@@ -334,12 +327,12 @@ const RoomProfile = () => {
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
 
-    const reduxRoom: RoomObjectProps = useSelector((store: RootStateOrAny) => store?.redRoom);
+    const reduxRoom: ReturnRoomObject = useSelector((store: RootStateOrAny) => store?.redRoom);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
 
     useEffect(() => {
-        dispatch(fetchRoomProfile(params.roomID, authData));
+        dispatch(fetchRoomProfile(params.roomID));
         dispatch(fetchEquipListRoom(params.roomID));
     }, [dispatch]);
 

@@ -45,7 +45,7 @@ interface ClickTarget extends EventTarget {
     href?: string
 };
 
-const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
+const handleClick = (e: React.MouseEvent, navigate: NavigateFunction, target: string) => {
     e.preventDefault();
     // console.log(`Clicked: ${target}`)
     if (target !== "") {
@@ -95,7 +95,7 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject)
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
-                            href={`/users/${data.owner_user.username_lowercase}`}
+                            onClick={(e) => handleClick(e, navigate, `/users/${data.owner_user ? data.owner_user.username : "404"}`)}
                         >
                             {data.owner_user.username}
                         </Link>
@@ -111,7 +111,7 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject)
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
-                            href={`/groups/${data.owner_group.group_id}`}
+                            onClick={(e) => handleClick(e, navigate, `/groups/${data.owner_group ? data.owner_group.group_id : "404"}`)}
                         >
                             {data.owner_group.group_name}
                         </Link>
@@ -127,8 +127,7 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject)
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
-                            href={`/rooms/${data.room_associations[0].room_id}`}
-
+                            onClick={(e) => handleClick(e, navigate, `/rooms/${data.room_associations ? data.room_associations[0].room_name : "404"}`)}
                         >
                             {data.room_associations[0].room_name}
                         </Link>

@@ -1,6 +1,6 @@
 // React
 import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Redux
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
@@ -171,6 +171,7 @@ const RoomDirectoryUser = () => {
     const { alertSetter } = useAlert();
     const { authData } = useAuth();
 
+    const params: any = useParams();
 
     // React / Redux Function Instantiations
     const dispatch = useDispatch();
@@ -178,7 +179,7 @@ const RoomDirectoryUser = () => {
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
 
     useEffect(() => {
-        dispatch(fetchRoomListUser());
+        dispatch(fetchRoomListUser(params.username));
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {
