@@ -25,12 +25,17 @@ import {
 } from "@mui/icons-material";
 
 // Typescript Interface Imports
-import { UserObjectPropsPrivate, AlertValueObjectProps } from '../../interfaces/globalInterfaces';
+import { AlertValueObjectProps } from '../../interfaces/globalInterfaces';
+import { RequestUserObject } from '../../interfaces/edomUserInterfaces';
+
+// API Imports
 import apiEDOM from '../../utils/apiEDOM';
+
+// Provider Imports
 import { useAuth } from '../../providers/authProvider';
 
 
-interface FormObjectProps extends UserObjectPropsPrivate {
+interface FormObjectProps extends RequestUserObject {
     showPassword: boolean
 };
 
