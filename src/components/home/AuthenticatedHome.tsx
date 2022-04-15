@@ -40,8 +40,8 @@ interface ReduxDataPayload {
 
 const HomePageHeader = () => {
     return (
-        <React.Fragment>
-            <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+        <Grid container item spacing={4} xs={12}>
+            <Grid item container xs={12} margin={'0 0 2rem 0'}>
                 <Grid item xs={12} flexDirection='column' display={'flex'} justifyContent={'center'}>
                     <Typography display={'flex'} variant='h2' align='center' color={'text.primary'} margin='0.25rem'>
                         What's New!
@@ -52,7 +52,7 @@ const HomePageHeader = () => {
                 </Grid>
             </Grid>
 
-            <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+            <Grid item container xs={12} margin={'0 0 2rem 0'}>
                 <Grid item xs={4} display={'flex'} justifyContent={'center'}>
                     <Button 
                         href='https://www.scuttlerobot.org/' 
@@ -81,7 +81,7 @@ const HomePageHeader = () => {
                     </Button>
                 </Grid>
             </Grid>
-        </React.Fragment>
+        </Grid>
     )
 };
 
@@ -98,12 +98,12 @@ const PageLoadHandler = (props: {
         return (
             <React.Fragment>
                 {HomePageHeader()}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
-                    <Typography variant='h4' color={'text.primary'}>Featured Groups</Typography>
+                <Grid item xs={12} margin={"20px 0 0 0"}>
+                    <Typography variant='h2' color={'text.primary'}>Featured Groups</Typography>
                 </Grid>
                 {GroupCardListHorizontal(navigate, "featured-groups", 3, reduxData.groups)}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
-                    <Typography variant='h4' color={'text.primary'}>Featured Rooms</Typography>
+                <Grid item xs={12} margin={"20px 0 0 0"}>
+                    <Typography variant='h2' color={'text.primary'}>Featured Rooms</Typography>
                 </Grid>
                 {RoomCardListHorizontal(navigate, "featured-rooms", 3, reduxData.rooms)}
             </React.Fragment>
@@ -147,14 +147,12 @@ const AuthenticatedHome = (props: {authData: authToken, navigate: NavigateFuncti
     };
 
     return (
-        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
-            <PageLoadHandler 
-                authData={authData}
-                navigate={navigate}
-                alertSetter={alertSetter}
-                reduxData={reduxData}
-            />
-        </Grid>
+        <PageLoadHandler 
+            authData={authData}
+            navigate={navigate}
+            alertSetter={alertSetter}
+            reduxData={reduxData}
+        />
     )
 }
 
