@@ -26,17 +26,16 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
     return (
         <React.Fragment>
             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
-                <Grid item xs={12} md={5} flexDirection='column' display={'flex'} justifyContent={'center'}>
-                    <Typography display={'flex'} variant='h2' align='center' color={'text.primary'} margin='0.25rem'>
+                <Grid item xs={12} lg={5} flexDirection='column' display={'flex'} justifyContent={'center'}>
+                    <Typography display={'flex'} variant='h2' align='center' color={'text.primary'} margin='0.25rem' sx={{justifyContent: 'center'}}>
                         Connect, Control, Create
                     </Typography>
-                    <Typography display={'flex'} variant='h6' align='center' color={'secondary.light'} margin='0.25rem'>
+                    <Typography display={'flex'} variant='h6' align='center' color={'secondary.light'} margin='0.25rem' sx={{justifyContent: 'center'}}>
                         The Connectivity Solution for Managing and
                         Orchestrating Devices on the Edge
                     </Typography>
                     <Box display={'flex'} justifyContent={'center'}>
                         <UserLogin />
-                       
                     </Box>
 
                     <Box display={'flex'} justifyContent={'center'}>
@@ -55,11 +54,12 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                     </Box>
                 </Grid>
 
-                <Grid item xs={12} md={7} display={'flex'} justifyContent={'center'}>
+                <Grid item xs={12} lg={7} display={'flex'} justifyContent={'center'} maxHeight={'450px'}>
                     <img 
                         src='https://picturepark.com/data/cutting-edge-large.png'
                         alt='Hero Image'
-                        height='400px'
+                        width={'100%'}
+                        object-fit='cover'
                     />
                 </Grid>
             </Grid>

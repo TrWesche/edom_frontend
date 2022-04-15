@@ -45,14 +45,12 @@ const Home = () => {
     const { authData } = useAuth();
 
     return (
-        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
-            <Grid item container maxWidth={'1200px'}>
-                <PageLoadHandler 
-                    authData={authData}
-                    navigate={navigate}
-                    alertSetter={alertSetter}
-                />
-            </Grid>
+        <Grid container spacing={5} justifyContent={'center'} xs={12} padding={'20px 0 0 0'}>
+            <PageLoadHandler 
+                authData={authData}
+                navigate={navigate}
+                alertSetter={alertSetter}
+            />
         </Grid>
     );
 };
