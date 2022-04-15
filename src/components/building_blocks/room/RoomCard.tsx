@@ -64,7 +64,7 @@ const RoomCard = (data: ReturnRoomObject, navigate: NavigateFunction) => {
                             {data.category}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Room Headline
+                            {data.headline}
                         </Typography>
                     </CardContent>
                 </CardActionArea>

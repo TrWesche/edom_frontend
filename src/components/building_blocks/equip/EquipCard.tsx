@@ -62,6 +62,9 @@ const EquipCard = (data: ReturnEquipObject, navigate: NavigateFunction) => {
                             {data.name}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
+                            {data.category}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
                             {data.headline}
                         </Typography>
                     </CardContent>

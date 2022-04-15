@@ -1,8 +1,6 @@
-// React
-import { MouseEvent } from 'react';
+// Library Imports
+import React, { MouseEvent } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-
-// Material UI
 import {
     Typography,
     Card,
@@ -10,7 +8,6 @@ import {
     CardContent,
     CardMedia
 } from "@mui/material"
-
 
 // Interface Imports
 import { ReturnUserObject } from '../../../interfaces/edomUserInterfaces';
@@ -35,11 +32,11 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 
 const UserCard = (data: ReturnUserObject, navigate: NavigateFunction) => {
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ flexGrow: 1}} elevation={2}>
             <CardActionArea onClick={(e) => handleClick(e, navigate, `/users/${data.username_lowercase}`)}>
                 <CardMedia
                     component="img"
-                    height="140"
+                    height="200"
                     src={data.image_url}
                     alt={`${data.username} Picture`}
                 />
@@ -52,15 +49,27 @@ const UserCard = (data: ReturnUserObject, navigate: NavigateFunction) => {
                     <Typography gutterBottom variant="h5" component="div">
                         {data.username}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {data.first_name} {data.last_name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {data.location}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {data.headline}
-                    </Typography>
+                    {data.first_name || data.last_name ? 
+                        <Typography variant="body2" color="text.secondary">
+                            {data.first_name ? data.first_name : ""} {data.last_name ? data.last_name : ""}
+                        </Typography>
+                        :
+                        <React.Fragment />
+                    }
+                    {data.location ? 
+                        <Typography variant="body2" color="text.secondary">
+                            {data.location}
+                        </Typography>
+                        :
+                        <React.Fragment />
+                    }
+                    {data.headline ? 
+                        <Typography variant="body2" color="text.secondary">
+                            {data.headline}
+                        </Typography>
+                        :
+                        <React.Fragment />
+                    }
                 </CardContent>
             </CardActionArea>
         </Card>          

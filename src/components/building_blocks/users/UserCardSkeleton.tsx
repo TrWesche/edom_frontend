@@ -7,9 +7,9 @@ import {
 const UserCardSkeleton = () => {
     return (
         <Box sx={{
-            maxWidth: "345"
+            flexGrow: 1
         }}>
-            <Skeleton height="140px"/>
+            <Skeleton height="200px"/>
             <Skeleton height="100px"/>
         </Box>
     )
