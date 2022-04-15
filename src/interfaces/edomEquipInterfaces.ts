@@ -24,6 +24,7 @@ export interface ReturnEquipObject {
     owner_user?: OwnerUser
     owner_group?: OwnerGroup
     room_associations?: Array<RoomAssociation>
+    edit_permissions?: boolean
 };
 
 interface OwnerUser {

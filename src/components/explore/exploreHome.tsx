@@ -18,18 +18,17 @@ import {
 
 // Providers
 import { authToken, useAuth } from '../../providers/authProvider';
-
+import { useAlert } from '../../providers/alertProvider';
 
 // Interface Imports
-import { fetchGroupList } from '../../redux/actions/actGroupList';
-import { fetchRoomList } from '../../redux/actions/actRoomList';
-
-
 import GroupCardListHorizontal, { GroupListProps } from "../building_blocks/group/GroupCardListHorizontal";
 import RoomCardListHorizontal, { RoomListProps } from "../building_blocks/room/RoomCardListHorizontal";
 import EquipCardListHorizontal, { EquipListProps } from '../building_blocks/equip/EquipCardListHorizontal';
+
+// Redux Actions
+import { fetchGroupList } from '../../redux/actions/actGroupList';
+import { fetchRoomList } from '../../redux/actions/actRoomList';
 import { fetchEquipList } from '../../redux/actions/actEquipList';
-import { useAlert } from '../../providers/alertProvider';
 
 
 interface ReduxDataPayload {
@@ -63,7 +62,7 @@ const ExploreHomeHeader = (navigate: NavigateFunction) => {
         <React.Fragment>
             <Grid item container width={'100%'}>
                 <Card sx={{ width: 240, margin: '0 10px 0 0' }}>
-                    <CardActionArea onClick={(e) => handleClick(e, navigate, '/explore/groups')}>
+                    <CardActionArea onClick={(e) => handleClick(e, navigate, '/groups')}>
                         <CardMedia
                             component="img"
                             height="50"
@@ -90,7 +89,7 @@ const ExploreHomeHeader = (navigate: NavigateFunction) => {
                 </Card>        
 
                 <Card sx={{ width: 240, margin: '0 10px 0 0' }}>
-                    <CardActionArea onClick={(e) => handleClick(e, navigate, '/explore/rooms')}>
+                    <CardActionArea onClick={(e) => handleClick(e, navigate, '/rooms')}>
                         <CardMedia
                             component="img"
                             height="50"
@@ -117,7 +116,7 @@ const ExploreHomeHeader = (navigate: NavigateFunction) => {
                 </Card>   
 
                 <Card sx={{ width: 240, margin: '0 10px 0 0' }}>
-                    <CardActionArea onClick={(e) => handleClick(e, navigate, '/explore/equip')}>
+                    <CardActionArea onClick={(e) => handleClick(e, navigate, '/equip')}>
                         <CardMedia
                             component="img"
                             height="50"
@@ -158,21 +157,21 @@ const PageLoadHandler = (props: {
 
     const pageLoaded = () => {
         return (
-            <React.Fragment>
+            <Grid container spacing={5} justifyContent={'center'} width={'100%'}>
                 {ExploreHomeHeader(navigate)}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
+                <Grid item xs={12}>
                     <Typography variant='h4' color={'text.primary'}>Featured Groups</Typography>
                 </Grid>
-                {GroupCardListHorizontal(navigate, "featured-groups", 4, reduxData.groups)}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
+                {GroupCardListHorizontal(navigate, "featured-groups", 6, reduxData.groups)}
+                <Grid item xs={12}>
                     <Typography variant='h4' color={'text.primary'}>Featured Rooms</Typography>
                 </Grid>
-                {RoomCardListHorizontal(navigate, "featured-rooms", 4, reduxData.rooms)}
-                <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
+                {RoomCardListHorizontal(navigate, "featured-rooms", 6, reduxData.rooms)}
+                <Grid item xs={12}>
                     <Typography variant='h4' color={'text.primary'}>Featured Equip</Typography>
                 </Grid>
-                {EquipCardListHorizontal(navigate, "featured-equips", 4, reduxData.equips)}
-            </React.Fragment>
+                {EquipCardListHorizontal(navigate, "featured-equips", 6, reduxData.equips)}
+            </Grid>
             
         );
     };
@@ -224,14 +223,12 @@ const ExploreHome = () => {
     };
 
     return (
-        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
-            <PageLoadHandler 
-                authData={authData}
-                navigate={navigate}
-                alertSetter={alertSetter}
-                reduxData={reduxData}
-            />
-        </Grid>
+        <PageLoadHandler 
+            authData={authData}
+            navigate={navigate}
+            alertSetter={alertSetter}
+            reduxData={reduxData}
+        />
     )
 }
 
