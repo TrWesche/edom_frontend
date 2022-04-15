@@ -24,8 +24,7 @@ export interface EquipListProps {
 
 const EquipCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: EquipListProps) => {
     const stateLoading = () => {
-        const skeletonArray = new Array(displayqty);
-        console.log("Loading Skeleton");
+        const skeletonArray = new Array(displayqty).fill(0);
         return (
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {
@@ -50,7 +49,6 @@ const EquipCardListHorizontal = (navigate: NavigateFunction, listid: string, dis
     };
 
     const stateLoaded = () => {
-        console.log("Loading Cards");
         return (
             <React.Fragment>
                 {list.equip.map(data => {

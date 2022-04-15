@@ -59,9 +59,13 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 
 const ExploreHomeHeader = (navigate: NavigateFunction) => {
     return (
-        <React.Fragment>
-            <Grid item container width={'100%'}>
-                <Card sx={{ width: 240, margin: '0 10px 0 0' }}>
+        <Grid container item spacing={4} xs={12}>
+            <Grid item xs={12}>
+                <Typography variant='h1' color={'text.primary'}>Explore</Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4}>
+                <Card sx={{ flexGrow: 1 }}>
                     <CardActionArea onClick={(e) => handleClick(e, navigate, '/groups')}>
                         <CardMedia
                             component="img"
@@ -86,9 +90,11 @@ const ExploreHomeHeader = (navigate: NavigateFunction) => {
                             </Typography>
                         </CardContent>
                     </CardActionArea>
-                </Card>        
+                </Card>
+            </Grid>
 
-                <Card sx={{ width: 240, margin: '0 10px 0 0' }}>
+            <Grid item xs={12} sm={6} md={4}>
+                <Card sx={{ flexGrow: 1 }}>
                     <CardActionArea onClick={(e) => handleClick(e, navigate, '/rooms')}>
                         <CardMedia
                             component="img"
@@ -113,9 +119,11 @@ const ExploreHomeHeader = (navigate: NavigateFunction) => {
                             </Typography>
                         </CardContent>
                     </CardActionArea>
-                </Card>   
+                </Card>
+            </Grid>
 
-                <Card sx={{ width: 240, margin: '0 10px 0 0' }}>
+            <Grid item xs={12} sm={6} md={4}>
+                <Card sx={{ flexGrow: 1 }}>
                     <CardActionArea onClick={(e) => handleClick(e, navigate, '/equip')}>
                         <CardMedia
                             component="img"
@@ -142,7 +150,7 @@ const ExploreHomeHeader = (navigate: NavigateFunction) => {
                     </CardActionArea>
                 </Card>   
             </Grid>
-        </React.Fragment>
+        </Grid>
     )
 };
 
@@ -159,16 +167,16 @@ const PageLoadHandler = (props: {
         return (
             <Grid container spacing={5} justifyContent={'center'} width={'100%'}>
                 {ExploreHomeHeader(navigate)}
-                <Grid item xs={12}>
-                    <Typography variant='h4' color={'text.primary'}>Featured Groups</Typography>
+                <Grid item xs={12} margin={"20px 0 0 0"}>
+                    <Typography variant='h2' color={'text.primary'}>Featured Groups</Typography>
                 </Grid>
                 {GroupCardListHorizontal(navigate, "featured-groups", 6, reduxData.groups)}
-                <Grid item xs={12}>
-                    <Typography variant='h4' color={'text.primary'}>Featured Rooms</Typography>
+                <Grid item xs={12} margin={"20px 0 0 0"}>
+                    <Typography variant='h2' color={'text.primary'}>Featured Rooms</Typography>
                 </Grid>
                 {RoomCardListHorizontal(navigate, "featured-rooms", 6, reduxData.rooms)}
-                <Grid item xs={12}>
-                    <Typography variant='h4' color={'text.primary'}>Featured Equip</Typography>
+                <Grid item xs={12} margin={"20px 0 0 0"}>
+                    <Typography variant='h2' color={'text.primary'}>Featured Equipment</Typography>
                 </Grid>
                 {EquipCardListHorizontal(navigate, "featured-equips", 6, reduxData.equips)}
             </Grid>

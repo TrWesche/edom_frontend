@@ -25,7 +25,7 @@ export interface GroupListProps {
 // TODO: Update with quantity of rows, quantity of columns, pagination/more/none selection
 const GroupCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: GroupListProps) => {
     const stateLoading = () => {
-        const skeletonArray = new Array(displayqty);
+        const skeletonArray = new Array(displayqty).fill(0);
         return (
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {

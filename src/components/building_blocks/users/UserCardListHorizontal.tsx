@@ -23,7 +23,7 @@ export interface UserListProps {
 
 const UserCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: UserListProps) => {
     const stateLoading = () => {
-        const skeletonArray = new Array(displayqty);
+        const skeletonArray = new Array(displayqty).fill(0);
 
         return (
             <React.Fragment>

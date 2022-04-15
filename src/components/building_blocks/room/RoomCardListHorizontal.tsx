@@ -23,7 +23,7 @@ export interface RoomListProps {
 
 const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: RoomListProps) => {
     const stateLoading = () => {
-        const skeletonArray = new Array(displayqty);
+        const skeletonArray = new Array(displayqty).fill(0);
 
         return (
             <React.Fragment>
