@@ -32,6 +32,7 @@ export interface ReturnUserObject {
     image_url?: string
     public_profile?: boolean
     member_from?: string
+    edit_permissions?: boolean
 };
 
 export interface RequestUserRequest {

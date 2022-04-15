@@ -16,6 +16,7 @@ export interface ReturnGroupObject {
     image_url?: string
     location?: string
     public_group?: boolean
+    edit_permissions?: boolean
 };
 
 

@@ -1,4 +1,4 @@
-// React
+// Library Imports
 import React from 'react';
 import { NavigateFunction } from 'react-router-dom';
 
@@ -8,8 +8,10 @@ import {
     Typography
 } from "@mui/material";
 
+// Interface Imports
 import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
 
+// Component Imports
 import GroupCardSkeleton from "./GroupCardSkeleton";
 import GroupCard from "./GroupCard";
 
@@ -28,7 +30,7 @@ const GroupCardListHorizontal = (navigate: NavigateFunction, listid: string, dis
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
-                        <Grid item xs={4} key={`${listid}-${idx}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`${listid}-${idx}`}>
                             {GroupCardSkeleton()}
                         </Grid>   
                     );
@@ -52,7 +54,7 @@ const GroupCardListHorizontal = (navigate: NavigateFunction, listid: string, dis
             <React.Fragment>
                 {list.group.map(data => {
                     return (
-                        <Grid item xs={4} key={`${listid}-${data.id}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`${listid}-${data.id}`}>
                             {GroupCard(data, navigate)}
                         </Grid>    
                     )
@@ -74,7 +76,7 @@ const GroupCardListHorizontal = (navigate: NavigateFunction, listid: string, dis
 
     if (list === undefined || list.group === undefined) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateLoading()}
             </Grid>
         )
@@ -82,19 +84,19 @@ const GroupCardListHorizontal = (navigate: NavigateFunction, listid: string, dis
 
     if (list.error) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateError()}
             </Grid>
         );
     } else if (list.isProcessing) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateLoading()}
             </Grid>
         )
     } else if (!list.isProcessing) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateLoaded()}
             </Grid>
         )

@@ -21,6 +21,7 @@ export interface ReturnRoomObject {
     public_room?: boolean
     owner_user?: OwnerUser
     owner_group?: OwnerGroup
+    edit_permissions?: boolean
 };
 
 interface OwnerUser {

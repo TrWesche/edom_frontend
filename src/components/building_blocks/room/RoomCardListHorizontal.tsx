@@ -1,4 +1,4 @@
-// React
+// Library Imports
 import React from 'react';
 import { NavigateFunction } from 'react-router-dom';
 
@@ -6,12 +6,12 @@ import { NavigateFunction } from 'react-router-dom';
 import {
     Grid,
     Typography
-} from "@mui/material"
-
+} from "@mui/material";
 
 // Interface Imports
 import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
 
+// Component Imports
 import RoomCard from './RoomCard';
 import RoomCardSkeleton from './RoomCardSkeleton';
 
@@ -29,7 +29,7 @@ const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
-                        <Grid item xs={12} key={`${listid}-${idx}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={2} key={`${listid}-${idx}`}>
                             {RoomCardSkeleton()}
                         </Grid>   
                     );
@@ -53,7 +53,7 @@ const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
             <React.Fragment>
                 {list.rooms.map(data => {
                     return (
-                        <Grid item xs={4} key={`${listid}-${data.id}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={2} key={`${listid}-${data.id}`}>
                             {RoomCard(data, navigate)}
                         </Grid>    
                     )
@@ -75,7 +75,7 @@ const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
 
     if (list === undefined || list.rooms === undefined) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateLoading()}
             </Grid>
         )
@@ -83,19 +83,19 @@ const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
 
     if (list.error) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateError()}
             </Grid>
         );
     } else if (list.isProcessing) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateLoading()}
             </Grid>
         )
     } else if (!list.isProcessing) {
         return (
-            <Grid container item>
+            <Grid container item spacing={4} minHeight={310}>
                 {stateLoaded()}
             </Grid>
         )

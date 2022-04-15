@@ -1,21 +1,20 @@
-// React
+// Library Imports
 import React, { MouseEvent } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-
 import {
-    Button,
     Typography,
     Card,
     CardActionArea,
     CardContent,
-    CardActions,
     CardMedia,
     Fab,
     Box
 } from "@mui/material"
-
-import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
 import { Edit } from '@mui/icons-material';
+
+// Interface Imports
+import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
+
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
     target: ClickTarget

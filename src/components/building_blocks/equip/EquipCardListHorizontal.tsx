@@ -1,5 +1,6 @@
-// React
+// Library Imports
 import React from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 // Material UI
 import {
@@ -7,11 +8,13 @@ import {
     Typography
 } from "@mui/material";
 
+// Interface Imports
 import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
 
+// Component Imports
 import EquipCardSkeleton from './EquipCardSkeleton';
 import EquipCard from './EquipCard';
-import { NavigateFunction } from 'react-router-dom';
+
 
 export interface EquipListProps {
     equip: Array<ReturnEquipObject>
