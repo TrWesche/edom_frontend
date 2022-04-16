@@ -1,32 +1,26 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Material UI Styling System Imports
+// Redux
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
+// Material UI Styling System Imports
 import {
     Grid,
-    IconButton,
     OutlinedInput,
-    InputAdornment,
     FormHelperText,
     FormControl,
     Button,
     Snackbar,
     Alert,
-    FormGroup,
     FormControlLabel,
     Checkbox
 } from "@mui/material";
 
-import {
-    Visibility,
-    VisibilityOff
-} from "@mui/icons-material";
-
 // Typescript Interface Imports
 import { AlertValueObjectProps } from '../../../interfaces/globalInterfaces';
-import { RequestUserObject } from '../../../interfaces/edomUserInterfaces';
+import { ReturnUserObject } from '../../../interfaces/edomUserInterfaces';
 
 // API Imports
 import apiEDOM from '../../../utils/apiEDOM';
@@ -34,14 +28,16 @@ import apiEDOM from '../../../utils/apiEDOM';
 // Provider Imports
 import { useAuth } from '../../../providers/authProvider';
 
+// Redux Actions
+import { fetchUserProfile } from '../../../redux/actions/actUser';
 
 const UserUpdateAccountForm = () => {
     const navigate = useNavigate();
-
     const { authData, updateAuth } = useAuth();
+    const dispatch = useDispatch();
 
     // Page States
-    const onLoadFormValues: RequestUserObject = {
+    const onLoadFormValues: ReturnUserObject = {
         username: '',
         email: '',
         public_email: false,
@@ -62,12 +58,25 @@ const UserUpdateAccountForm = () => {
     const [alertValues, setAlertValues] = useState(onLoadAlertValue);
 
 
+    // React / Redux Function Instantiations    
+    const reduxUser: ReturnUserObject = useSelector((store: RootStateOrAny) => store?.redUser.user);
+    useEffect(() => {
+        if (authData.username) {
+            dispatch(fetchUserProfile(authData.username));
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (reduxUser) {
+            setFormValues(reduxUser);
+        };
+    }, [reduxUser]);
+
     // Event Handlers
     const handleAlertClose = (e: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         };
-    
         setAlertValues({...alertValues, open: false});
     };
 
@@ -94,21 +103,13 @@ const UserUpdateAccountForm = () => {
         event.preventDefault();
 
         try {
-            const {headers, data} = await apiEDOM.registerUser(formValues);
-
-            console.log(data);
-
-            if (!updateAuth) {
-                console.log("Error: Auth Handling Function Returned Undefined")
-            } else {
-                updateAuth();
-            }
+            const {headers, data} = await apiEDOM.updateUser(formValues);
 
             if (data.errorMessage) {
                 throw new Error(data.errorMessage.message)
             };
 
-            navigate('/');
+            navigate('/profile');
         } catch (error: any) {
             console.log(error);
 
@@ -130,7 +131,7 @@ const UserUpdateAccountForm = () => {
                         onSubmit={handleSubmit}
                         className="form-object"
                     >
-                        <Grid item spacing={4} xs={12} margin="5px 0">
+                        <Grid item xs={12} margin="5px 0">
                             <FormControl className={"form-control-class"}>
                                 <OutlinedInput
                                     required
