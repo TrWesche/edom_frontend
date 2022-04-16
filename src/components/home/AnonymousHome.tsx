@@ -17,7 +17,7 @@ import {
 } from '@mui/icons-material';
 
 import HandleButtonClick from '../../utils/HandleButtonClick';
-import UserLogin from "../user/UserLogin";
+import LoginForm from '../building_blocks/users/LoginForm';
 
 // Providers
 import { authToken } from '../../providers/authProvider';
@@ -25,7 +25,7 @@ import { authToken } from '../../providers/authProvider';
 const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined}) => {   
     return (
         <React.Fragment>
-            <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+            <Grid item container xs={12} margin={'0 0 2rem 0'}>
                 <Grid item xs={12} lg={5} flexDirection='column' display={'flex'} justifyContent={'center'}>
                     <Typography display={'flex'} variant='h2' align='center' color={'text.primary'} margin='0.25rem' sx={{justifyContent: 'center'}}>
                         Connect, Control, Create
@@ -35,7 +35,7 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                         Orchestrating Devices on the Edge
                     </Typography>
                     <Box display={'flex'} justifyContent={'center'}>
-                        <UserLogin />
+                        <LoginForm />
                     </Box>
 
                     <Box display={'flex'} justifyContent={'center'}>
@@ -64,7 +64,7 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                 </Grid>
             </Grid>
 
-            <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
+            <Grid item container xs={12} margin={'0 0 2rem 0'}>
                 <Grid item xs={4} display={'flex'} justifyContent={'center'}>
                     <Button 
                         href='https://www.scuttlerobot.org/' 

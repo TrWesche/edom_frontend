@@ -123,7 +123,7 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
                     disabled
                 >
                     <ListItemIcon>
-                        <Star color="secondary" />
+                        <Explore color="secondary" />
                     </ListItemIcon>
                     <ListItemText primary="Explore" />
                 </ListItemButton>

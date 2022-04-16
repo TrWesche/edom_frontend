@@ -8,8 +8,7 @@ const EquipCardSkeleton = () => {
         <Box sx={{
             flexGrow: 1
         }}>
-            <Skeleton height="200px"/>
-            <Skeleton height="100px"/>
+            <Skeleton height="300px"/>
         </Box>
     )
 };

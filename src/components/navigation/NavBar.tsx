@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { NavigateFunction } from 'react-router-dom';
 import { MouseEvent } from 'react';
 
@@ -169,18 +169,35 @@ const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavB
                         </Menu>
                     </Box>
                     :
-                    <Link 
-                        variant="h6" 
-                        noWrap 
-                        component="div" 
-                        sx={{ cursor: "pointer" }}
-                        underline = "none"
-                        color = "secondary"
-                        href="/login"
-                        onClick={(event) => handleClick(event, navigate, '/login')}
-                    >
-                        Login/Register
-                    </Link>
+                    <Fragment>
+                        <Link 
+                            variant="h6" 
+                            noWrap 
+                            component="div" 
+                            sx={{ cursor: "pointer" }}
+                            underline = "none"
+                            color = "secondary"
+                            href="/login"
+                            margin={"0 10px"}
+                            onClick={(event) => handleClick(event, navigate, '/login')}
+                        >
+                            Login
+                        </Link>
+                        <Link 
+                            variant="h6" 
+                            noWrap 
+                            component="div" 
+                            sx={{ cursor: "pointer" }}
+                            underline = "none"
+                            color = "secondary"
+                            href="/register"
+                            margin={"0 10px"}
+                            onClick={(event) => handleClick(event, navigate, '/register')}
+                        >
+                            Register
+                        </Link>
+                    </Fragment>
+
                 }
                 
             </Toolbar>
