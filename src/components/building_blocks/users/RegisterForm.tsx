@@ -103,17 +103,25 @@ const RegisterForm = () => {
         try {
             const {headers, data} = await apiEDOM.registerUser(formValues);
 
+            console.log(data);
+
             if (!updateAuth) {
                 console.log("Error: Auth Handling Function Returned Undefined")
             } else {
                 updateAuth();
             }
 
+            if (data.errorMessage) {
+                throw new Error(data.errorMessage.message)
+            };
+
             navigate('/');
         } catch (error: any) {
-            if (error[0] && error[0].length > 0) {
-                const errorText = error[0];
-                setAlertValues({open: true, content: errorText, severity: "error"});
+            console.log(error);
+
+            // if (error[0] && error[0].length > 0) {
+            if (error.message) {
+                setAlertValues({open: true, content: error.message, severity: "error"});
             } else {
                 setAlertValues({open: true, content: "Oops something went wrong.", severity: "error"});
             }
