@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavigateFunction } from 'react-router-dom';
 import { MouseEvent } from 'react';
 
@@ -7,8 +8,11 @@ import {
     Avatar,
     Toolbar,
     IconButton,
-    Typography,
     Link,
+    Menu,
+    MenuItem,
+    Tooltip,
+    Box
     // useTheme
 } from "@mui/material";
 
@@ -23,6 +27,12 @@ import {
 // Providers
 import { authToken } from "../../providers/authProvider";
 
+
+const settings = [
+    { display: 'Profile', link: 'profile'},
+    { display: 'Account', link: 'account'},
+    { display: 'Logout', link: 'logout'},
+];
 
 interface ClickEvent extends MouseEvent<HTMLSpanElement> {
     target: ClickTarget
@@ -41,8 +51,6 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
         console.log("Error, destination not defined")
     }
 };
-
-
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean,
@@ -76,6 +84,15 @@ const AppBar = styled(MuiAppBar, {
 
 
 const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavBarProps ) => {
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
     return (
         <AppBar position="fixed" open={open} drawerwidth={drawerwidth} sx={{
             backgroundColor: "background.paper"
@@ -89,7 +106,8 @@ const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavB
                     sx={{ mr: 2, ...(open && { display: 'none' }) }}
                 >
                     <MenuIcon />
-                </IconButton>{ open ? 
+                </IconButton>
+                { open ? 
                     (
                         <Link 
                             variant="h6" 
@@ -112,7 +130,59 @@ const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavB
                         </Link>
                     )
                 }
-                <Avatar />
+                { authData.logged_in ?
+                    <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="User Account">
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <Avatar />
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="user-menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {settings.map((setting) => (
+                                <MenuItem key={setting.link} onClick={handleCloseUserMenu}>
+                                    <Link 
+                                        textAlign="center"
+                                        underline = "none"
+                                        color = "secondary"
+                                        href={`/${setting.link}`}
+                                        onClick={(event) => handleClick(event, navigate, `/${setting.link}`)}
+                                    >
+                                        {setting.display}
+                                    </Link>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                    :
+                    <Link 
+                        variant="h6" 
+                        noWrap 
+                        component="div" 
+                        sx={{ cursor: "pointer" }}
+                        underline = "none"
+                        color = "secondary"
+                        href="/login"
+                        onClick={(event) => handleClick(event, navigate, '/login')}
+                    >
+                        Login/Register
+                    </Link>
+                }
+                
             </Toolbar>
         </AppBar>
     )
