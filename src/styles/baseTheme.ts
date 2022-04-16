@@ -88,6 +88,26 @@ const theme = createTheme({
     },
     shape: {
         borderRadius: 4
+    },
+    components: {
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'outlined',
+                fullWidth: true
+            }
+        },
+        MuiOutlinedInput: {
+            defaultProps: {
+                fullWidth: true,
+                sx: {backgroundColor: 'primary.light'}
+            }
+        },
+        MuiFormControlLabel: {
+            defaultProps: {
+                sx: {color: 'common.white'},
+                labelPlacement: 'end'
+            }
+        }
     }
 })
 

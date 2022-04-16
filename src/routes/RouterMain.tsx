@@ -10,6 +10,7 @@ import Home from "../components/home/Home"
 import UserRegister from "../components/user/UserRegister";
 import UserLogin from "../components/user/UserLogin";
 import UserAccountManagement from "../components/user/UserAccountManagement";
+import UserUpdateAccount from "../components/user/UserUpdateAccount";
 import UserProfile from "../components/user/UserProfile";
 import GroupDirectoryUser from "../components/group/GroupDirectoryUser";
 import EquipDirectoryUser from "../components/equip/EquipDirectoryUser";
@@ -20,12 +21,12 @@ import GroupManagement from "../components/group/GroupManagement";
 import EquipDirectoryGroup from "../components/equip/EquipDirectoryGroup";
 import RoomDirectoryGroup from "../components/room/RoomDirectoryGroup";
 import UserDirectoryGroup from "../components/user/UserDirectoryGroup";
+import UserDirectorySite from "../components/user/UserDirectorySite";
 
 import ExploreHome from "../components/explore/exploreHome";
 import ExploreGroups from "../components/explore/exploreGroups";
 import ExploreRooms from "../components/explore/exploreRooms";
 import ExploreEquip from "../components/explore/exploreEquip";
-import UserDirectorySite from "../components/user/UserDirectorySite";
 
 import EquipProfile from "../components/equip/EquipProfile";
 
@@ -33,6 +34,7 @@ import RoomProfile from "../components/room/RoomProfile";
 import RoomSession from "../components/room/RoomSession";
 
 import PageNotFound from "../components/notfound/PageNotFound";
+
 
 
 const RouterMain = () => {
@@ -48,6 +50,7 @@ const RouterMain = () => {
                 <Route path="users/:username/rooms" element={<RoomDirectoryUser />} />
                 <Route path="users/:username/groups" element={<GroupDirectoryUser />} />
                 <Route path="dm" element={<UserAccountManagement />} />
+                <Route path="dm/account" element={<UserUpdateAccount />} />
 
                 <Route path="groups" element={<ExploreGroups />} />
                 <Route path="groups/:groupID" element={<GroupProfile />} />

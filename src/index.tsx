@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 
 // Styling Imports
 import { CssBaseline } from "@mui/material"
+import "./styles/baseStyles.css"
 
 // Application Import
 import App from './components/app';

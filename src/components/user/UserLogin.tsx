@@ -7,7 +7,7 @@ import {
 } from "@mui/material"
 
 import HandleButtonClick from '../../utils/HandleButtonClick';
-import LoginForm from '../building_blocks/users/LoginForm';
+import LoginForm from '../building_blocks/users/UserLoginForm';
 
 const UserLogin = () => {   
     return (

@@ -8,7 +8,7 @@ export interface RequestUserObject {
     last_name?: string
     public_last_name?: boolean
     location?: string
-    public_location?: string
+    public_location?: boolean
     headline?: string
     about?: string
     image_url?: string
@@ -26,7 +26,7 @@ export interface ReturnUserObject {
     last_name?: string
     public_last_name?: boolean
     location?: string
-    public_location?: string
+    public_location?: boolean
     headline?: string
     about?: string
     image_url?: string

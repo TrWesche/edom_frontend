@@ -17,7 +17,7 @@ import {
 } from '@mui/icons-material';
 
 import HandleButtonClick from '../../utils/HandleButtonClick';
-import LoginForm from '../building_blocks/users/LoginForm';
+import LoginForm from '../building_blocks/users/UserLoginForm';
 
 // Providers
 import { authToken } from '../../providers/authProvider';
