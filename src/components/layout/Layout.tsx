@@ -1,15 +1,23 @@
+// Libraries
 import { useState, useLayoutEffect } from "react";
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Outlet } from "react-router";
-
 import {
     Box,
     styled,
     // useTheme
 } from "@mui/material"
 
+// Providers
+import { useAuth } from "../../providers/authProvider";
+
+// Components
 import NavBar from "../navigation/NavBar";
 import NavDrawer from "../navigation/NavDrawer";
 
+// TODO: On webpage small (width less than 600 px) the NavDrawer should start sitting on top of the main window rather than resizing the content window.
+// at Extra Small widths (with less than 480px)the NavDrawer's width should increase to cover the entire main window area and should automatically
+// retract on click of an option from the menu.
 const drawerwidth = 240;
 
 interface MainProps {
@@ -65,6 +73,9 @@ const useWindowSize = () => {
 };
 
 const Layout = () => {
+    const { authData } = useAuth();
+    const navigate = useNavigate();
+
     const [open, setOpen] = useState(false);
     const dimensions = useWindowSize();
         
@@ -73,8 +84,8 @@ const Layout = () => {
 
     return (
         <Box sx={{ display: 'flex' }} bgcolor={'background.default'} minHeight={`${dimensions.height}px`} minWidth={`${dimensions.width}px`}>
-            <NavBar drawerwidth={drawerwidth} open={open} handleDrawerOpen={handleDrawerOpen} />
-            <NavDrawer drawerwidth={drawerwidth} open={open} handleDrawerClose={handleDrawerClose} />
+            <NavBar drawerwidth={drawerwidth} open={open} handleDrawerOpen={handleDrawerOpen} authData={authData} navigate={navigate}/>
+            <NavDrawer drawerwidth={drawerwidth} open={open} handleDrawerClose={handleDrawerClose} authData={authData} navigate={navigate}/>
             <Main open={open}>
                 <Offset />
                 <Outlet />

@@ -1,3 +1,5 @@
+import { NavigateFunction } from 'react-router-dom';
+
 import { styled, useTheme } from '@mui/material/styles';
 
 import {
@@ -23,9 +25,10 @@ import {
     MeetingRoom
 } from '@mui/icons-material'
 
-import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { MouseEvent } from 'react';
 
+// Providers
+import { authToken } from "../../providers/authProvider";
 
 interface ClickEvent extends MouseEvent<HTMLAnchorElement> {
     target: ClickTarget
@@ -50,6 +53,8 @@ interface NavDrawerProps {
     drawerwidth: number,
     open: boolean,
     handleDrawerClose: () => void
+    authData: authToken
+    navigate: NavigateFunction
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -61,9 +66,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
+function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }: NavDrawerProps) {
   const theme = useTheme();
-  const navigate = useNavigate();
 
   return (
     <Drawer
@@ -111,55 +115,97 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose }: NavDrawerProps) {
                 <ListItemText primary="Explore" />
             </ListItemButton>
 
-            <ListItemButton 
-                key='navdrawer-favorites'
-                href='/favorites'
-                onClick={(event) => handleClick(event, navigate, '/favorites')}>
-                <ListItemIcon>
-                    <Star color="secondary" />
-                </ListItemIcon>
-                <ListItemText primary="Favorites" />
-            </ListItemButton>
-
-            <ListItemButton 
-                key='navdrawer-groups'
-                href='/groups'
-                onClick={(event) => handleClick(event, navigate, '/groups')}>
-                <ListItemIcon>
-                    <Group color="secondary" />
-                </ListItemIcon>
-                <ListItemText primary="My Groups" />
-            </ListItemButton>
-
-            <ListItemButton 
-                key='navdrawer-rooms'
-                href='/rooms'
-                onClick={(event) => handleClick(event, navigate, '/rooms')}>
-                <ListItemIcon>
-                    <MeetingRoom color="secondary" />
-                </ListItemIcon>
-                <ListItemText primary="My Rooms" />
-            </ListItemButton>
-
-            <ListItemButton 
-                key='navdrawer-equip'
-                href='/equip'
-                onClick={(event) => handleClick(event, navigate, '/equip')}>
-                <ListItemIcon>
-                    <DeviceHub color="secondary" />
-                </ListItemIcon>
-                <ListItemText primary="My Equip" />
-            </ListItemButton>
-{/* 
-
-            {['Home', 'Explore', 'FAQ', 'Device Management'].map((text, index) => (
-                <ListItem button key={text}>
+            { authData.logged_in ? 
+                <ListItemButton 
+                    key='navdrawer-favorites'
+                    href={`/${authData.username}/favorites`}
+                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/favorites`)}>
                     <ListItemIcon>
-                        {index % 2 === 0 ? <MoveToInbox color="secondary" /> : <Mail color="secondary" />}
+                        <Star color="secondary" />
                     </ListItemIcon>
-                    <ListItemText primary={text} />
-                </ListItem>
-            ))} */}
+                    <ListItemText primary="Favorites" />
+                </ListItemButton>
+                :
+                <ListItemButton 
+                    key='navdrawer-favorites'
+                    href='/user/favorites'
+                    onClick={(event) => handleClick(event, navigate, `/user/favorites`)}>
+                    disabled = true
+                    <ListItemIcon>
+                        <Star color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="Favorites" />
+                </ListItemButton>
+            }
+            
+            { authData.logged_in ? 
+                <ListItemButton 
+                    key='navdrawer-groups'
+                    href={`/${authData.username}/groups`}
+                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/groups`)}>
+                    <ListItemIcon>
+                        <Group color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="My Groups" />
+                </ListItemButton>
+                :
+                <ListItemButton 
+                    key='navdrawer-groups'
+                    href={`/user/groups`}
+                    onClick={(event) => handleClick(event, navigate, `/user/groups`)}>
+                    disabled = true
+                    <ListItemIcon>
+                        <Group color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="My Groups" />
+                </ListItemButton>
+            }
+
+            { authData.logged_in ? 
+                <ListItemButton 
+                    key='navdrawer-rooms'
+                    href={`/${authData.username}/rooms`}
+                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/rooms`)}>
+                    <ListItemIcon>
+                        <MeetingRoom color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="My Rooms" />
+                </ListItemButton>
+                :
+                <ListItemButton 
+                    key='navdrawer-rooms'
+                    href={`/user/rooms`}
+                    onClick={(event) => handleClick(event, navigate, `/user/rooms`)}>
+                    disabled = true
+                    <ListItemIcon>
+                        <MeetingRoom color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="My Rooms" />
+                </ListItemButton>
+            }
+
+            { authData.logged_in ? 
+                <ListItemButton 
+                    key='navdrawer-equip'
+                    href={`/${authData.username}/equip`}
+                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/equip`)}>
+                    <ListItemIcon>
+                        <DeviceHub color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="My Equip" />
+                </ListItemButton>
+                :
+                <ListItemButton 
+                    key='navdrawer-equip'
+                    href={`/user/equip`}
+                    onClick={(event) => handleClick(event, navigate, `/user/equip`)}>
+                    disabled = true
+                    <ListItemIcon>
+                        <DeviceHub color="secondary" />
+                    </ListItemIcon>
+                    <ListItemText primary="My Equip" />
+                </ListItemButton>
+            }
         </List>
     </Drawer>
   );
