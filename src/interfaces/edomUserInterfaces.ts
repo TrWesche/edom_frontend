@@ -51,3 +51,11 @@ export interface RequestUserLogin {
     username?: string
     password?: string
 };
+
+export interface RequestPasswordChange {
+    [key: string]: any
+    password_e1: string
+    password_e2: string
+    showPassword_e1: boolean
+    showPassword_e2: boolean
+};

@@ -106,7 +106,6 @@ const UserUpdateAccountForm = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        console.log(formValues);
         try {
             const {headers, data} = await apiEDOM.updateUser(formValues);
 
@@ -114,7 +113,7 @@ const UserUpdateAccountForm = () => {
                 throw new Error(data.errorMessage.message)
             };
 
-            navigate('/profile');
+            navigate('/dm/account');
         } catch (error: any) {
             console.log(error);
 

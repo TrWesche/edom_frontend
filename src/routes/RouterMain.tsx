@@ -49,8 +49,10 @@ const RouterMain = () => {
                 <Route path="users/:username/equip" element={<EquipDirectoryUser />} />
                 <Route path="users/:username/rooms" element={<RoomDirectoryUser />} />
                 <Route path="users/:username/groups" element={<GroupDirectoryUser />} />
-                <Route path="dm" element={<UserAccountManagement />} />
-                <Route path="dm/account" element={<UserUpdateAccount />} />
+                <Route path="dm/account" element={<UserAccountManagement />} />
+                <Route path="dm/account/edit" element={<UserUpdateAccount />} />
+                <Route path="dm/account/cpw" element={<UserUpdateAccount />} />
+                <Route path="dm/profile/edit" element={<UserAccountManagement />} />
 
                 <Route path="groups" element={<ExploreGroups />} />
                 <Route path="groups/:groupID" element={<GroupProfile />} />
