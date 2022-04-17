@@ -33,7 +33,7 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 const UserCard = (data: ReturnUserObject, navigate: NavigateFunction) => {
     return (
         <Card sx={{ flexGrow: 1}} elevation={2}>
-            <CardActionArea onClick={(e) => handleClick(e, navigate, `/users/${data.username_lowercase}`)}>
+            <CardActionArea onClick={(e) => handleClick(e, navigate, `/users/${data.username_clean}`)}>
                 <CardMedia
                     component="img"
                     height="200"

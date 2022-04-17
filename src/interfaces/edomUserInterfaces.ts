@@ -18,8 +18,9 @@ export interface RequestUserObject {
 
 export interface ReturnUserObject {
     username?: string
-    username_lowercase?: string
+    username_clean?: string
     email?: string
+    email_clean?: string
     public_email?: boolean
     first_name?: string
     public_first_name?: boolean

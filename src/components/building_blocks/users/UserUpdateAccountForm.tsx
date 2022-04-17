@@ -99,9 +99,14 @@ const UserUpdateAccountForm = () => {
         setFormValues({ ...formValues, [prop]: event.target.value });
     };
 
+    const handleChangeCheckbox = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormValues({ ...formValues, [prop]: event.target.checked });
+    };
+
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
+        console.log(formValues);
         try {
             const {headers, data} = await apiEDOM.updateUser(formValues);
 
@@ -169,8 +174,8 @@ const UserUpdateAccountForm = () => {
                                     control={
                                         <Checkbox 
                                             id="user-email-public"
-                                            value={formValues.public_email}
-                                            onChange={handleChange('public_email')}
+                                            checked={formValues.public_email}
+                                            onChange={handleChangeCheckbox('public_email')}
                                             inputProps={{'aria-label': 'public email toggle'}}
                                         />
                                     } 
@@ -184,7 +189,7 @@ const UserUpdateAccountForm = () => {
                                 <FormControl className={"form-control-class"} variant="outlined">
                                     <OutlinedInput
                                         id="user-firstname"
-                                        value={formValues.first_name}
+                                        value={formValues.first_name ? formValues.first_name : ""}
                                         onChange={handleChange('first_name')}
                                         aria-describedby="user-firstname-helper-text"
                                         inputProps={{
@@ -199,8 +204,8 @@ const UserUpdateAccountForm = () => {
                                     control={
                                         <Checkbox 
                                             id="user-first-name-public"
-                                            value={formValues.public_first_name}
-                                            onChange={handleChange('public_first_name')}
+                                            checked={formValues.public_first_name}
+                                            onChange={handleChangeCheckbox('public_first_name')}
                                             inputProps={{'aria-label': 'public first name toggle'}}
                                         />
                                     } 
@@ -215,7 +220,7 @@ const UserUpdateAccountForm = () => {
                                 <FormControl className={"form-control-class"} variant="outlined">
                                     <OutlinedInput
                                         id="user-lastname"
-                                        value={formValues.last_name}
+                                        value={formValues.last_name ? formValues.last_name : ""}
                                         onChange={handleChange('last_name')}
                                         aria-describedby="user-lastname-helper-text"
                                         inputProps={{
@@ -230,8 +235,8 @@ const UserUpdateAccountForm = () => {
                                     control={
                                         <Checkbox 
                                             id="user-last-name-public"
-                                            value={formValues.public_last_name}
-                                            onChange={handleChange('public_last_name')}
+                                            checked={formValues.public_last_name}
+                                            onChange={handleChangeCheckbox('public_last_name')}
                                             inputProps={{'aria-label': 'public last name toggle'}}
                                         />
                                     } 
@@ -246,7 +251,7 @@ const UserUpdateAccountForm = () => {
                                 <FormControl className={"form-control-class"} variant="outlined">
                                     <OutlinedInput
                                         id="user-location"
-                                        value={formValues.location}
+                                        value={formValues.location ? formValues.location : ""}
                                         onChange={handleChange('location')}
                                         aria-describedby="user-location-helper-text"
                                         inputProps={{
@@ -261,8 +266,8 @@ const UserUpdateAccountForm = () => {
                                     control={
                                         <Checkbox 
                                             id="user-location-public"
-                                            value={formValues.public_location}
-                                            onChange={handleChange('public_location')}
+                                            checked={formValues.public_location}
+                                            onChange={handleChangeCheckbox('public_location')}
                                             inputProps={{'aria-label': 'public location toggle'}}
                                         />
                                     } 

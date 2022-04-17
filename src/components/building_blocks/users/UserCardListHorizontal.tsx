@@ -53,7 +53,7 @@ const UserCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
             <React.Fragment>
                 {list.users.map(data => {
                     return (
-                        <Grid item xs={12} sm={6} md={4} lg={2} key={`${listid}-${data.username_lowercase}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={2} key={`${listid}-${data.username_clean}`}>
                             {UserCard(data, navigate)}
                         </Grid>    
                     )
