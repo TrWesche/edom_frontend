@@ -28,12 +28,6 @@ import {
 import { authToken } from "../../providers/authProvider";
 
 
-const settings = [
-    { display: 'Profile', link: 'profile'},
-    { display: 'Account', link: 'account'},
-    { display: 'Logout', link: 'logout'},
-];
-
 interface ClickEvent extends MouseEvent<HTMLSpanElement> {
     target: ClickTarget
 };
@@ -84,6 +78,12 @@ const AppBar = styled(MuiAppBar, {
 
 
 const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavBarProps ) => {
+    const settings = [
+        { display: 'Profile', link: `/users/${authData.username}`},
+        { display: 'Account', link: '/dm/account'},
+        { display: 'Logout', link: '/logout'},
+    ];
+
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -122,7 +122,7 @@ const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavB
                             component="div" 
                             sx={{ flexGrow: 1, cursor: "pointer" }}
                             underline = "none"
-                            color = "secondary"
+                            color = "text.primary"
                             href="/"
                             onClick={(event) => handleClick(event, navigate, '/')}
                         >
@@ -159,8 +159,8 @@ const NavBar = ( {handleDrawerOpen, open, drawerwidth, authData, navigate}: NavB
                                         textAlign="center"
                                         underline = "none"
                                         color = "secondary"
-                                        href={`/${setting.link}`}
-                                        onClick={(event) => handleClick(event, navigate, `/${setting.link}`)}
+                                        href={`${setting.link}`}
+                                        onClick={(event) => handleClick(event, navigate, `${setting.link}`)}
                                     >
                                         {setting.display}
                                     </Link>

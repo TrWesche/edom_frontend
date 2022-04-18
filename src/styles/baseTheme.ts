@@ -35,14 +35,15 @@ const theme = createTheme({
     spacing: 4,
     palette: {
         primary: {
-            main: '#216494',
-            light: '#5991c5',
-            dark: '#003a66'
+            main: '#0d47a1',
+            light: '#5472d3',
+            dark: '#002171',
+            contrastText: "#FFF"
         },
         secondary: {
-            main: '#ead350',
-            light: '#fdfda1',
-            dark: '#b5a219'
+            main: '#ffe57f',
+            light: '#ffffb0',
+            dark: '#cab350'
         },
         error: {
             main: '#f44336',
@@ -64,14 +65,14 @@ const theme = createTheme({
             light: '#81c784',
             dark: '#388e3c'
         },
-        divider: '#314768',
+        divider: '#111',
         text: {
             primary: "#F4F4F4",
             secondary: '#A4A4A4',
         },
         background: {
-            default: "#151D2A",
-            paper: '#25354D',
+            default: "#12171C",
+            paper: '#2B2B2B',
         },
         common: {
             white: '#FAFAFA'
