@@ -31,6 +31,12 @@ import apiEDOM from '../../../utils/apiEDOM';
 // Provider Imports
 import { useAuth } from '../../../providers/authProvider';
 
+interface RequestPasswordChangeForm extends RequestPasswordChange {
+    showPassword_e1: boolean,
+    showPassword_e2: boolean,
+    matchError: boolean
+}
+
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -38,11 +44,12 @@ const RegisterForm = () => {
     const { authData, updateAuth } = useAuth();
 
     // Page States
-    const onLoadFormValues: RequestPasswordChange = {
+    const onLoadFormValues: RequestPasswordChangeForm = {
         password_e1: '',
         password_e2: '',
         showPassword_e1: false,
-        showPassword_e2: false
+        showPassword_e2: false,
+        matchError: false
     };
     const [formValues, setFormValues] = useState(onLoadFormValues);
 
@@ -79,6 +86,13 @@ const RegisterForm = () => {
     };
 
     const handleChange = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (formValues.password_e1.length !== 0 && formValues.password_e2.length !== 0) {
+            const passwordError = (formValues.password_e1 === formValues.password_e2);
+
+            if (passwordError !== formValues.matchError) {
+                setFormValues({ ...formValues, matchError: passwordError})
+            };
+        };
         setFormValues({ ...formValues, [prop]: event.target.value });
     };
     
@@ -172,6 +186,7 @@ const RegisterForm = () => {
                                     type={formValues.showPassword_e2 ? 'text' : 'password'}
                                     value={formValues.password_e2}
                                     onChange={handleChange('password_e2')}
+                                    error={formValues.matchError}
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
@@ -188,7 +203,7 @@ const RegisterForm = () => {
                                         backgroundColor: 'primary.light'
                                     }}
                                 />
-                                <FormHelperText id="user-lastname-helper-text">Repeate Password*</FormHelperText>
+                                <FormHelperText id="user-lastname-helper-text">Repeat Password*</FormHelperText>
                             </FormControl>
                         </Grid>
 
