@@ -11,6 +11,7 @@ import UserRegister from "../components/user/UserRegister";
 import UserLogin from "../components/user/UserLogin";
 import UserAccountManagement from "../components/user/UserAccountManagement";
 import UserUpdateAccount from "../components/user/UserUpdateAccount";
+import UserUpdatePassword from "../components/user/UserUpdatePassword";
 import UserProfile from "../components/user/UserProfile";
 import GroupDirectoryUser from "../components/group/GroupDirectoryUser";
 import EquipDirectoryUser from "../components/equip/EquipDirectoryUser";
@@ -51,7 +52,7 @@ const RouterMain = () => {
                 <Route path="users/:username/groups" element={<GroupDirectoryUser />} />
                 <Route path="dm/account" element={<UserAccountManagement />} />
                 <Route path="dm/account/edit" element={<UserUpdateAccount />} />
-                <Route path="dm/account/cpw" element={<UserUpdateAccount />} />
+                <Route path="dm/account/cpw" element={<UserUpdatePassword />} />
                 <Route path="dm/profile/edit" element={<UserAccountManagement />} />
 
                 <Route path="groups" element={<ExploreGroups />} />

@@ -34,11 +34,11 @@ import { useAuth } from '../../../providers/authProvider';
 interface RequestPasswordChangeForm extends RequestPasswordChange {
     showPassword_e1: boolean,
     showPassword_e2: boolean,
-    matchError: boolean
+    invalidPassword: boolean
 }
 
 
-const RegisterForm = () => {
+const UserUpdatePasswordForm = () => {
     const navigate = useNavigate();
 
     const { authData, updateAuth } = useAuth();
@@ -49,7 +49,7 @@ const RegisterForm = () => {
         password_e2: '',
         showPassword_e1: false,
         showPassword_e2: false,
-        matchError: false
+        invalidPassword: true
     };
     const [formValues, setFormValues] = useState(onLoadFormValues);
 
@@ -86,14 +86,18 @@ const RegisterForm = () => {
     };
 
     const handleChange = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (formValues.password_e1.length !== 0 && formValues.password_e2.length !== 0) {
-            const passwordError = (formValues.password_e1 === formValues.password_e2);
-
-            if (passwordError !== formValues.matchError) {
-                setFormValues({ ...formValues, matchError: passwordError})
-            };
+        let blockPWUpdate = true;
+        if (formValues.password_e1.length === 0 || formValues.password_e2.length === 0) {
+            blockPWUpdate = true;
+        } else if (prop === "password_e1" && event.target.value === formValues.password_e2) {
+            blockPWUpdate = false;
+        } else if (prop === "password_e2" && event.target.value === formValues.password_e1) {
+            blockPWUpdate = false;
+        } else {
+            blockPWUpdate = true;
         };
-        setFormValues({ ...formValues, [prop]: event.target.value });
+
+        setFormValues({ ...formValues, [prop]: event.target.value, invalidPassword: blockPWUpdate});
     };
     
     const handleClickShowPassword = (prop: string) => {
@@ -110,16 +114,12 @@ const RegisterForm = () => {
         try {
             // TODO: The Update Password Function will need to be updated to provide a more secure and reliable password changing experience
             // i.e. - Multi-Step Process (Require Password Input before Change can be Made), and Multi Input Check
-            let execValue: RequestUserObject = {};
-            if (formValues.password_e1 === formValues.password_e2) {
-                execValue.password = formValues.password_e1
-            } else {
-                throw new Error("Password do not match");
-            }
+            let execValue: RequestPasswordChange = {
+                password_e1: formValues.password_e1,
+                password_e2: formValues.password_e2
+            };
 
-            const {headers, data} = await apiEDOM.updateUser(execValue);
-
-            console.log(data);
+            const {headers, data} = await apiEDOM.updateUserPassword(execValue);
 
             if (!updateAuth) {
                 console.log("Error: Auth Handling Function Returned Undefined")
@@ -186,7 +186,7 @@ const RegisterForm = () => {
                                     type={formValues.showPassword_e2 ? 'text' : 'password'}
                                     value={formValues.password_e2}
                                     onChange={handleChange('password_e2')}
-                                    error={formValues.matchError}
+                                    error={formValues.invalidPassword}
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
@@ -213,6 +213,7 @@ const RegisterForm = () => {
                                 aria-label="user register" 
                                 variant="contained" 
                                 color="primary"
+                                disabled={formValues.invalidPassword}
                                 sx={{
                                     margin: '0.25rem',
                                     width: '200px'
@@ -228,4 +229,4 @@ const RegisterForm = () => {
     )
 };
 
-export default RegisterForm;
+export default UserUpdatePasswordForm;

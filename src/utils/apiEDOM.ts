@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 // Typescript Interfaces
 import { 
+    RequestPasswordChange,
     RequestUserLogin, 
     RequestUserObject, 
     RequestUserRequest
@@ -130,6 +131,11 @@ class apiEDOM {
     // Data Retrieval / Manipulation Routes
     static async updateUser(input: RequestUserObject) {
         const response = await this.patchJson(`/user/update`, input);
+        return {headers: response.headers, data: response.data};
+    };
+
+    static async updateUserPassword(input: RequestPasswordChange) {
+        const response = await this.patchJson(`/user/cpw`, input);
         return {headers: response.headers, data: response.data};
     };
 
