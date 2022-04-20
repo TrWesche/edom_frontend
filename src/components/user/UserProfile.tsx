@@ -1,6 +1,7 @@
 // React Imports
 import React, { useEffect } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
 // Material UI Styling System Imports
 import { Avatar, Skeleton, Stack } from '@mui/material'
@@ -17,12 +18,16 @@ import {
 //     VisibilityOff
 // } from "@mui/icons-material";
 
+// Provider Imports
+import { useAlert } from '../../providers/alertProvider';
+import { authToken, useAuth } from '../../providers/authProvider';
+
 // Typescript Interface Imports
 import { ReturnUserObject } from '../../interfaces/edomUserInterfaces';
-import { authToken, useAuth } from '../../providers/authProvider';
-import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+
+// Redux Action Imports
 import { fetchUserProfile } from '../../redux/actions/actUser';
-import { useAlert } from '../../providers/alertProvider';
+
 
 // TODO: This will need to have a Private / Public Component
 interface UserProfileProps {
@@ -37,31 +42,20 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoading = () => {
         return (
-            <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
-                <Box  sx={{
-                    display: 'grid',
-                    width: '100%',
-                    gridTemplateColumns: 'repeat(6, 1fr)',
-                    gap: 1,
-                    gridTemplateRows: 'auto',
-                    gridTemplateAreas: `
-                        "avatar details details details details details"
-                        "info info info info info info"
-                    `,
-                    }}
-                >
-                    <Box sx={{ gridArea: 'avatar'}}>
+            <Grid container item spacing={4} xs={12}>
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
                         <Skeleton variant="circular" width={152} height={152} />
-                    </Box>
-                    <Box sx={{ gridArea: 'details'}}>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
                         <Skeleton variant="rectangular" height={152} />
-                    </Box>
+                    </Grid>
+                </Grid>
 
-                    <Box sx={{ gridArea: 'info'}}>
-                        <Skeleton variant="rectangular" height={400} />
-                    </Box>
-                </Box>
-            </Paper>
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    <Skeleton variant="rectangular" height={400} />
+                </Grid>
+            </Grid>
         );
     };
 
@@ -85,47 +79,84 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoaded = () => {
         return (
-            <Paper elevation={2} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
-                <Box  sx={{
-                    display: 'grid',
-                    width: '100%',
-                    gridTemplateColumns: 'repeat(6, 1fr)',
-                    gap: 1,
-                    gridTemplateRows: 'auto',
-                    gridTemplateAreas: `
-                        "avatar details details details details details"
-                        "about about about about about about"
-                        "groups groups groups groups groups groups"
-                        "rooms rooms rooms rooms rooms rooms"
-                        "equip equip equip equip equip equip"
-                    `,
-                    }}
-                >
-                    <Box sx={{ gridArea: 'avatar'}}>
+            <Grid container item spacing={4} xs={12}>
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
                         <Avatar 
                             alt="User Image"
-                            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+                            src={`${data.image_url ? data.image_url : "https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png"}`}
                             sx={{ width: 152, height: 152 }}
                         />
-                    </Box>
-                    <Box sx={{ gridArea: 'details' }}>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
                         {dataLoaded()}
-                    </Box>
+                    </Grid>
+                </Grid>
+
+
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    { data.headline && data.headline.length !== 0 ?
+                        <React.Fragment>
+                            <Grid item xs={12} margin={'0 0 2rem 0'}>
+                                <Typography 
+                                    color={'secondary.dark'} 
+                                    variant='h5' 
+                                    margin={"1rem 0rem 0rem 0rem"}
+                                    bgcolor={'grey.A200'}
+                                    padding={"0.25rem"}
+                                    borderRadius={"0.25rem"}
+                                >
+                                    Headline
+                                </Typography>
+                                
+                            </Grid>
+                            <Grid item xs={12} margin={'0 0 1rem 0'}>
+                                <Typography
+                                    variant='body1'
+                                    margin={"1rem 0rem 0rem 0rem"}
+                                >
+                                    {data.headline}
+                                </Typography>
+                            </Grid>
+                        </React.Fragment>
+                        :
+                        <React.Fragment />
+                    }
+
+
+                    { data.about && data.about.length !== 0 ?
+                        <React.Fragment>
+                            <Grid item xs={12} margin={'0 0 2rem 0'}>
+                                <Typography 
+                                    color={'secondary.dark'} 
+                                    variant='h5' 
+                                    margin={"1rem 0rem 0rem 0rem"}
+                                    bgcolor={'grey.A200'}
+                                    padding={"0.25rem"}
+                                    borderRadius={"0.25rem"}
+                                >
+                                    About Me
+                                </Typography>
+                                
+                            </Grid>
+                            <Grid item xs={12} margin={'0 0 1rem 0'}>
+                                <Typography
+                                    variant='body1'
+                                    margin={"1rem 0rem 0rem 0rem"}
+                                >
+                                    {data.about}
+                                </Typography>
+                            </Grid>
+                        </React.Fragment>
+                        :
+                        <React.Fragment />
+                    }
                 
-                
-                    <Box sx={{ gridArea: 'about'}}>
-                        <Typography 
-                            color={'secondary.dark'} 
-                            variant='h5' 
-                            margin={"1rem 0rem 0rem 0rem"}
-                            bgcolor={'grey.A200'}
-                            padding={"0.25rem"}
-                            borderRadius={"0.25rem"}
-                        >
-                            About Me
-                        </Typography>
-                    </Box>
-                    <Box sx={{ gridArea: 'groups'}}>
+                </Grid>
+
+
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    <Grid item xs={12} margin={'0 0 2rem 0'}>
                         <Typography 
                             color={'secondary.dark'} 
                             variant='h5' 
@@ -136,8 +167,16 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                         >
                             Groups
                         </Typography>
-                    </Box>
-                    <Box sx={{ gridArea: 'rooms'}}>
+                    </Grid>
+                    <Grid item xs={12} margin={'0 0 0.5rem 0'}>
+                        <Typography>
+                            Add Group List Load
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    <Grid item xs={12} margin={'0 0 2rem 0'}>
                         <Typography 
                             color={'secondary.dark'} 
                             variant='h5' 
@@ -146,10 +185,18 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                             padding={"0.25rem"}
                             borderRadius={"0.25rem"}
                         >
-                            Rooms
+                            Hubs
                         </Typography>
-                    </Box>
-                    <Box sx={{ gridArea: 'equip'}}>
+                    </Grid>
+                    <Grid item xs={12} margin={'0 0 0.5rem 0'}>
+                        <Typography>
+                            Add Hub List Load
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+                <Grid item container xs={12} margin={'0 0 2rem 0'}>
+                    <Grid item xs={12} margin={'0 0 2rem 0'}>
                         <Typography 
                             color={'secondary.dark'} 
                             variant='h5' 
@@ -160,11 +207,14 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                         >
                             Equipment
                         </Typography>
-                    </Box>
-                    
-                </Box>
-
-            </Paper>
+                    </Grid>
+                    <Grid item xs={12} margin={'0 0 0.5rem 0'}>
+                        <Typography>
+                            Add Equipment List Load
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Grid>
         );
     };
 

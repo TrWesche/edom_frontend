@@ -96,7 +96,6 @@ const UserUpdateProfileForm = () => {
 
     const handleChangeCheckbox = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormValues({ ...formValues, [prop]: event.target.checked });
-        console.log(formValues)
     };
 
 
