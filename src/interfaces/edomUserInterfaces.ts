@@ -17,6 +17,7 @@ export interface RequestUserObject {
 };
 
 export interface ReturnUserObject {
+    id?: string
     username?: string
     username_clean?: string
     email?: string

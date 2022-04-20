@@ -9,8 +9,14 @@ import { Avatar, Skeleton, Stack } from '@mui/material'
 import {
     Grid,
     Typography,
-    Paper
+    Paper,
+    IconButton,
+    Box
 } from "@mui/material";
+
+import {
+    Edit as EditIcon
+} from "@mui/icons-material"
 
 // Provider Imports
 import { useAlert } from '../../providers/alertProvider';
@@ -62,6 +68,16 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                     <Typography display={"flex"} flexDirection={"row-reverse"}>{data.username ? data.username : "Failed to Retrieve Username"}</Typography>
                     <Typography display={"flex"} flexDirection={"row-reverse"}>{data.first_name} {data.last_name}</Typography>
                     <Typography display={"flex"} flexDirection={"row-reverse"}>{data.email ? data.email : ""}</Typography>
+                    <Typography display={"flex"} flexDirection={"row-reverse"}>{data.location ? data.location : ""}</Typography>
+                    { data.id === authData.id ? 
+                        <Box display={"flex"} justifyContent={"flex-end"}>
+                            <IconButton aria-label="edit-profile" sx={{justifyContent:"flex-end", color: "primary.light"}}>
+                                <EditIcon />
+                            </IconButton>
+                        </Box>
+                        :
+                        <React.Fragment />
+                    }
                 </Stack>
             )
         } else {
