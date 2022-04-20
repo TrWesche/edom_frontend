@@ -10,6 +10,7 @@ import {
 } from "@mui/material"
 
 import UserUpdateAccountForm from "../building_blocks/users/UserUpdateAccountForm";
+import UserUpdateProfileForm from "../building_blocks/users/UserUpdateProfileForm";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -103,7 +104,7 @@ const UserAccount = () => {
                         {UserUpdateAccountForm()}
                     </TabPanel>
                     <TabPanel value={tabIDX} index={1}>
-                        <Typography>Testing 1</Typography>
+                        {UserUpdateProfileForm()}
                     </TabPanel>
                     <TabPanel value={tabIDX} index={2}>
                         <Typography>Testing 2</Typography>

@@ -20,7 +20,7 @@ import {
 
 // Typescript Interface Imports
 import { AlertValueObjectProps } from '../../../interfaces/globalInterfaces';
-import { ReturnUserObject } from '../../../interfaces/edomUserInterfaces';
+import { RequestUserObject } from '../../../interfaces/edomUserInterfaces';
 
 // API Imports
 import apiEDOM from '../../../utils/apiEDOM';
@@ -37,7 +37,7 @@ const UserUpdateAccountForm = () => {
     const dispatch = useDispatch();
 
     // Page States
-    const onLoadFormValues: ReturnUserObject = {
+    const onLoadFormValues: RequestUserObject = {
         username: '',
         email: '',
         public_email: false,
@@ -59,7 +59,7 @@ const UserUpdateAccountForm = () => {
 
 
     // React / Redux Function Instantiations    
-    const reduxUser: ReturnUserObject = useSelector((store: RootStateOrAny) => store?.redUser.user);
+    const reduxUser: RequestUserObject = useSelector((store: RootStateOrAny) => store?.redUser.user);
     useEffect(() => {
         if (authData.username) {
             dispatch(fetchUserProfile(authData.username));
