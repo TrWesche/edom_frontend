@@ -9,14 +9,8 @@ import { Avatar, Skeleton, Stack } from '@mui/material'
 import {
     Grid,
     Typography,
-    Paper,
-    Box
+    Paper
 } from "@mui/material";
-
-// import {
-//     Visibility,
-//     VisibilityOff
-// } from "@mui/icons-material";
 
 // Provider Imports
 import { useAlert } from '../../providers/alertProvider';
@@ -42,20 +36,22 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoading = () => {
         return (
-            <Grid container item spacing={4} xs={12}>
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
-                        <Skeleton variant="circular" width={152} height={152} />
+            <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                <Grid container item spacing={8} xs={12}>
+                    <Grid item container spacing={2} xs={12}>
+                        <Grid item xs={12} sm={6} md={4} lg={2} xl={1} display={'flex'} justifyContent={'flex-start'}>
+                            <Skeleton variant="circular" width={152} height={152} />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={8} lg={10} xl={11} display={'flex'} justifyContent={'flex-end'}>
+                            <Skeleton variant="rectangular" height={152} />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
-                        <Skeleton variant="rectangular" height={152} />
-                    </Grid>
-                </Grid>
 
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    <Skeleton variant="rectangular" height={400} />
+                    <Grid item container spacing={2} xs={12}>
+                        <Skeleton variant="rectangular" height={400} />
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Paper>
         );
     };
 
@@ -79,152 +75,141 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
 
     const pageLoaded = () => {
         return (
-            <Grid container item spacing={4} xs={12}>
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
-                        <Avatar 
-                            alt="User Image"
-                            src={`${data.image_url ? data.image_url : "https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png"}`}
-                            sx={{ width: 152, height: 152 }}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={4} lg={3} xl={2} display={'flex'} justifyContent={'center'}>
-                        {dataLoaded()}
-                    </Grid>
-                </Grid>
+            <React.Fragment>
+                <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid container item spacing={8} xs={12}>
+                        <Grid item container spacing={2} xs={12}>
+                            <Grid item xs={12} sm={6} md={4} lg={2} xl={1} display={'flex'} justifyContent={'flex-start'}>
+                                <Avatar 
+                                    alt="User Image"
+                                    src={`${data.image_url ? data.image_url : "https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png"}`}
+                                    sx={{ width: 152, height: 152 }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={8} lg={10} xl={11} display={'flex'} justifyContent={'flex-end'}>
+                                {dataLoaded()}
+                            </Grid>
+                        </Grid>
 
 
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    { data.headline && data.headline.length !== 0 ?
-                        <React.Fragment>
-                            <Grid item xs={12} margin={'0 0 2rem 0'}>
+                        <Grid item container spacing={2} xs={12}>
+                            { data.headline && data.headline.length !== 0 ?
+                                <Grid item xs={12}>
+                                    <Typography
+                                        variant='h5'
+                                        margin={'0 0 10px 0'}
+                                    >
+                                        {data.headline}
+                                    </Typography>
+                                </Grid>
+                                :
+                                <React.Fragment />
+                            }
+
+
+                            { data.about && data.about.length !== 0 ?
+                                <React.Fragment>
+                                    <Grid item xs={12}>
+                                        <Typography 
+                                            color={'primary.light'} 
+                                            variant='h5' 
+                                            padding={"0.25rem"}
+                                            borderRadius={"0.25rem"}
+                                        >
+                                            About
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Typography
+                                            variant='body1'
+                                        >
+                                            {data.about}
+                                        </Typography>
+                                    </Grid>
+                                </React.Fragment>
+                                :
+                                <React.Fragment />
+                            }
+                        
+                        </Grid>
+                    </Grid>
+                </Paper>
+
+
+                <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid container item spacing={8} xs={12}>
+                        <Grid item container spacing={2} xs={12}>
+                            <Grid item xs={12}>
                                 <Typography 
-                                    color={'secondary.dark'} 
+                                    color={'primary.light'} 
                                     variant='h5' 
-                                    margin={"1rem 0rem 0rem 0rem"}
-                                    bgcolor={'grey.A200'}
                                     padding={"0.25rem"}
                                     borderRadius={"0.25rem"}
                                 >
-                                    Headline
-                                </Typography>
-                                
-                            </Grid>
-                            <Grid item xs={12} margin={'0 0 1rem 0'}>
-                                <Typography
-                                    variant='body1'
-                                    margin={"1rem 0rem 0rem 0rem"}
-                                >
-                                    {data.headline}
+                                    Groups
                                 </Typography>
                             </Grid>
-                        </React.Fragment>
-                        :
-                        <React.Fragment />
-                    }
+                            <Grid item xs={12}>
+                                <Typography>
+                                    Add Group List Load
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Paper>
 
-
-                    { data.about && data.about.length !== 0 ?
-                        <React.Fragment>
-                            <Grid item xs={12} margin={'0 0 2rem 0'}>
+                <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid container item spacing={8} xs={12}>
+                        <Grid item container spacing={2} xs={12}>
+                            <Grid item xs={12}>
                                 <Typography 
-                                    color={'secondary.dark'} 
+                                    color={'primary.light'} 
                                     variant='h5' 
-                                    margin={"1rem 0rem 0rem 0rem"}
-                                    bgcolor={'grey.A200'}
                                     padding={"0.25rem"}
                                     borderRadius={"0.25rem"}
                                 >
-                                    About Me
+                                    Hubs
                                 </Typography>
-                                
                             </Grid>
-                            <Grid item xs={12} margin={'0 0 1rem 0'}>
-                                <Typography
-                                    variant='body1'
-                                    margin={"1rem 0rem 0rem 0rem"}
+                            <Grid item xs={12}>
+                                <Typography>
+                                    Add Hub List Load
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Paper>
+
+                <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+                    <Grid container item spacing={8} xs={12}>
+                        <Grid item container spacing={2} xs={12}>
+                            <Grid item xs={12}>
+                                <Typography 
+                                    color={'primary.light'} 
+                                    variant='h5' 
+                                    padding={"0.25rem"}
+                                    borderRadius={"0.25rem"}
                                 >
-                                    {data.about}
+                                    Equipment
                                 </Typography>
                             </Grid>
-                        </React.Fragment>
-                        :
-                        <React.Fragment />
-                    }
-                
-                </Grid>
-
-
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    <Grid item xs={12} margin={'0 0 2rem 0'}>
-                        <Typography 
-                            color={'secondary.dark'} 
-                            variant='h5' 
-                            margin={"1rem 0rem 0rem 0rem"}
-                            bgcolor={'grey.A200'}
-                            padding={"0.25rem"}
-                            borderRadius={"0.25rem"}
-                        >
-                            Groups
-                        </Typography>
+                            <Grid item xs={12}>
+                                <Typography>
+                                    Add Equipment List Load
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} margin={'0 0 0.5rem 0'}>
-                        <Typography>
-                            Add Group List Load
-                        </Typography>
-                    </Grid>
-                </Grid>
-
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    <Grid item xs={12} margin={'0 0 2rem 0'}>
-                        <Typography 
-                            color={'secondary.dark'} 
-                            variant='h5' 
-                            margin={"1rem 0rem 0rem 0rem"}
-                            bgcolor={'grey.A200'}
-                            padding={"0.25rem"}
-                            borderRadius={"0.25rem"}
-                        >
-                            Hubs
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} margin={'0 0 0.5rem 0'}>
-                        <Typography>
-                            Add Hub List Load
-                        </Typography>
-                    </Grid>
-                </Grid>
-
-                <Grid item container xs={12} margin={'0 0 2rem 0'}>
-                    <Grid item xs={12} margin={'0 0 2rem 0'}>
-                        <Typography 
-                            color={'secondary.dark'} 
-                            variant='h5' 
-                            margin={"1rem 0rem 0rem 0rem"}
-                            bgcolor={'grey.A200'}
-                            padding={"0.25rem"}
-                            borderRadius={"0.25rem"}
-                        >
-                            Equipment
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} margin={'0 0 0.5rem 0'}>
-                        <Typography>
-                            Add Equipment List Load
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
+                </Paper>
+            </React.Fragment>
         );
     };
 
     const pageLoadError = () => {
         return (
-            <Paper>
-                <Grid item xs={12}>
-                    <Typography>Something went wrong.</Typography>
-                </Grid>
-            </Paper>
+            <Grid item xs={12}>
+                <Typography>Something went wrong.</Typography>
+            </Grid>
         );
     };
 
@@ -278,17 +263,18 @@ const UserProfile = () => {
     const params: any = useParams();
     
     const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
+
     useEffect(() => {
         dispatch(fetchUserProfile(params.username));
     }, [dispatch]);
 
 
     const data: ReturnUserObject = reduxPayload.user;
-    const isProcessing = reduxPayload.isProcessing;
+    const isProcessing = reduxPayload.isProcessing || reduxPayload.user === undefined;
     const reduxError = reduxPayload.error ? reduxPayload.error : false;
 
     return (
-        <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
+        <Grid container spacing={2} justifyContent={'center'} margin={"30px 0"}>
             <PageLoadHandler 
                 authData={authData}
                 navigate={navigate}
