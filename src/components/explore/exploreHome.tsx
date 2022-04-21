@@ -179,6 +179,9 @@ const PageLoadHandler = (props: {
                     <Typography variant='h2' color={'text.primary'}>Featured Equipment</Typography>
                 </Grid>
                 {EquipCardListHorizontal(navigate, "featured-equips", 6, reduxData.equips)}
+                <Grid item xs={12} margin={"20px 0 0 0"}>
+                    <Typography variant='h2' color={'text.primary'}>Featured Users</Typography>
+                </Grid>
             </Grid>
             
         );

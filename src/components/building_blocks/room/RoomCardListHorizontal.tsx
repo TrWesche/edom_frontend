@@ -21,6 +21,7 @@ export interface RoomListProps {
     error?: boolean
 };
 
+// TODO: Update with quantity of rows, quantity of columns, pagination/more/none selection
 const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: RoomListProps) => {
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty).fill(0);
@@ -29,7 +30,7 @@ const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
             <React.Fragment>
                 {skeletonArray.map((val, idx) => {
                     return (
-                        <Grid item xs={12} sm={6} md={4} lg={2} key={`${listid}-${idx}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`${listid}-${idx}`}>
                             {RoomCardSkeleton()}
                         </Grid>   
                     );
@@ -53,7 +54,7 @@ const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, disp
             <React.Fragment>
                 {list.rooms.map(data => {
                     return (
-                        <Grid item xs={12} sm={6} md={4} lg={2} key={`${listid}-${data.id}`}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`${listid}-${data.id}`}>
                             {RoomCard(data, navigate)}
                         </Grid>    
                     )

@@ -15,7 +15,6 @@ import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
 import GroupCardSkeleton from "./GroupCardSkeleton";
 import GroupCard from "./GroupCard";
 
-
 export interface GroupListProps {
     group: Array<ReturnGroupObject>
     isProcessing: boolean
