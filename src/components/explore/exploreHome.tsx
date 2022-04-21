@@ -20,7 +20,7 @@ import {
 import { authToken, useAuth } from '../../providers/authProvider';
 import { useAlert } from '../../providers/alertProvider';
 
-// Interface Imports
+// Component Imports
 import GroupCardListHorizontal, { GroupListProps } from "../building_blocks/group/GroupCardListHorizontal";
 import RoomCardListHorizontal, { RoomListProps } from "../building_blocks/room/RoomCardListHorizontal";
 import EquipCardListHorizontal, { EquipListProps } from '../building_blocks/equip/EquipCardListHorizontal';

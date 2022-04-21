@@ -27,6 +27,14 @@ import { ReturnUserObject } from '../../interfaces/edomUserInterfaces';
 
 // Redux Action Imports
 import { fetchUserProfile } from '../../redux/actions/actUser';
+import { fetchGroupList } from '../../redux/actions/actGroupList';
+import { fetchRoomList } from '../../redux/actions/actRoomList';
+import { fetchEquipListUser } from '../../redux/actions/actEquipList';
+
+// Component Imports
+import GroupCardListHorizontal, { GroupListProps } from "../building_blocks/group/GroupCardListHorizontal";
+import RoomCardListHorizontal, { RoomListProps } from "../building_blocks/room/RoomCardListHorizontal";
+import EquipCardListHorizontal, { EquipListProps } from '../building_blocks/equip/EquipCardListHorizontal';
 
 
 // TODO: This will need to have a Private / Public Component
@@ -36,9 +44,23 @@ interface UserProfileProps {
     error?: boolean
 };
 
+interface UserOwnedObjectsProps {
+    groups: GroupListProps
+    rooms: RoomListProps
+    equips: EquipListProps
+};
 
-const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined, data: ReturnUserObject, isProcessing: boolean, reduxError: boolean}) => {
-    const { authData, navigate, alertSetter, data, isProcessing, reduxError } = props; 
+
+const PageLoadHandler = (props: {
+    authData: authToken, 
+    navigate: NavigateFunction, 
+    alertSetter: Function | undefined, 
+    data: ReturnUserObject, 
+    ownedObjects: UserOwnedObjectsProps, 
+    isProcessing: boolean, 
+    reduxError: boolean
+}) => {
+    const { authData, navigate, alertSetter, data, isProcessing, reduxError, ownedObjects } = props; 
 
     const pageLoading = () => {
         return (
@@ -166,9 +188,7 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography>
-                                    Add Group List Load
-                                </Typography>
+                                {GroupCardListHorizontal(navigate, `${data.username_clean}-groups`, 4, ownedObjects.groups)}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -188,9 +208,7 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography>
-                                    Add Hub List Load
-                                </Typography>
+                                {RoomCardListHorizontal(navigate, `${data.username_clean}-rooms`, 4, ownedObjects.rooms)}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -210,9 +228,7 @@ const PageLoadHandler = (props: {authData: authToken, navigate: NavigateFunction
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography>
-                                    Add Equipment List Load
-                                </Typography>
+                                {EquipCardListHorizontal(navigate, `${data.username_clean}-equip`, 4, ownedObjects.equips)}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -280,9 +296,23 @@ const UserProfile = () => {
     
     const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
 
+    const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
+    const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
+    const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+
+
     useEffect(() => {
         dispatch(fetchUserProfile(params.username));
+        dispatch(fetchGroupList());
+        dispatch(fetchRoomList());
+        dispatch(fetchEquipListUser(params.username));
     }, [dispatch]);
+
+    const ownedObjects: UserOwnedObjectsProps = {
+        groups: reduxGroupList,
+        rooms: reduxRoomList,
+        equips: reduxEquipList
+    };
 
 
     const data: ReturnUserObject = reduxPayload.user;
@@ -296,6 +326,7 @@ const UserProfile = () => {
                 navigate={navigate}
                 alertSetter={alertSetter}
                 data={data} 
+                ownedObjects={ownedObjects}
                 isProcessing={isProcessing} 
                 reduxError={reduxError} 
             />
