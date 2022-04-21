@@ -27,8 +27,8 @@ import { ReturnUserObject } from '../../interfaces/edomUserInterfaces';
 
 // Redux Action Imports
 import { fetchUserProfile } from '../../redux/actions/actUser';
-import { fetchGroupList } from '../../redux/actions/actGroupList';
-import { fetchRoomList } from '../../redux/actions/actRoomList';
+import { fetchGroupList, fetchGroupListUser } from '../../redux/actions/actGroupList';
+import { fetchRoomList, fetchRoomListUser } from '../../redux/actions/actRoomList';
 import { fetchEquipListUser } from '../../redux/actions/actEquipList';
 
 // Component Imports
@@ -300,11 +300,10 @@ const UserProfile = () => {
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
-
     useEffect(() => {
         dispatch(fetchUserProfile(params.username));
-        dispatch(fetchGroupList());
-        dispatch(fetchRoomList());
+        dispatch(fetchGroupListUser(params.username));
+        dispatch(fetchRoomListUser(params.username));
         dispatch(fetchEquipListUser(params.username));
     }, [dispatch]);
 
@@ -313,7 +312,6 @@ const UserProfile = () => {
         rooms: reduxRoomList,
         equips: reduxEquipList
     };
-
 
     const data: ReturnUserObject = reduxPayload.user;
     const isProcessing = reduxPayload.isProcessing || reduxPayload.user === undefined;

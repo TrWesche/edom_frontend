@@ -23,6 +23,7 @@ export interface RoomListProps {
 
 // TODO: Update with quantity of rows, quantity of columns, pagination/more/none selection
 const RoomCardListHorizontal = (navigate: NavigateFunction, listid: string, displayqty: number, list: RoomListProps) => {
+    console.log(list);
     const stateLoading = () => {
         const skeletonArray = new Array(displayqty).fill(0);
 
