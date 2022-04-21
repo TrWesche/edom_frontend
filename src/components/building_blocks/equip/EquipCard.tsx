@@ -71,7 +71,7 @@ const EquipCard = (data: ReturnEquipObject, navigate: NavigateFunction) => {
 
                 </CardActionArea>
             </Card>
-        </Box>      
+        </Box>
     )
 };
 

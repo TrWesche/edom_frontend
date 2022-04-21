@@ -27,8 +27,8 @@ import { ReturnUserObject } from '../../interfaces/edomUserInterfaces';
 
 // Redux Action Imports
 import { fetchUserProfile } from '../../redux/actions/actUser';
-import { fetchGroupList, fetchGroupListUser } from '../../redux/actions/actGroupList';
-import { fetchRoomList, fetchRoomListUser } from '../../redux/actions/actRoomList';
+import { fetchGroupListUser } from '../../redux/actions/actGroupList';
+import { fetchRoomListUser } from '../../redux/actions/actRoomList';
 import { fetchEquipListUser } from '../../redux/actions/actEquipList';
 
 // Component Imports
