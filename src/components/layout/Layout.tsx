@@ -12,8 +12,8 @@ import {
 import { useAuth } from "../../providers/authProvider";
 
 // Components
-import NavBar from "../navigation/NavBar";
-import NavDrawer from "../navigation/NavDrawer";
+import NavBar from "../tier01/navigation/NavBar";
+import NavDrawer from "../tier01/navigation/NavDrawer";
 
 // TODO: On webpage small (width less than 600 px) the NavDrawer should start sitting on top of the main window rather than resizing the content window.
 // at Extra Small widths (with less than 480px)the NavDrawer's width should increase to cover the entire main window area and should automatically

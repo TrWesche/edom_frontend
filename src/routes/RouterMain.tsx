@@ -5,36 +5,36 @@ import {
 
 import Layout from "../components/layout/Layout";
 
-import Home from "../components/home/Home"
+import Home from "../components/tier01/landing/Home"
 
-import UserRegister from "../components/user/UserRegister";
-import UserLogin from "../components/user/UserLogin";
-import UserAccount from "../components/user/UserAccount";
-import UserUpdateAccount from "../components/user/UserUpdateAccount";
-import UserUpdatePassword from "../components/user/UserUpdatePassword";
-import UserProfile from "../components/user/UserProfile";
-import GroupDirectoryUser from "../components/group/GroupDirectoryUser";
-import EquipDirectoryUser from "../components/equip/EquipDirectoryUser";
-import RoomDirectoryUser from "../components/room/RoomDirectoryUser";
+import UserRegister from "../components/tier01/user/UserRegister";
+import UserLogin from "../components/tier01/user/UserLogin";
+import UserAccount from "../components/tier01/user/UserAccount";
+import UserUpdateAccount from "../components/tier01/user/UserUpdateAccount";
+import UserUpdatePassword from "../components/tier01/user/UserUpdatePassword";
+import UserProfile from "../components/tier01/user/UserProfile";
+import GroupDirectoryUser from "../components/tier01/directories/GroupDirectoryUser";
+import EquipDirectoryUser from "../components/tier01/directories/EquipDirectoryUser";
+import RoomDirectoryUser from "../components/tier01/directories/RoomDirectoryUser";
 
-import GroupProfile from "../components/group/GroupProfile";
-import GroupManagement from "../components/group/GroupManagement";
-import EquipDirectoryGroup from "../components/equip/EquipDirectoryGroup";
-import RoomDirectoryGroup from "../components/room/RoomDirectoryGroup";
-import UserDirectoryGroup from "../components/user/UserDirectoryGroup";
-import UserDirectorySite from "../components/user/UserDirectorySite";
+import GroupProfile from "../components/tier01/group/GroupProfile";
+import GroupManagement from "../components/tier01/group/GroupManagement";
+import EquipDirectoryGroup from "../components/tier01/directories/EquipDirectoryGroup";
+import RoomDirectoryGroup from "../components/tier01/directories/RoomDirectoryGroup";
+import UserDirectoryGroup from "../components/tier01/directories/UserDirectoryGroup";
+import UserDirectorySite from "../components/tier01/directories/UserDirectorySite";
 
-import ExploreHome from "../components/explore/exploreHome";
-import ExploreGroups from "../components/explore/exploreGroups";
-import ExploreRooms from "../components/explore/exploreRooms";
-import ExploreEquip from "../components/explore/exploreEquip";
+import ExploreHome from "../components/tier01/search/exploreHome";
+import ExploreGroups from "../components/tier01/search/exploreGroups";
+import ExploreRooms from "../components/tier01/search/exploreRooms";
+import ExploreEquip from "../components/tier01/search/exploreEquip";
 
-import EquipProfile from "../components/equip/EquipProfile";
+import EquipProfile from "../components/tier01/equipment/EquipProfile";
 
-import RoomProfile from "../components/room/RoomProfile";
-import RoomSession from "../components/room/RoomSession";
+import RoomProfile from "../components/tier01/hub/RoomProfile";
+import RoomSession from "../components/tier01/hub/RoomSession";
 
-import PageNotFound from "../components/notfound/PageNotFound";
+import PageNotFound from "../components/tier01/notfound/PageNotFound";
 
 
 
