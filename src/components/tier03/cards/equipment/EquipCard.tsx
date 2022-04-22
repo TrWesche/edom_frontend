@@ -13,8 +13,20 @@ import {
 import { Edit } from '@mui/icons-material';
 
 // Interface Imports
-import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
+import { ReturnEquipObject } from '../../../../interfaces/edomEquipInterfaces';
 
+interface CardSettings {
+    numColumns: number
+    numRows: number
+    displayMedia: boolean
+    displayContent: boolean
+    displayActions: boolean
+};
+
+interface EquipCard {
+    data: ReturnEquipObject
+    navigate: NavigateFunction
+};
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
     target: ClickTarget
@@ -32,6 +44,7 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
         console.log("Error, destination not defined")
     }
 };
+
 
 const EquipCard = (data: ReturnEquipObject, navigate: NavigateFunction) => {
     return (

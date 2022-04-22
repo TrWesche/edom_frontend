@@ -11,7 +11,7 @@ import {
 
 import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
-import CardListStacked from "../../tier02/cardlist/CardListStacked";
+import CardListStacked from "../../tier02/cardlist/CardList";
 
 
 // Provider Imports

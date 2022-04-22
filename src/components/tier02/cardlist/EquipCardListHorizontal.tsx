@@ -13,7 +13,7 @@ import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
 
 // Component Imports
 import EquipCardSkeleton from '../../tier03/cards/EquipCardSkeleton';
-import EquipCard from '../../tier03/cards/EquipCard';
+import EquipCard from '../../tier03/cards/equipment/EquipCard';
 
 
 export interface EquipListProps {
