@@ -17,20 +17,29 @@ import CardMediaImage from '../../tier04/cards/CardMediaImage';
 import CardContentSection, {CardContentProps} from '../../tier04/cards/CardContentSection';
 
 // Interface Imports
-
-
 interface CardSettingProps {
     numColumns: number
     numRows: number
+    displayEdit: boolean
     displayMedia: boolean
     displayContent: boolean
     displayActions: boolean
-    displayEdit: boolean
+    enableActionArea: boolean
 };
 
-interface CardBaseProps {
+interface CardDataProps {
+    editAllowed: boolean
+    editButtonDestination: string
+    actionAreaDestination: string
+    mediaURI: string
+    mediaAltText: string
+    contentTexts: Array<CardContentProps>
+};
+
+export interface CardBaseProps {
     settings: CardSettingProps
     navigate: NavigateFunction
+    data: CardDataProps
 };
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
@@ -56,35 +65,35 @@ const CardBase = (config: CardBaseProps) => {
         <Box>
             {config.settings.displayEdit && 
                 <CardEditFAB 
-                    editPermissions={true}
+                    editPermissions={config.data.editAllowed}
                     navigate={config.navigate}
-                    navDestination={"/EditButtonDestination"}
+                    navDestination={config.data.editButtonDestination}
                 />
             }
 
             <Card sx={{ flexGrow: 1}} elevation={2}>
-                {config.settings.displayActions ?
-                    <CardActionArea onClick={(e) => handleClick(e, config.navigate, "/cardActionDestination")}>
+                {config.settings.enableActionArea ?
+                    <CardActionArea onClick={(e) => handleClick(e, config.navigate, config.data.actionAreaDestination)}>
                         <CardMediaImage 
                             showMedia={config.settings.displayMedia}
-                            srcURI={"inDevelopment"}
-                            altText={"inDevelopment"}
+                            srcURI={config.data.mediaURI}
+                            altText={config.data.mediaAltText}
                         />
                         <CardContentSection 
                             showContent={config.settings.displayContent}
-                            textSections={[{textVariant: "h5", textContent: "Testing"}]}
+                            textSections={config.data.contentTexts}
                         />
                     </CardActionArea>
                     :
                     <Fragment>
                         <CardMediaImage 
                             showMedia={config.settings.displayMedia}
-                            srcURI={"inDevelopment"}
-                            altText={"inDevelopment"}
+                            srcURI={config.data.mediaURI}
+                            altText={config.data.mediaAltText}
                         />
                         <CardContentSection 
                             showContent={config.settings.displayContent}
-                            textSections={[{textVariant: "h5", textContent: "Testing"}]}
+                            textSections={config.data.contentTexts}
                         />
                     </Fragment>
                 }
