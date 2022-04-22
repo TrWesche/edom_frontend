@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+import { useState } from "react";
 
 import {
     Grid,
@@ -13,15 +11,11 @@ import {
 
 import UserUpdateAccountForm from "../building_blocks/users/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../building_blocks/users/UserUpdateProfileForm";
-import CardListStacked, { CardListStackedProps } from "../building_blocks/cardLists/CardListStacked";
+import CardListStacked from "../building_blocks/cardLists/CardListStacked";
 
-import { fetchGroupListUser } from '../../redux/actions/actGroupList';
-import { fetchRoomListUser } from '../../redux/actions/actRoomList';
-import { fetchEquipListUser } from '../../redux/actions/actEquipList';
 
 // Provider Imports
-import { useAlert } from '../../providers/alertProvider';
-import { authToken, useAuth } from '../../providers/authProvider';
+import { useAuth } from '../../providers/authProvider';
 
 
 interface TabPanelProps {
@@ -29,13 +23,6 @@ interface TabPanelProps {
     index: number;
     value: number;
 };
-
-interface UserOwnedObjectsProps {
-    // groups: GroupListProps
-    // rooms: RoomListProps
-    equips: CardListStackedProps
-};
-
 
 
 const TabPanel = (props: TabPanelProps) => {
@@ -69,34 +56,8 @@ const tabProps = (index: number) => {
 const UserAccount = () => {
     const [tabIDX, setTabIDX] = useState(0);
 
-    // React / Redux Function Instantiations
-    const dispatch = useDispatch();
-
     // Context Providers
-    // const { alertSetter } = useAlert();
     const { authData } = useAuth();
-
-    const params: any = useParams();
-
-    // const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
-
-    // const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    // const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
-    const reduxEquipList: CardListStackedProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
-
-    useEffect(() => {
-        // dispatch(fetchUserProfile(params.username));
-        // dispatch(fetchGroupListUser(params.username));
-        // dispatch(fetchRoomListUser(params.username));
-        dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
-    }, [dispatch]);
-
-    const ownedObjects: UserOwnedObjectsProps = {
-        // groups: reduxGroupList,
-        // rooms: reduxRoomList,
-        equips: reduxEquipList
-    };
-
 
     const handleChange = (e: React.SyntheticEvent, newIDX: number) => {
         setTabIDX(newIDX);
@@ -166,7 +127,7 @@ const UserAccount = () => {
                         <Typography>Testing 5</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={6}>
-                        {CardListStacked(`${authData.username}-equip`, 25, ownedObjects.equips)}
+                        {CardListStacked(authData, `${authData.username}-equip`, 3, "equip")}
                     </TabPanel>
                 </Grid>
             </Paper>
