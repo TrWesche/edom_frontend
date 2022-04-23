@@ -40,7 +40,7 @@ interface FormObjectProps extends RequestUserObject {
 const RegisterForm = () => {
     const navigate = useNavigate();
 
-    const { authData, updateAuth } = useAuth();
+    const { updateAuth } = useAuth();
 
     // Page States
     const onLoadFormValues: FormObjectProps = {
@@ -101,7 +101,7 @@ const RegisterForm = () => {
         event.preventDefault();
 
         try {
-            const {headers, data} = await apiEDOM.registerUser(formValues);
+            const {data} = await apiEDOM.registerUser(formValues);
 
             console.log(data);
 

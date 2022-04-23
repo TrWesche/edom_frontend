@@ -33,7 +33,7 @@ import { fetchUserProfile } from '../../../redux/actions/actUser';
 
 const UserUpdateAccountForm = () => {
     const navigate = useNavigate();
-    const { authData, updateAuth } = useAuth();
+    const { authData } = useAuth();
     const dispatch = useDispatch();
 
     // Page States
@@ -64,7 +64,7 @@ const UserUpdateAccountForm = () => {
         if (authData.username) {
             dispatch(fetchUserProfile(authData.username));
         }
-    }, [dispatch]);
+    }, [dispatch, authData.username]);
 
     useEffect(() => {
         if (reduxUser) {
@@ -107,7 +107,7 @@ const UserUpdateAccountForm = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            const {headers, data} = await apiEDOM.updateUser(formValues);
+            const {data} = await apiEDOM.updateUser(formValues);
 
             if (data.errorMessage) {
                 throw new Error(data.errorMessage.message)

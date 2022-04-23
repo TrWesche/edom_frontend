@@ -9,16 +9,10 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import {
     Grid,
     Typography,
-    Card,
-    CardActionArea,
-    CardMedia,
-    CardContent,
-    Box,
     Avatar,
     Paper,
     Divider,
     Button,
-    Stack,
     Link
 } from "@mui/material"
 

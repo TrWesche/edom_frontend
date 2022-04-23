@@ -1,11 +1,18 @@
 import {
+    createRef, 
+    Fragment, 
+    useEffect, 
+    // useState
+} from "react";
+
+import {
     CardMedia,
     Card,
     Typography,
     Paper
 } from "@mui/material"
 
-import {createRef, Fragment, useEffect, useState} from "react";
+
 import ButtonBar from "./ButtonBar";
 
 export interface VideoPlayerProps {
@@ -15,10 +22,10 @@ export interface VideoPlayerProps {
 
 const VideoPlayer = ( {media, remote}: VideoPlayerProps ) => {
 
-    const [videoMuted, setVideoMuted] = useState<Boolean>(false);
-    const [audioMuted, setAudioMuted] = useState<Boolean>(false);
-    const [showVideoToggle, setShowVideoToggle] = useState<Boolean>(true);
-    const [showAudioToggle, setShowAudioToggle] = useState<Boolean>(true);
+    // const [videoMuted, setVideoMuted] = useState<Boolean>(false);
+    // const [audioMuted, setAudioMuted] = useState<Boolean>(false);
+    // const [showVideoToggle, setShowVideoToggle] = useState<Boolean>(true);
+    // const [showAudioToggle, setShowAudioToggle] = useState<Boolean>(true);
 
     const videoElement =  createRef<HTMLVideoElement>();
 

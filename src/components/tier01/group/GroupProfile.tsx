@@ -9,11 +9,6 @@ import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import {
     Grid,
     Typography,
-    Card,
-    CardActionArea,
-    CardMedia,
-    CardContent,
-    Box,
     Avatar,
     Paper
 } from "@mui/material"
@@ -69,7 +64,7 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: ReturnGroupObject)
             <Grid item container xs={12}>
                 <Grid item xs={3}>
                     <Avatar 
-                        alt="User Image"
+                        alt="User"
                         src={data.image_url ? data.image_url : `https://th.bing.com/th/id/OIP.V4WfwwbPOAKnHebgSFbmNwHaGL?pid=ImgDet&rs=1`} 
                         sx={{ width: 152, height: 152 }}
                     />

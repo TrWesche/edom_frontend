@@ -86,7 +86,7 @@ const UserAccount = () => {
 
     useEffect(() => {
         dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
-    }, [dispatch]);
+    }, [dispatch, authData.username]);
 
 
     const [tabIDX, setTabIDX] = useState(0);

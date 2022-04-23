@@ -305,7 +305,7 @@ const UserProfile = () => {
         dispatch(fetchGroupListUser(params.username));
         dispatch(fetchRoomListUser(params.username));
         dispatch(fetchEquipListUser(params.username));
-    }, [dispatch]);
+    }, [dispatch, params.username]);
 
     const ownedObjects: UserOwnedObjectsProps = {
         groups: reduxGroupList,

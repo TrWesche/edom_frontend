@@ -4,7 +4,13 @@
 // https://blog.logrocket.com/creating-chat-application-with-webrtc/
 // https://github.com/jkithome/simple-webrtc-chat-app/blob/master/src/Chat.js
 
-import {useCallback, useEffect, useLayoutEffect, useState, useReducer } from "react";
+import {
+    // useCallback, 
+    useEffect, 
+    // useLayoutEffect, 
+    useState, 
+    // useReducer 
+} from "react";
 import useSignalChannel from "./useSignalChannel";
 import useRTCP from "./useRTCPeer";
 import * as msgTypes from "./_wrtcSigChMsgTypes.json";
@@ -12,7 +18,7 @@ import * as msgTypes from "./_wrtcSigChMsgTypes.json";
 import {
     Grid,
     Typography,
-    Card
+    // Card
 } from "@mui/material"
 import { useParams } from "react-router-dom"
 import { SIGNAL_SERVER_API_URL } from "../../../config/config";
@@ -56,8 +62,8 @@ const RoomSession = () => {
     const [sigChannelState, setSigChannelState] = useState("initializing");
     const [sigChMsgQueue, setSigChMsgQueue] = useState<Array<SigChMessageProps>>([]);
 
-    const [rtcpState, setRTCPState] = useState("waiting");
-    const [rtcpEventQueue, setRTCPEventQueue] = useState(); // TODO: Backup incoming channel events
+    // const [rtcpState, setRTCPState] = useState("waiting");
+    // const [rtcpEventQueue, setRTCPEventQueue] = useState(); // TODO: Backup incoming channel events
 
     useEffect(() => {
         const handleGUM = async () => {
@@ -104,13 +110,14 @@ const RoomSession = () => {
 
     const { rtcp, 
             iceCandidate, 
-            connectionState, 
-            createDataChannel, 
+            // connectionState, 
+            // createDataChannel, 
             createOffer, 
             createAnswer,
             addRemotePeer,
-            addTracks, 
-            removeTracks } = useRTCP(sigChannel, userData.userID, params.roomID);
+            // addTracks, 
+            // removeTracks 
+        } = useRTCP(sigChannel, userData.userID, params.roomID);
 
 
     // Handle Incoming Signaling Channel Messages

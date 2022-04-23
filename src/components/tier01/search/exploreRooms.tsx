@@ -133,7 +133,7 @@ const ExploreRoomsHeader = () => {
                 <Grid item xs={12} md={7} display={'flex'} justifyContent={'center'}>
                     <img 
                         src='https://picturepark.com/data/cutting-edge-large.png'
-                        alt='Hero Image'
+                        alt='Hero'
                         height='400px'
                     />
                 </Grid>

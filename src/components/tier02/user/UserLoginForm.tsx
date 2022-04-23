@@ -43,7 +43,7 @@ interface AlertValueObjectProps {
 const LoginForm = () => {
     const navigate = useNavigate();
 
-    const { authData, updateAuth } = useAuth();
+    const { updateAuth } = useAuth();
 
     // Page States
     const onLoadFormValues: FormObjectProps = {

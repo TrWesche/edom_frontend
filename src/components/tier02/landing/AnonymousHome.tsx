@@ -57,7 +57,7 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                 <Grid item xs={12} lg={7} display={'flex'} justifyContent={'center'} maxHeight={'450px'}>
                     <img 
                         src='https://picturepark.com/data/cutting-edge-large.png'
-                        alt='Hero Image'
+                        alt='Hero'
                         width={'100%'}
                         object-fit='cover'
                     />

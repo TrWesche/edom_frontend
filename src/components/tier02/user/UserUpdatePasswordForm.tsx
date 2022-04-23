@@ -23,7 +23,7 @@ import {
 
 // Typescript Interface Imports
 import { AlertValueObjectProps } from '../../../interfaces/globalInterfaces';
-import { RequestPasswordChange, RequestUserObject } from '../../../interfaces/edomUserInterfaces';
+import { RequestPasswordChange } from '../../../interfaces/edomUserInterfaces';
 
 // API Imports
 import apiEDOM from '../../../utils/apiEDOM';
@@ -41,7 +41,7 @@ interface RequestPasswordChangeForm extends RequestPasswordChange {
 const UserUpdatePasswordForm = () => {
     const navigate = useNavigate();
 
-    const { authData, updateAuth } = useAuth();
+    const { updateAuth } = useAuth();
 
     // Page States
     const onLoadFormValues: RequestPasswordChangeForm = {
@@ -119,7 +119,7 @@ const UserUpdatePasswordForm = () => {
                 password_e2: formValues.password_e2
             };
 
-            const {headers, data} = await apiEDOM.updateUserPassword(execValue);
+            const {data} = await apiEDOM.updateUserPassword(execValue);
 
             if (!updateAuth) {
                 console.log("Error: Auth Handling Function Returned Undefined")
