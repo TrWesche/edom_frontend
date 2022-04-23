@@ -26,6 +26,21 @@ import { useAuth } from '../../../providers/authProvider';
 import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
 
 
+const UserAccountCardProps = {
+    xlRows: 1,
+    lgRows: 1,
+    mdRows: 1,
+    smRows: 2,
+    xsRows: 3,
+    xlColumns: 6,
+    lgColumns: 5,
+    mdColumns: 4,
+    smColumns: 2,
+    xsColumns: 1
+}
+
+
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -80,6 +95,7 @@ const UserAccount = () => {
         cardType: "stacked",
         navigate: navigate,
         cardContent: equipCardContentList,
+        renderConfig: UserAccountCardProps,
         displayIsProcessing: reduxEquipList.isProcessing,
         displayError: reduxEquipList.error
     }

@@ -68,19 +68,19 @@ const CardList = (config: CardListProps) => {
     
     if (config.displayIsProcessing === false || config.displayError === false) {
         return (
-            <Grid container item spacing={4} minHeight={310}>
+            <Grid container item spacing={4} minHeight={310} className={"CardListParent"}>
                 {stateLoaded()}
             </Grid>
         )
     } else if (config.displayError) {
         return (
-            <Grid container item spacing={4} minHeight={310}>
+            <Grid container item spacing={4} minHeight={310} className={"CardListParent"}>
                 {stateError()}
             </Grid>
         );
     } else {
         return (
-            <Grid container item spacing={4} minHeight={310}>
+            <Grid container item spacing={4} minHeight={310} className={"CardListParent"}>
                 {stateLoading()}
             </Grid>
         )
@@ -101,10 +101,23 @@ const RenderCards = (
         colWidth: 6
     });
     const theme = useTheme();
-      
+    // console.log("Rendering Cards");
+    // console.log(renderFormat);
+    // console.log(theme.breakpoints.values);
+    // console.log(window.innerWidth);
+
+    // if (document.getElementsByClassName("CardListParent")[0]) {
+    //     console.log(document.getElementsByClassName("CardListParent")[0].clientWidth)
+    // }
+    
+
     useLayoutEffect(() => {
         function updateSize() {
-            const screenWidth = window.innerWidth - document.getElementsByTagName('html')[0].clientWidth; // subtract scroll bar width
+            // const screenWidth = document.getElementsByTagName('html')[0].clientWidth; // subtract scroll bar width
+            const screenWidth = document.getElementsByClassName('CardListParent')[0] ? 
+                document.getElementsByClassName('CardListParent')[0].clientWidth : 0; // subtract scroll bar width
+            // console.log(document.getElementsByClassName("CardListParent"))
+
             if (screenWidth >= theme.breakpoints.values.xl) {
                 setRenderFormat({
                     rows: renderConfig?.xlRows ? renderConfig.xlRows : 1,
@@ -135,7 +148,7 @@ const RenderCards = (
         window.addEventListener('resize', updateSize);
         updateSize();
         return () => window.removeEventListener('resize', updateSize);
-    });
+    }, [renderConfig, window.innerWidth]);
 
     // const xlColWidth = renderConfig && renderConfig.xlColumns ? Math.max(1, Math.trunc(12 / renderConfig.xlColumns)) : 2;
     // const lgColWidth = renderConfig && renderConfig.lgColumns ? Math.max(1, Math.trunc(12 / renderConfig.lgColumns)) : 3;
@@ -147,6 +160,9 @@ const RenderCards = (
 
     const cardsToRender: Array<CardProps> = cardData.slice(0, (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) - 1);
     const showDisplayMoreButton: boolean = (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) < cardData.length;
+
+    // console.log(cardsToRender);
+    // console.log(showDisplayMoreButton);
 
     return (
         <Fragment>
