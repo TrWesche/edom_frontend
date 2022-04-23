@@ -1,6 +1,6 @@
 // Library Imports
 import { useState, useEffect } from "react";
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
 import {
@@ -9,8 +9,7 @@ import {
     Tabs,
     Tab,
     Typography,
-    Box,
-    CardProps
+    Box
 } from "@mui/material"
 
 // Component Imports
@@ -22,8 +21,8 @@ import CardList, { CardListProps } from "../../tier02/cardlist/CardList";
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
 
 // Provider Imports
-import { useAlert } from '../../../providers/alertProvider';
-import { authToken, useAuth } from '../../../providers/authProvider';
+// import { useAlert } from '../../../providers/alertProvider';
+import { useAuth } from '../../../providers/authProvider';
 import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
 
 
@@ -68,62 +67,26 @@ const UserAccount = () => {
     const dispatch = useDispatch();
 
     // Context Providers
-    const { alertSetter } = useAlert();
+    // const { alertSetter } = useAlert();
     const { authData } = useAuth();
-    
-    const params: any = useParams();
-    
-    // const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
 
-    // const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    // const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+    const equipCardContentList = buildEquipContentList(reduxEquipList);
+    // console.log(reduxEquipList);
+    // console.log(equipCardContentList);
 
-    const equipCardContentList: Array<CardProps>;
-    
-    reduxEquipList.equip.forEach((eVal) => {
-        return ({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 100,
-                displayContent: true,
-                contentHeight:  200,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: eVal.edit_permissions,
-                editButtonDestination: `/equip/${eVal.id}`,
-                actionAreaDestination: `/equip/${eVal.id}`,
-                mediaURI: eVal.image_url,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [{textVariant: "h5", textContent: eVal.name}, {textVariant: "body2", textContent: eVal.headline}, {textVariant: "h5", textContent: eVal.description}]
-            }
-        })
-    }, [])
-
-    const cardDataEquipList: CardListProps = {
+    const equipCardListData: CardListProps = {
         listid: `${authData.username}-equip-list`,
         cardType: "stacked",
         navigate: navigate,
-        cardContent: equipListForCards
+        cardContent: equipCardContentList,
+        displayIsProcessing: reduxEquipList.isProcessing,
+        displayError: reduxEquipList.error
     }
 
     useEffect(() => {
         dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
     }, [dispatch]);
-
-    const ownedObjects: UserOwnedObjectsProps = {
-        groups: reduxGroupList,
-        rooms: reduxRoomList,
-        equips: reduxEquipList
-    };
-
-    const data: ReturnUserObject = reduxPayload.user;
-    const isProcessing = reduxPayload.isProcessing || reduxPayload.user === undefined;
-    const reduxError = reduxPayload.error ? reduxPayload.error : false;
 
 
     const [tabIDX, setTabIDX] = useState(0);
@@ -197,7 +160,7 @@ const UserAccount = () => {
                         <Typography>Testing 5</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={6}>
-                        {CardList(authData, `${authData.username}-equip`, 3, "equip")}
+                        {CardList(equipCardListData)}
                     </TabPanel>
                 </Grid>
             </Paper>
@@ -210,9 +173,13 @@ export default UserAccount;
 
 
 
-const buildEquipContentList = (data: EquipListProps) => {
-    const retList: Array<CardProps> = data.equip.map((eVal) => {
-        return ({
+const buildEquipContentList = (data: EquipListProps ) => {
+    const retList: any = [];
+    if (!data.equip) {
+        return retList;
+    }
+    data.equip.forEach(element => {
+        retList.push({
             settings: {
                 displayEdit: true,
                 displayMedia: true,
@@ -224,15 +191,19 @@ const buildEquipContentList = (data: EquipListProps) => {
                 enableActionArea: true
             },
             data: {
-                editAllowed: eVal.edit_permissions,
-                editButtonDestination: `/equip/${eVal.id}`,
-                actionAreaDestination: `/equip/${eVal.id}`,
-                mediaURI: eVal.image_url,
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/equip/${element.id}` || `#`,
+                actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [{textVariant: "h5", textContent: eVal.name}, {textVariant: "body2", textContent: eVal.headline}, {textVariant: "h5", textContent: eVal.description}]
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    {textVariant: "h5", textContent: element.description}
+                ]
             }
         })
-    }, [])
+    });
 
     return retList;
 };

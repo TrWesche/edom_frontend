@@ -38,6 +38,7 @@ export interface CardListProps {
 };
 
 const CardList = (config: CardListProps) => {
+    // console.log(config);
     const stateLoading = () => {
         return (
             <Grid item xs={12} key={`${config.listid}-loading`}>
@@ -61,7 +62,7 @@ const CardList = (config: CardListProps) => {
     };
 
     const stateLoaded = () => {
-        return renderCards(config.listid, config.navigate, config.renderConfig, config.cardContent);
+        return RenderCards(config.listid, config.navigate, config.renderConfig, config.cardContent);
     }
 
     
@@ -89,7 +90,7 @@ const CardList = (config: CardListProps) => {
 export default CardList;
 
 
-const renderCards = (
+const RenderCards = (
     listid: string,
     navigate: NavigateFunction,
     renderConfig: CardListRenderProps | undefined,

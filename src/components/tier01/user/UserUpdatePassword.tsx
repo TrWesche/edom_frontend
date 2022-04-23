@@ -5,7 +5,7 @@ import {
     Typography
 } from "@mui/material"
 
-import UserUpdatePasswordForm from "../building_blocks/users/UserUpdatePasswordForm";
+import UserUpdatePasswordForm from "../../tier02/user/UserUpdatePasswordForm";
 
 const UserUpdatePassword = () => {   
     return (

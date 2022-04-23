@@ -1,49 +1,17 @@
 // Library Imports
-import React, { Fragment, MouseEvent } from 'react';
+import { Fragment, MouseEvent } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import {
-    Typography,
     Card,
     CardActionArea,
-    CardContent,
-    CardMedia,
-    CardActions,
-    Fab,
     Box
 } from "@mui/material"
 
 import CardMediaImage from '../../tier04/cards/CardMediaImage';
-import CardContentSection, {CardContentProps} from '../../tier04/cards/CardContentSection';
+import CardContentSection from '../../tier04/cards/CardContentSection';
 import CardEditFAB from '../../tier04/cards/CardEditFAB';
 import { CardProps } from "./_interfaceCardProps";
 
-// Interface Imports
-// interface CardSettingProps {
-//     numColumns: number
-//     numRows: number
-//     displayEdit: boolean
-//     displayMedia: boolean
-//     mediaHeight: number
-//     displayContent: boolean
-//     contentHeight: number
-//     displayActions: boolean
-//     actionHeight: number
-//     enableActionArea: boolean
-// };
-
-// interface CardDataProps {
-//     editAllowed: boolean
-//     editButtonDestination: string
-//     actionAreaDestination: string
-//     mediaURI: string
-//     mediaAltText: string
-//     contentTexts: Array<CardContentProps>
-// };
-
-// export interface HorizontalCardProps {
-//     settings: CardSettingProps
-//     data: CardDataProps
-// };
 
 interface ClickEvent extends MouseEvent<HTMLButtonElement> {
     target: ClickTarget
