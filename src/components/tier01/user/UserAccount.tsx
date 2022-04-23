@@ -1,4 +1,7 @@
-import { useState } from "react";
+// Library Imports
+import { useState, useEffect } from "react";
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 
 import {
     Grid,
@@ -6,16 +9,22 @@ import {
     Tabs,
     Tab,
     Typography,
-    Box
+    Box,
+    CardProps
 } from "@mui/material"
 
+// Component Imports
 import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
 import CardList, { CardListProps } from "../../tier02/cardlist/CardList";
 
 
+import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
+
 // Provider Imports
-import { useAuth } from '../../../providers/authProvider';
+import { useAlert } from '../../../providers/alertProvider';
+import { authToken, useAuth } from '../../../providers/authProvider';
+import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
 
 
 interface TabPanelProps {
@@ -54,10 +63,71 @@ const tabProps = (index: number) => {
 
 
 const UserAccount = () => {
-    const [tabIDX, setTabIDX] = useState(0);
+    // React / Redux Function Instantiations
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // Context Providers
+    const { alertSetter } = useAlert();
     const { authData } = useAuth();
+    
+    const params: any = useParams();
+    
+    // const reduxPayload: UserProfileProps = useSelector((store: RootStateOrAny) => store?.redUser);
+
+    // const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
+    // const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
+    const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+
+    const equipCardContentList: Array<CardProps>;
+    
+    reduxEquipList.equip.forEach((eVal) => {
+        return ({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 100,
+                displayContent: true,
+                contentHeight:  200,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: eVal.edit_permissions,
+                editButtonDestination: `/equip/${eVal.id}`,
+                actionAreaDestination: `/equip/${eVal.id}`,
+                mediaURI: eVal.image_url,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [{textVariant: "h5", textContent: eVal.name}, {textVariant: "body2", textContent: eVal.headline}, {textVariant: "h5", textContent: eVal.description}]
+            }
+        })
+    }, [])
+
+    const cardDataEquipList: CardListProps = {
+        listid: `${authData.username}-equip-list`,
+        cardType: "stacked",
+        navigate: navigate,
+        cardContent: equipListForCards
+    }
+
+    useEffect(() => {
+        dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
+    }, [dispatch]);
+
+    const ownedObjects: UserOwnedObjectsProps = {
+        groups: reduxGroupList,
+        rooms: reduxRoomList,
+        equips: reduxEquipList
+    };
+
+    const data: ReturnUserObject = reduxPayload.user;
+    const isProcessing = reduxPayload.isProcessing || reduxPayload.user === undefined;
+    const reduxError = reduxPayload.error ? reduxPayload.error : false;
+
+
+    const [tabIDX, setTabIDX] = useState(0);
+    
 
     const handleChange = (e: React.SyntheticEvent, newIDX: number) => {
         setTabIDX(newIDX);
@@ -136,3 +206,33 @@ const UserAccount = () => {
 };
 
 export default UserAccount;
+
+
+
+
+const buildEquipContentList = (data: EquipListProps) => {
+    const retList: Array<CardProps> = data.equip.map((eVal) => {
+        return ({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 100,
+                displayContent: true,
+                contentHeight:  200,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: eVal.edit_permissions,
+                editButtonDestination: `/equip/${eVal.id}`,
+                actionAreaDestination: `/equip/${eVal.id}`,
+                mediaURI: eVal.image_url,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [{textVariant: "h5", textContent: eVal.name}, {textVariant: "body2", textContent: eVal.headline}, {textVariant: "h5", textContent: eVal.description}]
+            }
+        })
+    }, [])
+
+    return retList;
+};

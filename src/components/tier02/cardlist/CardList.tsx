@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 
 // Component Imports
-import HorizontalCard, { HorizontalCardProps } from '../../tier03/cards/HorizontalCard';
+import HorizontalCard from '../../tier03/cards/HorizontalCard';
+import { CardProps } from "../../tier03/cards/_interfaceCardProps";
 
 interface CardListRenderProps {
     xlRows?: number
@@ -30,8 +31,8 @@ export interface CardListProps {
     listid: string
     cardType: string
     navigate: NavigateFunction
-    horizontalCardContent: Array<HorizontalCardProps>
-    renderConfig: CardListRenderProps
+    cardContent: Array<CardProps>
+    renderConfig?: CardListRenderProps
     displayIsProcessing?: boolean
     displayError?: boolean
 };
@@ -60,7 +61,7 @@ const CardList = (config: CardListProps) => {
     };
 
     const stateLoaded = () => {
-        return renderCards(config.listid, config.navigate, config.renderConfig, config.horizontalCardContent);
+        return renderCards(config.listid, config.navigate, config.renderConfig, config.cardContent);
     }
 
     
@@ -92,7 +93,7 @@ const renderCards = (
     listid: string,
     navigate: NavigateFunction,
     renderConfig: CardListRenderProps | undefined,
-    cardData: Array<HorizontalCardProps>
+    cardData: Array<CardProps>
 ) => {
     const [renderFormat, setRenderFormat] = useState({
         rows: 1,
@@ -143,7 +144,7 @@ const renderCards = (
 
     
 
-    const cardsToRender: Array<HorizontalCardProps> = cardData.slice(0, (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) - 1);
+    const cardsToRender: Array<CardProps> = cardData.slice(0, (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) - 1);
     const showDisplayMoreButton: boolean = (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) < cardData.length;
 
     return (
