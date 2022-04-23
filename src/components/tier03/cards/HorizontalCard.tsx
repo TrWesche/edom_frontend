@@ -12,9 +12,9 @@ import {
     Box
 } from "@mui/material"
 
-import CardEditFAB from '../../tier04/cards/cardEditFAB';
 import CardMediaImage from '../../tier04/cards/CardMediaImage';
 import CardContentSection, {CardContentProps} from '../../tier04/cards/CardContentSection';
+import CardEditFAB from '../../tier04/cards/CardEditFAB';
 
 // Interface Imports
 interface CardSettingProps {
@@ -22,8 +22,11 @@ interface CardSettingProps {
     numRows: number
     displayEdit: boolean
     displayMedia: boolean
+    mediaHeight: number
     displayContent: boolean
+    contentHeight: number
     displayActions: boolean
+    actionHeight: number
     enableActionArea: boolean
 };
 
@@ -36,9 +39,8 @@ interface CardDataProps {
     contentTexts: Array<CardContentProps>
 };
 
-export interface CardBaseProps {
+export interface HorizontalCardProps {
     settings: CardSettingProps
-    navigate: NavigateFunction
     data: CardDataProps
 };
 
@@ -60,27 +62,29 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 };
 
 
-const CardBase = (config: CardBaseProps) => {
+const HorizontalCard = (config: HorizontalCardProps, navigate: NavigateFunction) => {
     return (
         <Box>
             {config.settings.displayEdit && 
                 <CardEditFAB 
                     editPermissions={config.data.editAllowed}
-                    navigate={config.navigate}
+                    navigate={navigate}
                     navDestination={config.data.editButtonDestination}
                 />
             }
 
             <Card sx={{ flexGrow: 1}} elevation={2}>
                 {config.settings.enableActionArea ?
-                    <CardActionArea onClick={(e) => handleClick(e, config.navigate, config.data.actionAreaDestination)}>
+                    <CardActionArea onClick={(e) => handleClick(e, navigate, config.data.actionAreaDestination)}>
                         <CardMediaImage 
                             showMedia={config.settings.displayMedia}
+                            mediaHeight={config.settings.mediaHeight}
                             srcURI={config.data.mediaURI}
                             altText={config.data.mediaAltText}
                         />
                         <CardContentSection 
                             showContent={config.settings.displayContent}
+                            contentHeight={config.settings.contentHeight}
                             textSections={config.data.contentTexts}
                         />
                     </CardActionArea>
@@ -88,11 +92,13 @@ const CardBase = (config: CardBaseProps) => {
                     <Fragment>
                         <CardMediaImage 
                             showMedia={config.settings.displayMedia}
+                            mediaHeight={config.settings.mediaHeight}
                             srcURI={config.data.mediaURI}
                             altText={config.data.mediaAltText}
                         />
                         <CardContentSection 
                             showContent={config.settings.displayContent}
+                            contentHeight={config.settings.contentHeight}
                             textSections={config.data.contentTexts}
                         />
                     </Fragment>
@@ -102,4 +108,4 @@ const CardBase = (config: CardBaseProps) => {
     )
 };
 
-export default CardBase;
+export default HorizontalCard;

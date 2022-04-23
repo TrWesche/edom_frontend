@@ -1,158 +1,170 @@
 // Library Imports
-import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+import { Fragment, useLayoutEffect, useState } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 // Material UI
 import {
     Grid,
-    Typography
+    Skeleton,
+    Typography,
+    useTheme
 } from "@mui/material";
 
-// Interface Imports
-import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
-import { ReturnUserObject } from '../../../interfaces/edomUserInterfaces';
-import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
-import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
-
 // Component Imports
-import CardListStackedSkeleton from '../../tier03/cardlist/CardListStackedSkeleton';
+import HorizontalCard, { HorizontalCardProps } from '../../tier03/cards/HorizontalCard';
 
-import EquipCardStackable from '../../tier03/cards/EquipCardStackable';
-
-import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
-import { authToken } from '../../../providers/authProvider';
-
-
-interface CardListStackedProps {
-    equip?: Array<ReturnEquipObject>
-    users?: Array<ReturnUserObject>
-    rooms?: Array<ReturnRoomObject> 
-    group?: Array<ReturnGroupObject>
-    isProcessing: boolean
-    error?: boolean
+interface CardListRenderProps {
+    xlRows?: number
+    lgRows?: number
+    mdRows?: number
+    smRows?: number
+    xsRows?: number
+    xlColumns?: number
+    lgColumns?: number
+    mdColumns?: number
+    smColumns?: number
+    xsColumns?: number
 };
 
-const CardListStacked = (authData: authToken, listid: string, displayqty: number, listType: string) => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+export interface CardListProps {
+    listid: string
+    cardType: string
+    navigate: NavigateFunction
+    horizontalCardContent: Array<HorizontalCardProps>
+    renderConfig: CardListRenderProps
+    displayIsProcessing?: boolean
+    displayError?: boolean
+};
 
-    useEffect(() => {
-        if (authData.username) {
-            switch (listType) {
-                case "equip": 
-                    dispatch(fetchEquipListUser(authData.username));
-                    break;
-                default:
-            }
-        }
-    }, [dispatch])
-
-    const renderData: CardListStackedProps | undefined = useSelector((store: RootStateOrAny) => {
-        switch (listType) {
-            case "equip":
-                return store?.redEquipList
-            default:
-                return undefined
-        }
-    });
-
-    // console.log(renderData);
-
+const CardList = (config: CardListProps) => {
     const stateLoading = () => {
-        console.log("Loading");
-        const skeletonArray = new Array(displayqty).fill(0);
         return (
-            <React.Fragment>
-                {skeletonArray.map((val, idx) => {
-                    return (
-                        <Grid item xs={12} key={`${listid}-${idx}`}>
-                            {CardListStackedSkeleton()}
-                        </Grid>   
-                    );
-                })}
-            </React.Fragment>
+            <Grid item xs={12} key={`${config.listid}-loading`}>
+                <Skeleton>
+                    <Typography>
+                        Loading...
+                    </Typography>
+                </Skeleton>
+            </Grid>   
         );
     };
 
     const stateError = () => {
         return (
-            <React.Fragment>
+            <Fragment>
                 <Typography>
                     Uh oh... Something went wrong.
                 </Typography>
-            </React.Fragment>
+            </Fragment>
         );
     };
 
     const stateLoaded = () => {
-        console.log("Loaded");
-        switch (listType) {
-            case "equip":
-                if (renderData?.equip) { // && isEquip(renderData)) {
-                    return renderEquipCards(listid, navigate, renderData.equip);
-                };
-                break;
-            default:
-        }
+        return renderCards(config.listid, config.navigate, config.renderConfig, config.horizontalCardContent);
     }
 
-    // const displayMore = () => {
-    //     if (list.equip.length > displayqty) {
-    //         return (
-    //             <Grid item xs={12} key={`${listid}-more`}>
-    //                 <p>View More</p>
-    //             </Grid>
-    //         )
-    //     }
-    // };
-
-    if (renderData === undefined || renderData.isProcessing === true) {
-        return (
-            <Grid container item spacing={4} minHeight={310}>
-                {stateLoading()}
-            </Grid>
-        )
-    };
-
-    if (renderData.error) {
-        return (
-            <Grid container item spacing={4} minHeight={310}>
-                {stateError()}
-            </Grid>
-        );
-    } else if (renderData.isProcessing) {
-        return (
-            <Grid container item spacing={4} minHeight={310}>
-                {stateLoading()}
-            </Grid>
-        )
-    } else if (!renderData.isProcessing) {
+    
+    if (config.displayIsProcessing === false || config.displayError === false) {
         return (
             <Grid container item spacing={4} minHeight={310}>
                 {stateLoaded()}
             </Grid>
         )
+    } else if (config.displayError) {
+        return (
+            <Grid container item spacing={4} minHeight={310}>
+                {stateError()}
+            </Grid>
+        );
+    } else {
+        return (
+            <Grid container item spacing={4} minHeight={310}>
+                {stateLoading()}
+            </Grid>
+        )
     };
 };
 
-export default CardListStacked;
+export default CardList;
 
 
-// const isEquip = (equipList: any): equipList is CardListStackedProps =>
-//   (equipList as CardListStackedProps).equip !== undefined;
+const renderCards = (
+    listid: string,
+    navigate: NavigateFunction,
+    renderConfig: CardListRenderProps | undefined,
+    cardData: Array<HorizontalCardProps>
+) => {
+    const [renderFormat, setRenderFormat] = useState({
+        rows: 1,
+        colWidth: 6
+    });
+    const theme = useTheme();
+      
+    useLayoutEffect(() => {
+        function updateSize() {
+            const screenWidth = window.innerWidth - document.getElementsByTagName('html')[0].clientWidth; // subtract scroll bar width
+            if (screenWidth >= theme.breakpoints.values.xl) {
+                setRenderFormat({
+                    rows: renderConfig?.xlRows ? renderConfig.xlRows : 1,
+                    colWidth: renderConfig?.xlColumns ? Math.max(1, Math.trunc(12 / renderConfig.xlColumns)) : 2
+                });
+            } else if (screenWidth >= theme.breakpoints.values.lg && renderConfig?.lgRows) {
+                setRenderFormat({
+                    rows: renderConfig?.lgRows ? renderConfig.lgRows : 1,
+                    colWidth: renderConfig?.lgColumns ? Math.max(1, Math.trunc(12 / renderConfig.lgColumns)) : 3
+                });
+            } else if (screenWidth >= theme.breakpoints.values.md && renderConfig?.mdRows) {
+                setRenderFormat({
+                    rows: renderConfig?.mdRows ? renderConfig.mdRows : 1,
+                    colWidth: renderConfig?.mdColumns ? Math.max(1, Math.trunc(12 / renderConfig.mdColumns)) : 4
+                });
+            } else if (screenWidth >= theme.breakpoints.values.sm && renderConfig?.smRows) {
+                setRenderFormat({
+                    rows: renderConfig?.smRows ? renderConfig.smRows : 2,
+                    colWidth: renderConfig?.smColumns ? Math.max(1, Math.trunc(12 / renderConfig.smColumns)) : 6
+                });
+            } else {
+                setRenderFormat({
+                    rows: renderConfig?.xsRows ? renderConfig.xsRows : 4,
+                    colWidth: renderConfig?.xsColumns ? Math.max(1, Math.trunc(12 / renderConfig.xsColumns)) : 12
+                });
+            }
+        }
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
 
+    // const xlColWidth = renderConfig && renderConfig.xlColumns ? Math.max(1, Math.trunc(12 / renderConfig.xlColumns)) : 2;
+    // const lgColWidth = renderConfig && renderConfig.lgColumns ? Math.max(1, Math.trunc(12 / renderConfig.lgColumns)) : 3;
+    // const mdColWidth = renderConfig && renderConfig.mdColumns ? Math.max(1, Math.trunc(12 / renderConfig.mdColumns)) : 3;
+    // const smColWidth = renderConfig && renderConfig.smColumns ? Math.max(1, Math.trunc(12 / renderConfig.smColumns)) : 3;
+    // const xsColWidth = renderConfig && renderConfig.xsColumns ? Math.max(1, Math.trunc(12 / renderConfig.xsColumns)) : 3;
 
-const renderEquipCards = (listid: string, navigate: NavigateFunction, data: Array<ReturnEquipObject>) => {
+    
+
+    const cardsToRender: Array<HorizontalCardProps> = cardData.slice(0, (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) - 1);
+    const showDisplayMoreButton: boolean = (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) < cardData.length;
+
     return (
-        <React.Fragment>
-            {data.map(card => {
+        <Fragment>
+            {cardsToRender.map((card, idx) => {
                 return (
-                    <Grid item xs={12} key={`${listid}-${card.id}`}>
-                        {EquipCardStackable(card, navigate)}
+                    <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
+                        {HorizontalCard(card, navigate)}
                     </Grid>    
                 )
             })}
-        </React.Fragment>
+            {showDisplayMoreButton && displayMore(listid)}
+        </Fragment>
     )
-}
+};
+
+
+const displayMore = (listid: string,) => {
+    return (
+        <Grid item xs={12} key={`${listid}-view-more`}>
+            <p>View More</p>
+        </Grid>
+    )
+};

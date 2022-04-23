@@ -11,7 +11,7 @@ import {
 
 import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
-import CardListStacked from "../../tier02/cardlist/CardList";
+import CardList, { CardListProps } from "../../tier02/cardlist/CardList";
 
 
 // Provider Imports
@@ -127,7 +127,7 @@ const UserAccount = () => {
                         <Typography>Testing 5</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={6}>
-                        {CardListStacked(authData, `${authData.username}-equip`, 3, "equip")}
+                        {CardList(authData, `${authData.username}-equip`, 3, "equip")}
                     </TabPanel>
                 </Grid>
             </Paper>

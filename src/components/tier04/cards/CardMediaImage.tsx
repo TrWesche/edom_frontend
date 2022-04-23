@@ -5,13 +5,13 @@ import {
 } from "@mui/material"
 
 
-const CardMediaImage = (props: {showMedia: boolean, srcURI: string, altText: string}) => {
+const CardMediaImage = (props: {showMedia: boolean, mediaHeight: number, srcURI: string, altText: string}) => {
     return (
         <Fragment>
             {props.showMedia && 
                 <CardMedia
                     component="img"
-                    height="200"
+                    height={`${props.mediaHeight}px`}
                     src={props.srcURI}
                     alt={props.altText}
                 />
