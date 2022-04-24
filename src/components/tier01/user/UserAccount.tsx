@@ -101,10 +101,10 @@ const UserAccount = () => {
     const equipCardContentList = buildEquipContentList(reduxEquipList);
 
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    // const groupCardContentList = buildGroupContentList(reduxGroupList);
+    const groupCardContentList = buildGroupContentList(reduxGroupList);
 
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
-    // const roomCardContentList = buildRoomContentList(reduxRoomList);
+    const roomCardContentList = buildRoomContentList(reduxRoomList);
     // console.log(reduxEquipList);
     // console.log(equipCardContentList);
 
@@ -116,7 +116,27 @@ const UserAccount = () => {
         renderConfig: UserAccountCardProps,
         displayIsProcessing: reduxEquipList.isProcessing,
         displayError: reduxEquipList.error
-    }
+    };
+
+    const groupCardListData: CardListProps = {
+        listid: `${authData.username}-group-list`,
+        cardType: "stacked",
+        navigate: navigate,
+        cardContent: groupCardContentList,
+        renderConfig: UserAccountCardProps,
+        displayIsProcessing: reduxGroupList.isProcessing,
+        displayError: reduxGroupList.error
+    };
+
+    const roomCardListData: CardListProps = {
+        listid: `${authData.username}-room-list`,
+        cardType: "stacked",
+        navigate: navigate,
+        cardContent: roomCardContentList,
+        renderConfig: UserAccountCardProps,
+        displayIsProcessing: reduxRoomList.isProcessing,
+        displayError: reduxRoomList.error
+    };
 
     useEffect(() => {
         dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
@@ -190,10 +210,10 @@ const UserAccount = () => {
                         <Typography>Testing 3</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={4}>
-                        <Typography>Testing 4</Typography>
+                        {CardList(groupCardListData)}
                     </TabPanel>
                     <TabPanel value={tabIDX} index={5}>
-                        <Typography>Testing 5</Typography>
+                        {CardList(roomCardListData)}
                     </TabPanel>
                     <TabPanel value={tabIDX} index={6}>
                         {CardList(equipCardListData)}
@@ -231,6 +251,80 @@ const buildEquipContentList = (data: EquipListProps ) => {
                 editAllowed: element.edit_permissions || false,
                 editButtonDestination: `/equip/${element.id}` || `#`,
                 actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
+
+
+const buildGroupContentList = (data: GroupListProps ) => {
+    const retList: any = [];
+    if (!data.group) {
+        return retList;
+    }
+    data.group.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                // mediaHeight: 100,
+                mediaWidth: 151,
+                displayContent: true,
+                // contentHeight:  200,
+                displayActions: false,
+                // actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/group/${element.id}` || `#`,
+                actionAreaDestination: `/group/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
+
+
+const buildRoomContentList = (data: RoomListProps ) => {
+    const retList: any = [];
+    if (!data.rooms) {
+        return retList;
+    }
+    data.rooms.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                // mediaHeight: 100,
+                mediaWidth: 151,
+                displayContent: true,
+                // contentHeight:  200,
+                displayActions: false,
+                // actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/room/${element.id}` || `#`,
+                actionAreaDestination: `/room/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
                 contentTexts: [
