@@ -49,8 +49,7 @@ const UserAccountCardProps = {
     mdColumns: 1,
     smColumns: 1,
     xsColumns: 1
-}
-
+};
 
 
 interface TabPanelProps {
@@ -156,7 +155,7 @@ const UserAccount = () => {
     // TODO 2: Page organization will need to change when the page width becomes to small.
     return (
         <Grid container spacing={2} justifyContent={'center'} margin={"30px 0"}>
-            <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'center', padding: '1.5rem' }}>
+            <Paper elevation={3} sx={{ display: 'flex', m: 1, width: '80%', alignItems: 'flex-start', padding: '1.5rem' }}>
                 <Grid item sm={12} md={3}>
                     <Tabs
                         orientation="vertical"
@@ -204,10 +203,10 @@ const UserAccount = () => {
                         {UserUpdateProfileForm()}
                     </TabPanel>
                     <TabPanel value={tabIDX} index={2}>
-                        <Typography>Testing 2</Typography>
+                        <Typography>Under Development</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={3}>
-                        <Typography>Testing 3</Typography>
+                        <Typography>Under Development</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={4}>
                         {CardList(groupCardListData)}
@@ -286,8 +285,8 @@ const buildGroupContentList = (data: GroupListProps ) => {
             },
             data: {
                 editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/group/${element.id}` || `#`,
-                actionAreaDestination: `/group/${element.id}` || `#`,
+                editButtonDestination: `/groups/${element.id}` || `#`,
+                actionAreaDestination: `/groups/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
                 contentTexts: [
@@ -323,8 +322,8 @@ const buildRoomContentList = (data: RoomListProps ) => {
             },
             data: {
                 editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/room/${element.id}` || `#`,
-                actionAreaDestination: `/room/${element.id}` || `#`,
+                editButtonDestination: `/rooms/${element.id}` || `#`,
+                actionAreaDestination: `/rooms/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
                 contentTexts: [
