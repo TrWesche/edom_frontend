@@ -13,6 +13,7 @@ import {
 // Component Imports
 import HorizontalCard from '../../tier03/cards/HorizontalCard';
 import { CardProps } from "../../tier03/cards/_interfaceCardProps";
+import StackedCard from '../../tier03/cards/StackedCard';
 
 interface CardListRenderProps {
     xlRows?: number
@@ -62,7 +63,7 @@ const CardList = (config: CardListProps) => {
     };
 
     const stateLoaded = () => {
-        return RenderCards(config.listid, config.navigate, config.renderConfig, config.cardContent);
+        return RenderCards(config.listid, config.navigate, config.cardType, config.renderConfig, config.cardContent);
     }
 
     
@@ -93,6 +94,7 @@ export default CardList;
 const RenderCards = (
     listid: string,
     navigate: NavigateFunction,
+    cardType: string,
     renderConfig: CardListRenderProps | undefined,
     cardData: Array<CardProps>
 ) => {
@@ -164,18 +166,50 @@ const RenderCards = (
     // console.log(cardsToRender);
     // console.log(showDisplayMoreButton);
 
-    return (
-        <Fragment>
-            {cardsToRender.map((card, idx) => {
-                return (
-                    <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
-                        {HorizontalCard(card, navigate)}
-                    </Grid>    
-                )
-            })}
-            {showDisplayMoreButton && displayMore(listid)}
-        </Fragment>
-    )
+    switch (cardType) {
+        case "horizontal":
+            return (
+                <Fragment>
+                    {cardsToRender.map((card, idx) => {
+                        return (
+                            <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
+                                {HorizontalCard(card, navigate)}
+                            </Grid>    
+                        )
+                    })}
+                    {showDisplayMoreButton && displayMore(listid)}
+                </Fragment>
+            );
+        case "stacked":
+            console.log("Rendering Stacked");
+            return (
+                <Fragment>
+                    {cardsToRender.map((card, idx) => {
+                        return (
+                            <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
+                                {StackedCard(card, navigate)}
+                            </Grid>    
+                        )
+                    })}
+                    {showDisplayMoreButton && displayMore(listid)}
+                </Fragment>
+            )
+        default:
+            return (
+                <Fragment>
+                    {cardsToRender.map((card, idx) => {
+                        return (
+                            <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
+                                {HorizontalCard(card, navigate)}
+                            </Grid>    
+                        )
+                    })}
+                    {showDisplayMoreButton && displayMore(listid)}
+                </Fragment>
+            )
+
+    }
+    
 };
 
 

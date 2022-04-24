@@ -11,14 +11,14 @@ export interface CardContentProps {
     textContent: string
 };
 
-const CardContentSection = (props: {showContent: boolean, contentHeight: number, textSections: Array<CardContentProps>}) => {
+const CardContentSection = (props: {showContent: boolean, contentHeight?: number, textSections: Array<CardContentProps>}) => {
     return (
         <Fragment>
             {props.showContent && 
                 <CardContent
                     sx={{
-                        height: `${props.contentHeight}px`,
-                        textOverflow: 'ellipsis' 
+                        height: props.contentHeight ? `${props.contentHeight}px` : "auto",
+                        textOverflow: 'ellipsis'
                     }}
                 >
                     {

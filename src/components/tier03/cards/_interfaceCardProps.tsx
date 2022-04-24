@@ -4,11 +4,12 @@ import {CardContentProps} from '../../tier04/cards/CardContentSection';
 export interface CardSettingProps {
     displayEdit: boolean
     displayMedia: boolean
-    mediaHeight: number
+    mediaHeight?: number
+    mediaWidth?: number
     displayContent: boolean
-    contentHeight: number
+    contentHeight?: number
     displayActions: boolean
-    actionHeight: number
+    actionHeight?: number
     enableActionArea: boolean
 };
 

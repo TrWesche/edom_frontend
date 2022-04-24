@@ -31,7 +31,7 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 };
 
 
-const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
+const StackedCard = (config: CardProps, navigate: NavigateFunction) => {
     return (
         <Box>
             {config.settings.displayEdit && 
@@ -42,9 +42,12 @@ const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
                 />
             }
 
-            <Card sx={{ flexGrow: 1}} elevation={2}>
+            <Card sx={{ display:"flex", flexDirection:"row", flexGrow: 1}} elevation={2}>
+                
                 {config.settings.enableActionArea ?
-                    <CardActionArea onClick={(e) => handleClick(e, navigate, config.data.actionAreaDestination)}>
+                    <CardActionArea 
+                        sx={{display: 'flex', justifyContent: 'flex-start'}}
+                        onClick={(e) => handleClick(e, navigate, config.data.actionAreaDestination)}>
                         <CardMediaImage 
                             showMedia={config.settings.displayMedia}
                             mediaHeight={config.settings.mediaHeight}
@@ -52,14 +55,21 @@ const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
                             srcURI={config.data.mediaURI}
                             altText={config.data.mediaAltText}
                         />
-                        <CardContentSection 
-                            showContent={config.settings.displayContent}
-                            contentHeight={config.settings.contentHeight}
-                            textSections={config.data.contentTexts}
-                        />
+                        <Box sx={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            flexGrow: 1, 
+                            maxHeight: config.settings.mediaHeight ? config.settings.mediaHeight : 'none',
+                        }}>
+                            <CardContentSection 
+                                showContent={config.settings.displayContent}
+                                contentHeight={config.settings.contentHeight}
+                                textSections={config.data.contentTexts}
+                            />
+                        </Box>
                     </CardActionArea>
                     :
-                    <Fragment>
+                    <Fragment>                
                         <CardMediaImage 
                             showMedia={config.settings.displayMedia}
                             mediaHeight={config.settings.mediaHeight}
@@ -67,11 +77,13 @@ const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
                             srcURI={config.data.mediaURI}
                             altText={config.data.mediaAltText}
                         />
-                        <CardContentSection 
-                            showContent={config.settings.displayContent}
-                            contentHeight={config.settings.contentHeight}
-                            textSections={config.data.contentTexts}
-                        />
+                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                            <CardContentSection 
+                                showContent={config.settings.displayContent}
+                                contentHeight={config.settings.contentHeight}
+                                textSections={config.data.contentTexts}
+                            />
+                        </Box>
                     </Fragment>
                 }
             </Card>
@@ -79,4 +91,4 @@ const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
     )
 };
 
-export default HorizontalCard;
+export default StackedCard;

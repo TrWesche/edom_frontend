@@ -12,30 +12,42 @@ import {
     Box
 } from "@mui/material"
 
+// import {
+//     PlayArrow as PlayArrowIcon,
+//     SkipNext as SkipNextIcon,
+//     SkipPrevious as SkipPreviousIcon
+// } from "@mui/icons-material"
+
 // Component Imports
 import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
 import CardList, { CardListProps } from "../../tier02/cardlist/CardList";
+import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
 
-
+// Redux Action Imports
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
+import { fetchGroupListUser } from "../../../redux/actions/actGroupList";
+import { fetchRoomListUser } from "../../../redux/actions/actRoomList";
 
 // Provider Imports
 // import { useAlert } from '../../../providers/alertProvider';
 import { useAuth } from '../../../providers/authProvider';
-import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
+import { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
+import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
+
+
 
 
 const UserAccountCardProps = {
-    xlRows: 1,
-    lgRows: 1,
-    mdRows: 1,
-    smRows: 2,
-    xsRows: 3,
-    xlColumns: 6,
-    lgColumns: 5,
-    mdColumns: 4,
-    smColumns: 2,
+    xlRows: 6,
+    lgRows: 6,
+    mdRows: 6,
+    smRows: 6,
+    xsRows: 6,
+    xlColumns: 1,
+    lgColumns: 1,
+    mdColumns: 1,
+    smColumns: 1,
     xsColumns: 1
 }
 
@@ -87,6 +99,12 @@ const UserAccount = () => {
 
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
     const equipCardContentList = buildEquipContentList(reduxEquipList);
+
+    const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
+    // const groupCardContentList = buildGroupContentList(reduxGroupList);
+
+    const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
+    // const roomCardContentList = buildRoomContentList(reduxRoomList);
     // console.log(reduxEquipList);
     // console.log(equipCardContentList);
 
@@ -102,6 +120,8 @@ const UserAccount = () => {
 
     useEffect(() => {
         dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
+        dispatch(fetchGroupListUser(authData.username ? authData.username : "error"));
+        dispatch(fetchRoomListUser(authData.username ? authData.username : "error"))
     }, [dispatch, authData.username]);
 
 
@@ -199,23 +219,24 @@ const buildEquipContentList = (data: EquipListProps ) => {
             settings: {
                 displayEdit: true,
                 displayMedia: true,
-                mediaHeight: 100,
+                // mediaHeight: 100,
+                mediaWidth: 151,
                 displayContent: true,
-                contentHeight:  200,
+                // contentHeight:  200,
                 displayActions: false,
-                actionHeight: 100,
+                // actionHeight: 100,
                 enableActionArea: true
             },
             data: {
                 editAllowed: element.edit_permissions || false,
                 editButtonDestination: `/equip/${element.id}` || `#`,
                 actionAreaDestination: `/equip/${element.id}` || `#`,
-                mediaURI: element.image_url || `Not Found`,
+                mediaURI: element.image_url || `Image Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
                 contentTexts: [
                     {textVariant: "h5", textContent: element.name}, 
                     {textVariant: "body2", textContent: element.headline}, 
-                    {textVariant: "h5", textContent: element.description}
+                    // {textVariant: "body2", textContent: element.description}
                 ]
             }
         })
