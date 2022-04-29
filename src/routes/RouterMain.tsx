@@ -14,7 +14,7 @@ import UserUpdateAccount from "../components/tier01/user/UserUpdateAccount";
 import UserUpdatePassword from "../components/tier01/user/UserUpdatePassword";
 import UserProfile from "../components/tier01/user/UserProfile";
 import GroupDirectoryUser from "../components/tier01/group/GroupDirectoryUser";
-import EquipDirectoryUser from "../components/tier01/directories/EquipDirectoryUser";
+import EquipDirectoryUser from "../components/tier01/equipment/EquipDirectoryUser";
 import RoomDirectoryUser from "../components/tier01/directories/RoomDirectoryUser";
 
 import GroupProfile from "../components/tier01/group/GroupProfile";
