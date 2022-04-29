@@ -1,6 +1,6 @@
 // React
 import React, { useEffect } from 'react';
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 // Redux
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
@@ -24,15 +24,22 @@ import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
 // Interface Imports
+import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
+import { RoomListProps } from '../../tier02/cardlist/RoomCardListHorizontal';
 
 
-import EquipCardListHorizontal, { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
-
-
-
-interface ReduxDataPayload {
-    equips: EquipListProps
+const RoomDirectoryCardProps = {
+    xlRows: 1,
+    lgRows: 1,
+    mdRows: 2,
+    smRows: 3,
+    xsRows: 6,
+    xlColumns: 4,
+    lgColumns: 4,
+    mdColumns: 3,
+    smColumns: 2,
+    xsColumns: 1
 };
 
 
@@ -47,27 +54,6 @@ const CheckboxesGroup = () => {
         event.preventDefault();
 
         console.log("Filter Submit Clicked");
-
-        // setAlertValues({open: true, content: "Filter Submit Clicked", severity: "info"});
-
-//         try {
-//             await apiEDOM.loginUser(formValues);
-// \
-//             if (!updateAuth) {
-//                 console.log("Error: Auth Handling Function Returned Undefined")
-//             } else {
-//                 updateAuth();
-//             }
-// \
-//             navigate('/');
-//         } catch (error: any) {
-//             if (error[0] && error[0].length > 0) {
-//                 const errorText = error[0];
-//                 setAlertValues({open: true, content: errorText, severity: "error"});
-//             } else {
-//                 setAlertValues({open: true, content: "Oops something went wrong.", severity: "error"});
-//             }
-//         }
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,19 +114,19 @@ const CheckboxesGroup = () => {
 }
 
 
-const ExploreEquipsHeader = () => {
+const RoomDirectoryUserHeader = () => {
     return (
         <React.Fragment>
             <Grid item container width={'100%'} margin={'0 0 2rem 0'}>
                 <Grid item xs={12} md={7} display={'flex'} justifyContent={'center'}>
                     <img 
                         src='https://picturepark.com/data/cutting-edge-large.png'
-                        alt='Hero Image'
+                        alt='Hero'
                         height='400px'
                     />
                 </Grid>
 
-                <Grid item container xs={12} md={5} flexDirection='column' display={'flex'} justifyContent={'center'}>
+                <Grid item xs={12} md={5} flexDirection='column' display={'flex'} justifyContent={'center'}>
                     {CheckboxesGroup()}
                 </Grid>
             </Grid>
@@ -153,18 +139,25 @@ const PageLoadHandler = (props: {
         authData: authToken, 
         navigate: NavigateFunction,
         alertSetter: Function | undefined, 
-        reduxData: ReduxDataPayload}) => {
-    const { authData, navigate, alertSetter, reduxData } = props; 
-
+        renderData: CardListProps}) => {
+    const { authData, navigate, alertSetter, renderData } = props; 
 
     const pageLoaded = () => {
         return (
             <React.Fragment>
-                {ExploreEquipsHeader()}
+                {RoomDirectoryUserHeader()}
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
-                    <Typography variant='h4' color={'text.primary'}>Equip</Typography>
+                    <Typography variant='h4' color={'text.primary'}>Rooms</Typography>
                 </Grid>
-                {EquipCardListHorizontal(navigate, "explore-equips", 15, reduxData.equips)}
+                <CardList 
+                    listid={renderData.listid}
+                    cardType={renderData.cardType}
+                    navigate={renderData.navigate}
+                    cardContent={renderData.cardContent}
+                    renderConfig={renderData.renderConfig}
+                    displayIsProcessing={renderData.displayIsProcessing}
+                    displayError={renderData.displayError}
+                />
             </React.Fragment>
             
         );
@@ -186,28 +179,34 @@ const PageLoadHandler = (props: {
     );
 };
 
-const EquipDirectoryUser = () => {
+
+const RoomDirectoryUser = () => {
     // React / Redux Function Instantiations
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // Context Providers
     const { alertSetter } = useAlert();
     const { authData } = useAuth();
 
-    const params: any = useParams();
+    const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
+    const roomCardContentList = buildRoomContentList(reduxRoomList);
 
-    // React / Redux Function Instantiations
-    const dispatch = useDispatch();
-    
-    const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+    const roomCardListData: CardListProps = {
+        listid: `${authData.username}-room-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: roomCardContentList,
+        renderConfig: RoomDirectoryCardProps,
+        displayIsProcessing: reduxRoomList.isProcessing,
+        displayError: reduxRoomList.error
+    };
+
 
     useEffect(() => {
-        dispatch(fetchEquipListUser(params.username));
-    }, [dispatch]);
+        dispatch(fetchEquipListUser(authData.username ? authData.username : "error"));
+    }, [dispatch, authData.username]);
 
-    const reduxData: ReduxDataPayload = {
-        equips: reduxEquipList
-    };
 
     return (
         <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
@@ -215,10 +214,49 @@ const EquipDirectoryUser = () => {
                 authData={authData}
                 navigate={navigate}
                 alertSetter={alertSetter}
-                reduxData={reduxData}
+                renderData={roomCardListData}
             />
         </Grid>
     )
-};
+}
 
-export default EquipDirectoryUser;
+export default RoomDirectoryUser;
+
+
+
+
+const buildRoomContentList = (data: RoomListProps ) => {
+    const retList: any = [];
+    if (!data.rooms) {
+        return retList;
+    }
+    data.rooms.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/rooms/${element.id}` || `#`,
+                actionAreaDestination: `/rooms/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
