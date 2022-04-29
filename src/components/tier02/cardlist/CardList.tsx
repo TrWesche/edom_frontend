@@ -150,7 +150,7 @@ const RenderCards = (
         window.addEventListener('resize', updateSize);
         updateSize();
         return () => window.removeEventListener('resize', updateSize);
-    }, [renderConfig, window.innerWidth]);
+    }, [renderConfig, window.innerWidth, theme.breakpoints.values]);
 
     // const xlColWidth = renderConfig && renderConfig.xlColumns ? Math.max(1, Math.trunc(12 / renderConfig.xlColumns)) : 2;
     // const lgColWidth = renderConfig && renderConfig.lgColumns ? Math.max(1, Math.trunc(12 / renderConfig.lgColumns)) : 3;
@@ -181,7 +181,7 @@ const RenderCards = (
                 </Fragment>
             );
         case "stacked":
-            console.log("Rendering Stacked");
+            // console.log("Rendering Stacked");
             return (
                 <Fragment>
                     {cardsToRender.map((card, idx) => {

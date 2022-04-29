@@ -13,7 +13,7 @@ import UserAccount from "../components/tier01/user/UserAccount";
 import UserUpdateAccount from "../components/tier01/user/UserUpdateAccount";
 import UserUpdatePassword from "../components/tier01/user/UserUpdatePassword";
 import UserProfile from "../components/tier01/user/UserProfile";
-import GroupDirectoryUser from "../components/tier01/directories/GroupDirectoryUser";
+import GroupDirectoryUser from "../components/tier01/group/GroupDirectoryUser";
 import EquipDirectoryUser from "../components/tier01/directories/EquipDirectoryUser";
 import RoomDirectoryUser from "../components/tier01/directories/RoomDirectoryUser";
 
@@ -47,9 +47,11 @@ const RouterMain = () => {
 
                 <Route path="users" element={<UserDirectorySite />} />
                 <Route path="users/:username" element={<UserProfile />} />
-                <Route path="users/:username/equip" element={<EquipDirectoryUser />} />
-                <Route path="users/:username/rooms" element={<RoomDirectoryUser />} />
-                <Route path="users/:username/groups" element={<GroupDirectoryUser />} />
+
+                <Route path="dm/:username/groups" element={<GroupDirectoryUser />} />
+                <Route path="dm/:username/equip" element={<EquipDirectoryUser />} />
+                <Route path="dm/:username/rooms" element={<RoomDirectoryUser />} />
+                
                 <Route path="dm/account" element={<UserAccount />} />
                 <Route path="dm/account/edit" element={<UserUpdateAccount />} />
                 <Route path="dm/account/cpw" element={<UserUpdatePassword />} />

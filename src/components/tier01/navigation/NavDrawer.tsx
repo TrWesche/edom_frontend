@@ -132,8 +132,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
             { authData.logged_in ? 
                 <ListItemButton 
                     key='navdrawer-favorites'
-                    href={`/${authData.username}/favorites`}
-                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/favorites`)}
+                    href={`/dm/${authData.username}/favorites`}
+                    onClick={(event) => handleClick(event, navigate, `/dm/${authData.username}/favorites`)}
                 >
                     <ListItemIcon>
                         <Star color="secondary" />
@@ -143,8 +143,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
                 :
                 <ListItemButton 
                     key='navdrawer-favorites'
-                    href='/user/favorites'
-                    onClick={(event) => handleClick(event, navigate, `/user/favorites`)}
+                    href='/guest/favorites'
+                    onClick={(event) => handleClick(event, navigate, `/guest/favorites`)}
                     disabled
                 >
                     <ListItemIcon>
@@ -157,8 +157,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
             { authData.logged_in ? 
                 <ListItemButton 
                     key='navdrawer-groups'
-                    href={`/${authData.username}/groups`}
-                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/groups`)}>
+                    href={`/dm/${authData.username}/groups`}
+                    onClick={(event) => handleClick(event, navigate, `/dm/${authData.username}/groups`)}>
                     <ListItemIcon>
                         <Group color="secondary" />
                     </ListItemIcon>
@@ -167,8 +167,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
                 :
                 <ListItemButton 
                     key='navdrawer-groups'
-                    href={`/user/groups`}
-                    onClick={(event) => handleClick(event, navigate, `/user/groups`)}
+                    href={`/guest/groups`}
+                    onClick={(event) => handleClick(event, navigate, `/guest/groups`)}
                     disabled
                 >
                     <ListItemIcon>
@@ -181,8 +181,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
             { authData.logged_in ? 
                 <ListItemButton 
                     key='navdrawer-rooms'
-                    href={`/${authData.username}/rooms`}
-                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/rooms`)}
+                    href={`/dm/${authData.username}/rooms`}
+                    onClick={(event) => handleClick(event, navigate, `/dm/${authData.username}/rooms`)}
                 >
                     <ListItemIcon>
                         <MeetingRoom color="secondary" />
@@ -192,8 +192,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
                 :
                 <ListItemButton 
                     key='navdrawer-rooms'
-                    href={`/user/rooms`}
-                    onClick={(event) => handleClick(event, navigate, `/user/rooms`)}
+                    href={`/guest/rooms`}
+                    onClick={(event) => handleClick(event, navigate, `/guest/rooms`)}
                     disabled
                 >
                     <ListItemIcon>
@@ -206,8 +206,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
             { authData.logged_in ? 
                 <ListItemButton 
                     key='navdrawer-equip'
-                    href={`/${authData.username}/equip`}
-                    onClick={(event) => handleClick(event, navigate, `/${authData.username}/equip`)}
+                    href={`/dm/${authData.username}/equip`}
+                    onClick={(event) => handleClick(event, navigate, `/dm/${authData.username}/equip`)}
                 >
                     <ListItemIcon>
                         <DeviceHub color="secondary" />
@@ -217,8 +217,8 @@ function NavDrawer ({ drawerwidth, open, handleDrawerClose, authData, navigate }
                 :
                 <ListItemButton 
                     key='navdrawer-equip'
-                    href={`/user/equip`}
-                    onClick={(event) => handleClick(event, navigate, `/user/equip`)}
+                    href={`/guest/equip`}
+                    onClick={(event) => handleClick(event, navigate, `/guest/equip`)}
                     disabled
                 >
                     <ListItemIcon>
