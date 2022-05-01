@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, MouseEvent } from 'react';
+import React, { useEffect } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Redux
@@ -22,25 +22,31 @@ import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
 // Interface Imports
-import EquipCardListHorizontal, { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
+import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
 import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
 import { fetchRoomProfile } from '../../../redux/actions/actRoom';
 import { fetchEquipListRoom } from '../../../redux/actions/actEquipList';
+import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
 
+
+const EquipDirectoryCardProps = {
+    xlRows: 1,
+    lgRows: 1,
+    mdRows: 2,
+    smRows: 3,
+    xsRows: 6,
+    xlColumns: 4,
+    lgColumns: 4,
+    mdColumns: 3,
+    smColumns: 2,
+    xsColumns: 1
+};
 
 interface ReduxDataPayload {
     Room: ReturnRoomObject
-    equips: EquipListProps
+    Equip: CardListProps
 };
 
-
-interface ClickEvent extends MouseEvent<HTMLButtonElement> {
-    target: ClickTarget
-};
-
-interface ClickTarget extends EventTarget {
-    href?: string
-};
 
 const handleClick = (e: React.MouseEvent, navigate: NavigateFunction, target: string) => {
     e.preventDefault();
@@ -52,7 +58,11 @@ const handleClick = (e: React.MouseEvent, navigate: NavigateFunction, target: st
     }
 };
 
-const RoomProfileHeader = (navigate: NavigateFunction, data: ReturnRoomObject) => {
+const RoomProfileHeader = (props: {
+    navigate: NavigateFunction,
+    data: ReturnRoomObject}) => 
+{
+    const {navigate, data} = props;
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
@@ -255,8 +265,11 @@ const RoomProfileHeader = (navigate: NavigateFunction, data: ReturnRoomObject) =
 };
 
 
-const RoomEquipSection = (navigate: NavigateFunction, data: EquipListProps) => {
-    if (data && data.equip && data.equip.length !== 0) {
+const RoomEquipSection = (props: {
+    data: CardListProps}) => 
+{
+    const {data} = props;
+    if (data && data.cardContent && data.cardContent.length !== 0) {
         return (
             <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
@@ -264,29 +277,38 @@ const RoomEquipSection = (navigate: NavigateFunction, data: EquipListProps) => {
                     <Typography variant='h4' color={'text.primary'}>Room Equip</Typography>
                 </Grid>
                 <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
-                    {EquipCardListHorizontal(navigate, "Room-equip", 4, data)}
+                    <CardList 
+                        listid={data.listid}
+                        cardType={data.cardType}
+                        navigate={data.navigate}
+                        cardContent={data.cardContent}
+                        renderConfig={data.renderConfig}
+                        displayIsProcessing={data.displayIsProcessing}
+                        displayError={data.displayError}
+                    />
                 </Grid>
             </Grid>
         </Paper>
         )
-    } 
+    } else {
+        return <React.Fragment />
+    }
 };
 
 const PageLoadHandler = (props: {
     authData: authToken, 
     navigate: NavigateFunction,
     alertSetter: Function | undefined, 
-    reduxData: ReduxDataPayload}) => {
-    const { authData, navigate, alertSetter, reduxData } = props; 
+    renderData: ReduxDataPayload}) => {
+    const { authData, navigate, alertSetter, renderData } = props; 
 
 
     const pageLoaded = () => {
         return (
-            <React.Fragment> 
-                {RoomProfileHeader(navigate, reduxData.Room)}
-                {RoomEquipSection(navigate, reduxData.equips)}
+            <React.Fragment>
+                <RoomProfileHeader navigate={navigate} data={renderData.Room} />
+                <RoomEquipSection data={renderData.Equip} />
             </React.Fragment>
-            
         );
     };
 
@@ -323,6 +345,17 @@ const RoomProfile = () => {
 
     const reduxRoom: ReturnRoomObject = useSelector((store: RootStateOrAny) => store?.redRoom);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+    const equipCardContentList = buildEquipContentList(reduxEquipList);
+
+    const equipCardListData: CardListProps = {
+        listid: `${authData.username}-equip-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: equipCardContentList,
+        renderConfig: EquipDirectoryCardProps,
+        displayIsProcessing: reduxEquipList.isProcessing,
+        displayError: reduxEquipList.error
+    };
 
 
     useEffect(() => {
@@ -330,9 +363,9 @@ const RoomProfile = () => {
         dispatch(fetchEquipListRoom(params.roomID));
     }, [dispatch]);
 
-    const reduxData: ReduxDataPayload = {
+    const renderData: ReduxDataPayload = {
         Room: reduxRoom,
-        equips: reduxEquipList
+        Equip: equipCardListData
     };
 
     return (
@@ -342,7 +375,7 @@ const RoomProfile = () => {
                     authData={authData}
                     navigate={navigate}
                     alertSetter={alertSetter}
-                    reduxData={reduxData}
+                    renderData={renderData}
                 />
             </Grid>
         </Grid>
@@ -350,3 +383,41 @@ const RoomProfile = () => {
 };
 
 export default RoomProfile;
+
+
+
+const buildEquipContentList = (data: EquipListProps ) => {
+    const retList: any = [];
+    if (!data.equip) {
+        return retList;
+    }
+    data.equip.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/equip/${element.id}` || `#`,
+                actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
