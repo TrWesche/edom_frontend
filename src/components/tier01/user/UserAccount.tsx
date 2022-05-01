@@ -197,10 +197,10 @@ const UserAccount = () => {
                 </Grid>
                 <Grid item sm={12} md={9}>
                     <TabPanel value={tabIDX} index={0}>
-                        {UserUpdateAccountForm()}
+                        <UserUpdateAccountForm />
                     </TabPanel>
                     <TabPanel value={tabIDX} index={1}>
-                        {UserUpdateProfileForm()}
+                        <UserUpdateProfileForm />
                     </TabPanel>
                     <TabPanel value={tabIDX} index={2}>
                         <Typography>Under Development</Typography>
@@ -209,13 +209,37 @@ const UserAccount = () => {
                         <Typography>Under Development</Typography>
                     </TabPanel>
                     <TabPanel value={tabIDX} index={4}>
-                        {CardList(groupCardListData)}
+                        <CardList 
+                            listid={groupCardListData.listid}
+                            cardType={groupCardListData.cardType}
+                            navigate={groupCardListData.navigate}
+                            cardContent={groupCardListData.cardContent}
+                            renderConfig={groupCardListData.renderConfig}
+                            displayIsProcessing={groupCardListData.displayIsProcessing}
+                            displayError={groupCardListData.displayError}
+                        />
                     </TabPanel>
                     <TabPanel value={tabIDX} index={5}>
-                        {CardList(roomCardListData)}
+                        <CardList 
+                            listid={roomCardListData.listid}
+                            cardType={roomCardListData.cardType}
+                            navigate={roomCardListData.navigate}
+                            cardContent={roomCardListData.cardContent}
+                            renderConfig={roomCardListData.renderConfig}
+                            displayIsProcessing={roomCardListData.displayIsProcessing}
+                            displayError={roomCardListData.displayError}
+                        />
                     </TabPanel>
                     <TabPanel value={tabIDX} index={6}>
-                        {CardList(equipCardListData)}
+                        <CardList 
+                            listid={equipCardListData.listid}
+                            cardType={equipCardListData.cardType}
+                            navigate={equipCardListData.navigate}
+                            cardContent={equipCardListData.cardContent}
+                            renderConfig={equipCardListData.renderConfig}
+                            displayIsProcessing={equipCardListData.displayIsProcessing}
+                            displayError={equipCardListData.displayError}
+                        />
                     </TabPanel>
                 </Grid>
             </Paper>
