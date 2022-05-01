@@ -27,14 +27,22 @@ import { useAlert } from '../../../providers/alertProvider';
 import { fetchEquipList } from '../../../redux/actions/actEquipList';
 
 
-import EquipCardListHorizontal, { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
+import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
+import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
 
 
-
-interface ReduxDataPayload {
-    equips: EquipListProps
+const EquipListRenderSettings = {
+    xlRows: 3,
+    lgRows: 3,
+    mdRows: 4,
+    smRows: 6,
+    xsRows: 12,
+    xlColumns: 4,
+    lgColumns: 4,
+    mdColumns: 3,
+    smColumns: 2,
+    xsColumns: 1
 };
-
 
 const CheckboxesGroup = () => {
     const [state, setState] = React.useState({
@@ -153,18 +161,26 @@ const PageLoadHandler = (props: {
         authData: authToken, 
         navigate: NavigateFunction,
         alertSetter: Function | undefined, 
-        reduxData: ReduxDataPayload}) => {
-    const { authData, navigate, alertSetter, reduxData } = props; 
-
+        renderData: CardListProps}) => {
+    const { authData, navigate, alertSetter, renderData } = props; 
+    
 
     const pageLoaded = () => {
         return (
             <React.Fragment>
-                {ExploreEquipsHeader()}
+                <ExploreEquipsHeader />
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Equip</Typography>
                 </Grid>
-                {EquipCardListHorizontal(navigate, "explore-equips", 15, reduxData.equips)}
+                <CardList 
+                    listid={renderData.listid}
+                    cardType={renderData.cardType}
+                    navigate={renderData.navigate}
+                    cardContent={renderData.cardContent}
+                    renderConfig={renderData.renderConfig}
+                    displayIsProcessing={renderData.displayIsProcessing}
+                    displayError={renderData.displayError}
+                />
             </React.Fragment>
             
         );
@@ -200,14 +216,21 @@ const ExploreEquip = () => {
     const dispatch = useDispatch();
     
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
+    const equipCardContentList = buildEquipContentList(reduxEquipList);
+
+    const equipCardListData: CardListProps = {
+        listid: `${authData.username}-equip-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: equipCardContentList,
+        renderConfig: EquipListRenderSettings,
+        displayIsProcessing: reduxEquipList.isProcessing,
+        displayError: reduxEquipList.error
+    };
 
     useEffect(() => {
         dispatch(fetchEquipList());
     }, [dispatch]);
-
-    const reduxData: ReduxDataPayload = {
-        equips: reduxEquipList
-    };
 
     return (
         <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
@@ -215,10 +238,47 @@ const ExploreEquip = () => {
                 authData={authData}
                 navigate={navigate}
                 alertSetter={alertSetter}
-                reduxData={reduxData}
+                renderData={equipCardListData}
             />
         </Grid>
     )
 }
 
 export default ExploreEquip;
+
+
+const buildEquipContentList = (data: EquipListProps ) => {
+    const retList: any = [];
+    if (!data.equip) {
+        return retList;
+    }
+    data.equip.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/equip/${element.id}` || `#`,
+                actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};

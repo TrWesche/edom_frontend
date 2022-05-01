@@ -293,7 +293,7 @@ const PageLoadHandler = (props: {
 
 
 
-const RoomProfile = () => {
+const EquipProfile = () => {
     // React / Redux Function Instantiations
     const navigate = useNavigate();
 
@@ -331,4 +331,4 @@ const RoomProfile = () => {
     )
 };
 
-export default RoomProfile;
+export default EquipProfile;
