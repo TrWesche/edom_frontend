@@ -219,7 +219,7 @@ const ExploreEquip = () => {
     const equipCardContentList = buildEquipContentList(reduxEquipList);
 
     const equipCardListData: CardListProps = {
-        listid: `${authData.username}-equip-list`,
+        listid: `explore-equip-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: equipCardContentList,

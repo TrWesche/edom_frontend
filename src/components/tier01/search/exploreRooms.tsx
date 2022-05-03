@@ -224,7 +224,7 @@ const ExploreRooms = () => {
     const roomCardContentList = buildRoomContentList(reduxRoomList);
 
     const roomCardListData: CardListProps = {
-        listid: `${authData.username}-equip-list`,
+        listid: `explore-room-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: roomCardContentList,

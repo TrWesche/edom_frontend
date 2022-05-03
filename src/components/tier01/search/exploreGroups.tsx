@@ -28,7 +28,7 @@ import { fetchGroupList } from '../../../redux/actions/actGroupList';
 
 // Component Imports
 import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
-import GroupCardListHorizontal, { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
+import { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
 
 const CardRenderProps = {
     xlRows: 1,
@@ -41,11 +41,6 @@ const CardRenderProps = {
     mdColumns: 3,
     smColumns: 2,
     xsColumns: 1
-};
-
-
-interface ReduxDataPayload {
-    groups: CardListProps
 };
 
 
@@ -223,8 +218,8 @@ const ExploreGroups = () => {
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
     const groupCardContentList = buildGroupContentList(reduxGroupList);
 
-    const equipCardListData: CardListProps = {
-        listid: `${authData.username}-group-list`,
+    const groupCardListData: CardListProps = {
+        listid: `explore-group-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: groupCardContentList,
@@ -243,7 +238,7 @@ const ExploreGroups = () => {
                 authData={authData}
                 navigate={navigate}
                 alertSetter={alertSetter}
-                renderData={equipCardListData}
+                renderData={groupCardListData}
             />
         </Grid>
     )
