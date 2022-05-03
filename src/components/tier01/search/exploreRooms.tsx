@@ -23,11 +23,26 @@ import {
 import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
-// Interface Imports
+// Redux Imports
 import { fetchRoomList } from '../../../redux/actions/actRoomList';
 
-import RoomCardListHorizontal, { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
+// Component & Interface Imports
+import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
+import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
 
+
+const ContentRenderSettings = {
+    xlRows: 3,
+    lgRows: 3,
+    mdRows: 4,
+    smRows: 6,
+    xsRows: 12,
+    xlColumns: 4,
+    lgColumns: 4,
+    mdColumns: 3,
+    smColumns: 2,
+    xsColumns: 1
+};
 
 interface ReduxDataPayload {
     rooms: RoomListProps
@@ -151,18 +166,26 @@ const PageLoadHandler = (props: {
         authData: authToken, 
         navigate: NavigateFunction,
         alertSetter: Function | undefined, 
-        reduxData: ReduxDataPayload}) => {
-    const { authData, navigate, alertSetter, reduxData } = props; 
+        renderData: CardListProps}) => {
+    const { authData, navigate, alertSetter, renderData } = props; 
 
 
     const pageLoaded = () => {
         return (
             <React.Fragment>
-                {ExploreRoomsHeader()}
+                <ExploreRoomsHeader />
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Rooms</Typography>
                 </Grid>
-                {RoomCardListHorizontal(navigate, "explore-rooms", 15, reduxData.rooms)}
+                <CardList 
+                    listid={renderData.listid}
+                    cardType={renderData.cardType}
+                    navigate={renderData.navigate}
+                    cardContent={renderData.cardContent}
+                    renderConfig={renderData.renderConfig}
+                    displayIsProcessing={renderData.displayIsProcessing}
+                    displayError={renderData.displayError}
+                />
             </React.Fragment>
             
         );
@@ -198,6 +221,17 @@ const ExploreRooms = () => {
     const dispatch = useDispatch();
     
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
+    const roomCardContentList = buildRoomContentList(reduxRoomList);
+
+    const roomCardListData: CardListProps = {
+        listid: `${authData.username}-equip-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: roomCardContentList,
+        renderConfig: ContentRenderSettings,
+        displayIsProcessing: reduxRoomList.isProcessing,
+        displayError: reduxRoomList.error
+    };
 
     useEffect(() => {
         dispatch(fetchRoomList());
@@ -213,10 +247,48 @@ const ExploreRooms = () => {
                 authData={authData}
                 navigate={navigate}
                 alertSetter={alertSetter}
-                reduxData={reduxData}
+                renderData={roomCardListData}
             />
         </Grid>
     )
 }
 
 export default ExploreRooms;
+
+
+
+const buildRoomContentList = (data: RoomListProps ) => {
+    const retList: any = [];
+    if (!data.rooms) {
+        return retList;
+    }
+    data.rooms.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/equip/${element.id}` || `#`,
+                actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};

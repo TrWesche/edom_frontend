@@ -173,7 +173,7 @@ const PageLoadHandler = (props: {
     const pageLoaded = () => {
         return (
             <React.Fragment>
-                {ExploreGroupsHeader()}
+                <ExploreGroupsHeader />
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Groups</Typography>
                 </Grid>
