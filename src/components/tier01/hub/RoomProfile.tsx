@@ -22,11 +22,15 @@ import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
 // Interface Imports
-import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
 import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
+
+// Redux Imports
 import { fetchRoomProfile } from '../../../redux/actions/actRoom';
 import { fetchEquipListRoom } from '../../../redux/actions/actEquipList';
+
+// Component Imports
 import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
+import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
 
 
 const EquipDirectoryCardProps = {

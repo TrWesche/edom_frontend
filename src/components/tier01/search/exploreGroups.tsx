@@ -23,15 +23,29 @@ import {
 import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
-// Interface Imports
+// Redux Imports
 import { fetchGroupList } from '../../../redux/actions/actGroupList';
 
+// Component Imports
+import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
 import GroupCardListHorizontal, { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
 
+const CardRenderProps = {
+    xlRows: 1,
+    lgRows: 1,
+    mdRows: 2,
+    smRows: 3,
+    xsRows: 6,
+    xlColumns: 4,
+    lgColumns: 4,
+    mdColumns: 3,
+    smColumns: 2,
+    xsColumns: 1
+};
 
 
 interface ReduxDataPayload {
-    groups: GroupListProps
+    groups: CardListProps
 };
 
 
@@ -152,8 +166,8 @@ const PageLoadHandler = (props: {
         authData: authToken, 
         navigate: NavigateFunction,
         alertSetter: Function | undefined, 
-        reduxData: ReduxDataPayload}) => {
-    const { authData, navigate, alertSetter, reduxData } = props; 
+        renderData: CardListProps}) => {
+    const { authData, navigate, alertSetter, renderData } = props; 
 
 
     const pageLoaded = () => {
@@ -163,7 +177,15 @@ const PageLoadHandler = (props: {
                 <Grid item container width={'100%'} margin={'2rem 0 0 0'}>
                     <Typography variant='h4' color={'text.primary'}>Groups</Typography>
                 </Grid>
-                {GroupCardListHorizontal(navigate, "explore-groups", 15, reduxData.groups)}
+                <CardList 
+                    listid={renderData.listid}
+                    cardType={renderData.cardType}
+                    navigate={renderData.navigate}
+                    cardContent={renderData.cardContent}
+                    renderConfig={renderData.renderConfig}
+                    displayIsProcessing={renderData.displayIsProcessing}
+                    displayError={renderData.displayError}
+                />
             </React.Fragment>
             
         );
@@ -199,14 +221,21 @@ const ExploreGroups = () => {
     const dispatch = useDispatch();
     
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
+    const groupCardContentList = buildGroupContentList(reduxGroupList);
+
+    const equipCardListData: CardListProps = {
+        listid: `${authData.username}-group-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: groupCardContentList,
+        renderConfig: CardRenderProps,
+        displayIsProcessing: reduxGroupList.isProcessing,
+        displayError: reduxGroupList.error
+    };
 
     useEffect(() => {
         dispatch(fetchGroupList());
     }, [dispatch]);
-
-    const reduxData: ReduxDataPayload = {
-        groups: reduxGroupList
-    };
 
     return (
         <Grid container spacing={2} justifyContent={'center'} width={'100%'}>
@@ -214,10 +243,47 @@ const ExploreGroups = () => {
                 authData={authData}
                 navigate={navigate}
                 alertSetter={alertSetter}
-                reduxData={reduxData}
+                renderData={equipCardListData}
             />
         </Grid>
     )
 }
 
 export default ExploreGroups;
+
+
+const buildGroupContentList = (data: GroupListProps ) => {
+    const retList: any = [];
+    if (!data.group) {
+        return retList;
+    }
+    data.group.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/groups/${element.id}` || `#`,
+                actionAreaDestination: `/groups/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
