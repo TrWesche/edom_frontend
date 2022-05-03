@@ -22,9 +22,10 @@ import { useAlert } from '../../../providers/alertProvider';
 import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
 
 // Component Imports
-import EquipCardListHorizontal, { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
-import RoomCardListHorizontal, { RoomListProps } from '../../tier02/cardlist/RoomCardListHorizontal';
-import UserCardListHorizontal, { UserListProps } from '../../tier02/cardlist/UserCardListHorizontal';
+import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
+import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
+import { RoomListProps } from '../../tier02/cardlist/RoomCardListHorizontal';
+import { UserListProps } from '../../tier02/cardlist/UserCardListHorizontal';
 
 // Redux Action Imports
 import { fetchEquipListGroup } from '../../../redux/actions/actEquipList';
@@ -32,11 +33,25 @@ import { fetchGroupProfile } from '../../../redux/actions/actGroup';
 import { fetchRoomListGroup } from '../../../redux/actions/actRoomList';
 import { fetchUserListGroup } from '../../../redux/actions/actUserList';
 
+
+const CardRenderProps = {
+    xlRows: 1,
+    lgRows: 1,
+    mdRows: 2,
+    smRows: 3,
+    xsRows: 6,
+    xlColumns: 4,
+    lgColumns: 4,
+    mdColumns: 3,
+    smColumns: 2,
+    xsColumns: 1
+};
+
 interface ReduxDataPayload {
     group: ReturnGroupObject
-    users: UserListProps
-    rooms: RoomListProps
-    equips: EquipListProps
+    user: CardListProps
+    room: CardListProps
+    equip: CardListProps
 };
 
 
@@ -48,17 +63,10 @@ interface ClickTarget extends EventTarget {
     href?: string
 };
 
-const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) => {
-    e.preventDefault();
-    // console.log(`Clicked: ${target}`)
-    if (target !== "") {
-        navigate(target);
-    } else {
-        console.log("Error, destination not defined")
-    }
-};
 
-const GroupProfileHeader = (navigate: NavigateFunction, data: ReturnGroupObject) => {
+const GroupProfileHeader = (props: {navigate: NavigateFunction, data: ReturnGroupObject}) => {
+    const {data, navigate} = props;
+
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
@@ -140,55 +148,91 @@ const GroupProfileHeader = (navigate: NavigateFunction, data: ReturnGroupObject)
     )
 };
 
-const GroupUserSection = (navigate: NavigateFunction, data: UserListProps) => {
-    if (data && data.users && data.users.length !== 0) {
+const GroupUserSection = (props: {renderData: CardListProps}) => {
+    const {renderData} = props;
+
+    if (renderData && renderData.cardContent.length !== 0) {
         return (
             <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
                 <Grid item xs={12}>
-                    <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
+                    <Typography variant='h4' color={'text.primary'}>Users</Typography>
                 </Grid>
                 <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
-                    {UserCardListHorizontal(navigate, "group-equip", 4, data)}
+                    <CardList 
+                        listid={renderData.listid}
+                        cardType={renderData.cardType}
+                        navigate={renderData.navigate}
+                        cardContent={renderData.cardContent}
+                        renderConfig={renderData.renderConfig}
+                        displayIsProcessing={renderData.displayIsProcessing}
+                        displayError={renderData.displayError}
+                    />
                 </Grid>
             </Grid>
         </Paper>
         )
-    } 
+    } else {
+        return <React.Fragment />
+    };
 };
 
-const GroupRoomSection = (navigate: NavigateFunction, data: RoomListProps) => {
-    if (data && data.rooms && data.rooms.length !== 0) {
-        return (
-            <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
-                <Grid item container xs={12}>
-                    <Grid item xs={12}>
-                        <Typography variant='h4' color={'text.primary'}>Group Rooms</Typography>
-                    </Grid>
-                    <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
-                        {RoomCardListHorizontal(navigate, "group-rooms", 4, data)}
-                    </Grid>
-                </Grid>
-            </Paper>
-        )
-    }
-};
+const GroupRoomSection = (props: {renderData: CardListProps}) => {
+    const {renderData} = props;
 
-const GroupEquipSection = (navigate: NavigateFunction, data: EquipListProps) => {
-    if (data && data.equip && data.equip.length !== 0) {
+    if (renderData && renderData.cardContent.length !== 0) {
         return (
             <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
             <Grid item container xs={12}>
                 <Grid item xs={12}>
-                    <Typography variant='h4' color={'text.primary'}>Group Equip</Typography>
+                    <Typography variant='h4' color={'text.primary'}>Rooms</Typography>
                 </Grid>
                 <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
-                    {EquipCardListHorizontal(navigate, "group-equip", 4, data)}
+                    <CardList 
+                        listid={renderData.listid}
+                        cardType={renderData.cardType}
+                        navigate={renderData.navigate}
+                        cardContent={renderData.cardContent}
+                        renderConfig={renderData.renderConfig}
+                        displayIsProcessing={renderData.displayIsProcessing}
+                        displayError={renderData.displayError}
+                    />
                 </Grid>
             </Grid>
         </Paper>
         )
-    } 
+    } else {
+        return <React.Fragment />
+    };
+};
+
+const GroupEquipSection = (props: {renderData: CardListProps}) => {
+    const {renderData} = props;
+
+    if (renderData && renderData.cardContent.length !== 0) {
+        return (
+            <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
+            <Grid item container xs={12}>
+                <Grid item xs={12}>
+                    <Typography variant='h4' color={'text.primary'}>Equipment</Typography>
+                </Grid>
+                <Grid item container xs={12} margin={"1rem 0rem 0rem 0rem"}>
+                    <CardList 
+                        listid={renderData.listid}
+                        cardType={renderData.cardType}
+                        navigate={renderData.navigate}
+                        cardContent={renderData.cardContent}
+                        renderConfig={renderData.renderConfig}
+                        displayIsProcessing={renderData.displayIsProcessing}
+                        displayError={renderData.displayError}
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
+        )
+    } else {
+        return <React.Fragment />
+    };
 };
 
 const PageLoadHandler = (props: {
@@ -202,10 +246,10 @@ const PageLoadHandler = (props: {
     const pageLoaded = () => {
         return (
             <React.Fragment> 
-                {GroupProfileHeader(navigate, reduxData.group)}
-                {GroupUserSection(navigate, reduxData.users)}
-                {GroupRoomSection(navigate, reduxData.rooms)}
-                {GroupEquipSection(navigate, reduxData.equips)}
+                <GroupProfileHeader navigate={navigate} data={reduxData.group} />
+                <GroupUserSection renderData={reduxData.user} />
+                <GroupRoomSection renderData={reduxData.room} />
+                <GroupEquipSection renderData={reduxData.equip} />
             </React.Fragment>
             
         );
@@ -247,6 +291,40 @@ const GroupProfile = () => {
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
+    const userCardContentList = buildUserContentList(reduxUserList);
+    const roomCardContentList = buildRoomContentList(reduxRoomList);
+    const equipCardContentList = buildEquipContentList(reduxEquipList);
+
+    const userCardListData: CardListProps = {
+        listid: `${params.groupID}-user-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: userCardContentList,
+        renderConfig: CardRenderProps,
+        displayIsProcessing: reduxUserList.isProcessing,
+        displayError: reduxUserList.error
+    };
+
+    const roomCardListData: CardListProps = {
+        listid: `${params.groupID}-room-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: roomCardContentList,
+        renderConfig: CardRenderProps,
+        displayIsProcessing: reduxRoomList.isProcessing,
+        displayError: reduxRoomList.error
+    };
+
+    const equipCardListData: CardListProps = {
+        listid: `${params.groupID}-equip-list`,
+        cardType: "horizontal",
+        navigate: navigate,
+        cardContent: equipCardContentList,
+        renderConfig: CardRenderProps,
+        displayIsProcessing: reduxEquipList.isProcessing,
+        displayError: reduxEquipList.error
+    };
+
 
     useEffect(() => {
         dispatch(fetchGroupProfile(params.groupID));
@@ -257,9 +335,9 @@ const GroupProfile = () => {
 
     const reduxData: ReduxDataPayload = {
         group: reduxGroup,
-        users: reduxUserList,
-        rooms: reduxRoomList,
-        equips: reduxEquipList
+        user: userCardListData,
+        room: roomCardListData,
+        equip: equipCardListData
     };
 
     return (
@@ -277,3 +355,115 @@ const GroupProfile = () => {
 };
 
 export default GroupProfile;
+
+
+
+const buildEquipContentList = (data: EquipListProps ) => {
+    const retList: any = [];
+    if (!data.equip) {
+        return retList;
+    }
+    data.equip.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/equip/${element.id}` || `#`,
+                actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
+
+
+const buildRoomContentList = (data: RoomListProps ) => {
+    const retList: any = [];
+    if (!data.rooms) {
+        return retList;
+    }
+    data.rooms.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/equip/${element.id}` || `#`,
+                actionAreaDestination: `/equip/${element.id}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.name}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
+
+
+const buildUserContentList = (data: UserListProps ) => {
+    const retList: any = [];
+    if (!data.users) {
+        return retList;
+    }
+    data.users.forEach(element => {
+        retList.push({
+            settings: {
+                displayEdit: true,
+                displayMedia: true,
+                mediaHeight: 200,
+                // mediaWidth: 200,
+                displayContent: true,
+                contentHeight:  100,
+                displayActions: false,
+                actionHeight: 100,
+                enableActionArea: true
+            },
+            data: {
+                editAllowed: element.edit_permissions || false,
+                editButtonDestination: `/users/${element.username_clean}` || `#`,
+                actionAreaDestination: `/users/${element.username_clean}` || `#`,
+                mediaURI: element.image_url || `Image Not Found`,
+                mediaAltText: "TODO - Alt Text Not Stored",
+                contentTexts: [
+                    {textVariant: "h5", textContent: element.username}, 
+                    {textVariant: "body2", textContent: element.headline}, 
+                    // {textVariant: "body2", textContent: element.description}
+                ]
+            }
+        })
+    });
+
+    return retList;
+};
