@@ -23,6 +23,9 @@ import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
 import CardList, { CardListProps } from "../../tier02/cardlist/CardList";
 import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
+import { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
+import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
+
 
 // Redux Action Imports
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
@@ -32,11 +35,6 @@ import { fetchRoomListUser } from "../../../redux/actions/actRoomList";
 // Provider Imports
 // import { useAlert } from '../../../providers/alertProvider';
 import { useAuth } from '../../../providers/authProvider';
-import { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
-import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
-
-
-
 
 const UserAccountCardProps = {
     xlRows: 6,
@@ -50,7 +48,6 @@ const UserAccountCardProps = {
     smColumns: 1,
     xsColumns: 1
 };
-
 
 interface TabPanelProps {
     children?: React.ReactNode;
