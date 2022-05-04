@@ -32,13 +32,12 @@ import { fetchRoomListUser } from '../../../redux/actions/actRoomList';
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
 
 // Component Imports
-import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
-import { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
-import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
-import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
+import CardList from '../../tier02/cardlist/CardList';
 
+// Interface Imports
+import { CardListProps, CardListRenderProps, GroupListProps, RoomListProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
 
-const CardRenderProps = {
+const CardRenderProps: CardListRenderProps = {
     xlRows: 1,
     lgRows: 1,
     mdRows: 2,

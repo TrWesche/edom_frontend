@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, MouseEvent } from 'react';
+import React, { useEffect } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Redux
@@ -18,14 +18,12 @@ import {
 import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
-// Interface Imports
-import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
-
 // Component Imports
-import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
-import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
-import { RoomListProps } from '../../tier02/cardlist/RoomCardListHorizontal';
-import { UserListProps } from '../../tier02/cardlist/UserCardListHorizontal';
+import CardList from '../../tier02/cardlist/CardList';
+
+// Interface Imports
+import { CardListProps, CardListRenderProps, EquipListProps, RoomListProps, UserListProps } from '../../tier02/cardlist/CardListInterfaces';
+import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
 
 // Redux Action Imports
 import { fetchEquipListGroup } from '../../../redux/actions/actEquipList';
@@ -34,7 +32,7 @@ import { fetchRoomListGroup } from '../../../redux/actions/actRoomList';
 import { fetchUserListGroup } from '../../../redux/actions/actUserList';
 
 
-const CardRenderProps = {
+const CardRenderProps: CardListRenderProps = {
     xlRows: 1,
     lgRows: 1,
     mdRows: 2,
@@ -52,15 +50,6 @@ interface ReduxDataPayload {
     user: CardListProps
     room: CardListProps
     equip: CardListProps
-};
-
-
-interface ClickEvent extends MouseEvent<HTMLButtonElement> {
-    target: ClickTarget
-};
-
-interface ClickTarget extends EventTarget {
-    href?: string
 };
 
 

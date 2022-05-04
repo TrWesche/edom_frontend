@@ -18,13 +18,18 @@ import {
 //     SkipPrevious as SkipPreviousIcon
 // } from "@mui/icons-material"
 
+
+// Provider Imports
+// import { useAlert } from '../../../providers/alertProvider';
+import { useAuth } from '../../../providers/authProvider';
+
 // Component Imports
+import CardList from '../../tier02/cardlist/CardList';
 import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
-import CardList, { CardListProps } from "../../tier02/cardlist/CardList";
-import { EquipListProps } from "../../tier02/cardlist/EquipCardListHorizontal";
-import { GroupListProps } from "../../tier02/cardlist/GroupCardListHorizontal";
-import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
+
+// Interface Imports
+import { CardListProps, CardListRenderProps, GroupListProps, RoomListProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
 
 
 // Redux Action Imports
@@ -32,11 +37,8 @@ import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
 import { fetchGroupListUser } from "../../../redux/actions/actGroupList";
 import { fetchRoomListUser } from "../../../redux/actions/actRoomList";
 
-// Provider Imports
-// import { useAlert } from '../../../providers/alertProvider';
-import { useAuth } from '../../../providers/authProvider';
 
-const UserAccountCardProps = {
+const UserAccountCardProps: CardListRenderProps = {
     xlRows: 6,
     lgRows: 6,
     mdRows: 6,

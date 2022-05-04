@@ -12,31 +12,11 @@ import {
 
 // Component Imports
 import HorizontalCard from '../../tier03/cards/HorizontalCard';
-import { CardProps } from "../../tier03/cards/_interfaceCardProps";
 import StackedCard from '../../tier03/cards/StackedCard';
 
-interface CardListRenderProps {
-    xlRows?: number
-    lgRows?: number
-    mdRows?: number
-    smRows?: number
-    xsRows?: number
-    xlColumns?: number
-    lgColumns?: number
-    mdColumns?: number
-    smColumns?: number
-    xsColumns?: number
-};
-
-export interface CardListProps {
-    listid: string
-    cardType: string
-    navigate: NavigateFunction
-    cardContent: Array<CardProps>
-    renderConfig?: CardListRenderProps
-    displayIsProcessing?: boolean
-    displayError?: boolean
-};
+// Interface Imports
+import { CardListProps, CardListRenderProps } from './CardListInterfaces';
+import { CardProps } from "../../tier03/cards/_interfaceCardProps";
 
 const CardList = (config: CardListProps) => {
     // console.log(config);
@@ -152,13 +132,6 @@ const RenderCards = (
         return () => window.removeEventListener('resize', updateSize);
     }, [renderConfig, window.innerWidth, theme.breakpoints.values]);
 
-    // const xlColWidth = renderConfig && renderConfig.xlColumns ? Math.max(1, Math.trunc(12 / renderConfig.xlColumns)) : 2;
-    // const lgColWidth = renderConfig && renderConfig.lgColumns ? Math.max(1, Math.trunc(12 / renderConfig.lgColumns)) : 3;
-    // const mdColWidth = renderConfig && renderConfig.mdColumns ? Math.max(1, Math.trunc(12 / renderConfig.mdColumns)) : 3;
-    // const smColWidth = renderConfig && renderConfig.smColumns ? Math.max(1, Math.trunc(12 / renderConfig.smColumns)) : 3;
-    // const xsColWidth = renderConfig && renderConfig.xsColumns ? Math.max(1, Math.trunc(12 / renderConfig.xsColumns)) : 3;
-
-    
 
     const cardsToRender: Array<CardProps> = cardData.slice(0, (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) - 1);
     const showDisplayMoreButton: boolean = (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) < cardData.length;

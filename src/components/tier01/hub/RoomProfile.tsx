@@ -21,19 +21,19 @@ import {
 import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
+// Component Imports
+import CardList from '../../tier02/cardlist/CardList';
+
 // Interface Imports
+import { CardListProps, CardListRenderProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
 import { ReturnRoomObject } from '../../../interfaces/edomRoomInterfaces';
 
 // Redux Imports
 import { fetchRoomProfile } from '../../../redux/actions/actRoom';
 import { fetchEquipListRoom } from '../../../redux/actions/actEquipList';
 
-// Component Imports
-import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
-import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
 
-
-const EquipDirectoryCardProps = {
+const EquipDirectoryCardProps: CardListRenderProps = {
     xlRows: 1,
     lgRows: 1,
     mdRows: 2,

@@ -23,18 +23,17 @@ import { authToken } from '../../../providers/authProvider';
 
 import HandleButtonClick from '../../../utils/HandleButtonClick';
 
+// Component Imports
+import CardList from '../../tier02/cardlist/CardList';
+
 // Interface Imports
+import { CardListProps, CardListRenderProps, GroupListProps, RoomListProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
+
+// Redux Action Imports
 import { fetchGroupList } from '../../../redux/actions/actGroupList';
 import { fetchRoomList } from '../../../redux/actions/actRoomList';
 
-// Component Imports
-import CardList, { CardListProps } from '../cardlist/CardList';
-import { GroupListProps } from "../cardlist/GroupCardListHorizontal";
-import { RoomListProps } from "../cardlist/RoomCardListHorizontal";
-import { EquipListProps } from '../cardlist/EquipCardListHorizontal';
-
-
-const CardRenderProps = {
+const CardRenderProps: CardListRenderProps = {
     xlRows: 1,
     lgRows: 1,
     mdRows: 2,

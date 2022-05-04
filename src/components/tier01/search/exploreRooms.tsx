@@ -23,15 +23,16 @@ import {
 import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
-// Redux Imports
+// Component Imports
+import CardList from '../../tier02/cardlist/CardList';
+
+// Interface Imports
+import { CardListProps, CardListRenderProps, RoomListProps } from '../../tier02/cardlist/CardListInterfaces';
+
+// Redux Action Imports
 import { fetchRoomList } from '../../../redux/actions/actRoomList';
 
-// Component & Interface Imports
-import { RoomListProps } from "../../tier02/cardlist/RoomCardListHorizontal";
-import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
-
-
-const ContentRenderSettings = {
+const ContentRenderSettings: CardListRenderProps = {
     xlRows: 3,
     lgRows: 3,
     mdRows: 4,

@@ -23,14 +23,17 @@ import {
 import { authToken, useAuth } from '../../../providers/authProvider';
 import { useAlert } from '../../../providers/alertProvider';
 
-// Interface Imports
+// Component Imports
+import CardList from '../../tier02/cardlist/CardList';
 
-import CardList, { CardListProps } from '../../tier02/cardlist/CardList';
-import { EquipListProps } from '../../tier02/cardlist/EquipCardListHorizontal';
+// Interface Imports
+import { CardListProps, CardListRenderProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
+
+// Redux Actions
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
 
 
-const EquipDirectoryCardProps = {
+const EquipDirectoryCardProps: CardListRenderProps = {
     xlRows: 1,
     lgRows: 1,
     mdRows: 2,
