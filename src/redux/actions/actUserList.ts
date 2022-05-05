@@ -51,12 +51,13 @@ const gotUserList = (data: Array<ReturnUserObject | undefined>) => {
 };
 
 
-const fetchUserListGroup = (groupID: string, queryParams?: Array<QueryStringFilterProps>) => {
+const fetchUserListGroup = (queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchUserListGroup());
         try {
             const queryString = formQueryString(queryParams);
-            const result = await apiEDOM.getGroupUsers(groupID, queryString);
+            // const result = await apiEDOM.getGroupUsers(groupID, queryString);
+            const result = await apiEDOM.getUserList(queryString);
             const data = result.data;
             
             dispatch(gotUserListGroup(data));

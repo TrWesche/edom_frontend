@@ -82,12 +82,13 @@ const gotRoomListUser = (data: Array<ReturnRoomObject | undefined>) => {
 };
 
 
-const fetchRoomListGroup = (groupID: string, queryParams?: Array<QueryStringFilterProps>) => {
+const fetchRoomListGroup = (queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchRoomListGroup());
         try {
             const queryString = formQueryString(queryParams);
-            const result = await apiEDOM.getGroupRooms(groupID, queryString);
+            // const result = await apiEDOM.getGroupRooms(groupID, queryString);
+            const result = await apiEDOM.getRoomList(queryString);
             const data = result.data;
             
             dispatch(gotRoomListGroup(data));

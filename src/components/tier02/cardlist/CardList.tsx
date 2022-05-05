@@ -130,7 +130,7 @@ const RenderCards = (
         window.addEventListener('resize', updateSize);
         updateSize();
         return () => window.removeEventListener('resize', updateSize);
-    }, [renderConfig, window.innerWidth, theme.breakpoints.values]);
+    }, [renderConfig, theme.breakpoints.values]);
 
 
     const cardsToRender: Array<CardProps> = cardData.slice(0, (renderFormat.rows * Math.trunc(12/renderFormat.colWidth)) - 1);

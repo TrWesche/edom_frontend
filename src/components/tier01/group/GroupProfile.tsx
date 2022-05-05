@@ -317,9 +317,9 @@ const GroupProfile = () => {
 
     useEffect(() => {
         dispatch(fetchGroupProfile(params.groupID));
-        dispatch(fetchUserListGroup(params.groupID));
-        dispatch(fetchRoomListGroup(params.groupID));
-        dispatch(fetchEquipListGroup(params.groupID));
+        dispatch(fetchUserListGroup([{key: "gid", value: params.groupID}]));
+        dispatch(fetchRoomListGroup([{key: "gid", value: params.groupID}]));
+        dispatch(fetchEquipListGroup([{key: "gid", value: params.groupID}]));
     }, [dispatch]);
 
     const reduxData: ReduxDataPayload = {
@@ -404,8 +404,8 @@ const buildRoomContentList = (data: RoomListProps ) => {
             },
             data: {
                 editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/equip/${element.id}` || `#`,
-                actionAreaDestination: `/equip/${element.id}` || `#`,
+                editButtonDestination: `/rooms/${element.id}` || `#`,
+                actionAreaDestination: `/rooms/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
                 contentTexts: [

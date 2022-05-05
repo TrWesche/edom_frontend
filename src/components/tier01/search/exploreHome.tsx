@@ -375,8 +375,8 @@ const buildRoomContentList = (data: RoomListProps ) => {
             },
             data: {
                 editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/equip/${element.id}` || `#`,
-                actionAreaDestination: `/equip/${element.id}` || `#`,
+                editButtonDestination: `/rooms/${element.id}` || `#`,
+                actionAreaDestination: `/rooms/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
                 mediaAltText: "TODO - Alt Text Not Stored",
                 contentTexts: [

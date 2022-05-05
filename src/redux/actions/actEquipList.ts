@@ -80,12 +80,13 @@ const gotEquipListUser = (data: Array<ReturnEquipObject | undefined>) => {
 };
 
 
-const fetchEquipListGroup = (groupID: string, queryParams?: Array<QueryStringFilterProps>) => {
+const fetchEquipListGroup = (queryParams?: Array<QueryStringFilterProps>) => {
     return async function (dispatch: Dispatch) {
         dispatch(startFetchEquipListGroup());
         try {
             const queryString = formQueryString(queryParams);
-            const result = await apiEDOM.getGroupEquip(groupID, queryString);
+            // const result = await apiEDOM.getGroupEquip(groupID, queryString);
+            const result = await apiEDOM.getEquipList(queryString);
             const data = result.data;
             
             dispatch(gotEquipListGroup(data));
