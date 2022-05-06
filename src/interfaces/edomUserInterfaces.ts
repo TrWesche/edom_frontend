@@ -12,6 +12,7 @@ export interface RequestUserObject {
     headline?: string
     about?: string
     image_url?: string
+    image_alt_text?: string
     public_profile?: boolean
     member_from?: string
 };
@@ -32,6 +33,7 @@ export interface ReturnUserObject {
     headline?: string
     about?: string
     image_url?: string
+    image_alt_text?: string
     public_profile?: boolean
     member_from?: string
     edit_permissions?: boolean

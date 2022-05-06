@@ -5,6 +5,7 @@ export interface RequestRoomObject {
     name?: string
     category: string
     image_url?: string
+    image_alt_text?: string
     headline?: string
     description?: string
     public_room?: boolean
@@ -16,6 +17,7 @@ export interface ReturnRoomObject {
     name?: string
     category: string
     image_url?: string
+    image_alt_text?: string
     headline?: string
     description?: string
     public_room?: boolean

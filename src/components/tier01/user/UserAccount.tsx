@@ -274,7 +274,7 @@ const buildEquipContentList = (data: EquipListProps ) => {
                 editButtonDestination: `/equip/${element.id}` || `#`,
                 actionAreaDestination: `/equip/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
+                mediaAltText: element.image_alt_text ? element.image_alt_text : "Image Description Not Found",
                 contentTexts: [
                     {textVariant: "h5", textContent: element.name}, 
                     {textVariant: "body2", textContent: element.headline}, 
@@ -311,7 +311,7 @@ const buildGroupContentList = (data: GroupListProps ) => {
                 editButtonDestination: `/groups/${element.id}` || `#`,
                 actionAreaDestination: `/groups/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
+                mediaAltText: element.image_alt_text ? element.image_alt_text : "Image Description Not Found",
                 contentTexts: [
                     {textVariant: "h5", textContent: element.name}, 
                     {textVariant: "body2", textContent: element.headline}, 
@@ -348,7 +348,7 @@ const buildRoomContentList = (data: RoomListProps ) => {
                 editButtonDestination: `/rooms/${element.id}` || `#`,
                 actionAreaDestination: `/rooms/${element.id}` || `#`,
                 mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
+                mediaAltText: element.image_alt_text ? element.image_alt_text : "Image Description Not Found",
                 contentTexts: [
                     {textVariant: "h5", textContent: element.name}, 
                     {textVariant: "body2", textContent: element.headline}, 

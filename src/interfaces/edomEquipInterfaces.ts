@@ -6,6 +6,7 @@ export interface RequestEquipObject {
     description?: string
     category: string
     image_url?: string
+    image_alt_text?: string
     configuration?: EquipConfigurationProps
     public_equip?: boolean
 };
@@ -19,6 +20,7 @@ export interface ReturnEquipObject {
     description?: string
     category: string
     image_url?: string
+    image_alt_text?: string
     configuration?: EquipConfigurationProps
     public_equip?: boolean
     owner_user?: OwnerUser

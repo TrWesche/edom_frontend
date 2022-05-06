@@ -4,6 +4,7 @@ export interface RequestGroupObject {
     headline?: string
     description?: string
     image_url?: string
+    image_alt_text?: string
     location?: string
     public_group?: boolean
 };
@@ -14,6 +15,7 @@ export interface ReturnGroupObject {
     headline?: string
     description?: string
     image_url?: string
+    image_alt_text?: string
     location?: string
     public_group?: boolean
     edit_permissions?: boolean
