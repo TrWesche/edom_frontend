@@ -55,7 +55,7 @@ const UserAccountCardSettings: CardSettingProps = {
     displayContent: true,
     displayActions: false,
     enableActionArea: true
-}
+};
 
 interface TabPanelProps {
     children?: React.ReactNode;

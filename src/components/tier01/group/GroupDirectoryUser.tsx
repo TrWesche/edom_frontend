@@ -26,8 +26,13 @@ import { useAlert } from '../../../providers/alertProvider';
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
 
+// Component Function Imports
+import { buildGroupCardContentList } from "../../tier02/cardlist/CardListFunctions";
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, GroupListProps } from '../../tier02/cardlist/CardListInterfaces';
+
 
 // Redux Action Imports
 import { fetchGroupListUser } from '../../../redux/actions/actGroupList';
@@ -45,6 +50,16 @@ const GroupDirectoryCardProps: CardListRenderProps = {
     xsColumns: 1
 };
 
+const GroupDirectoryCardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaHeight: 200,
+    displayContent: true,
+    contentHeight:  100,
+    displayActions: false,
+    actionHeight: 100,
+    enableActionArea: true
+};
 
 const CheckboxesGroup = () => {
     const [state, setState] = React.useState({
@@ -193,7 +208,7 @@ const GroupDirectoryUser = () => {
     const { authData } = useAuth();
 
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    const groupCardContentList = buildGroupContentList(reduxGroupList);
+    const groupCardContentList = buildGroupCardContentList(GroupDirectoryCardSettings, reduxGroupList);
 
     const groupCardListData: CardListProps = {
         listid: `${authData.username}-group-list`,
@@ -224,42 +239,3 @@ const GroupDirectoryUser = () => {
 }
 
 export default GroupDirectoryUser;
-
-
-
-
-const buildGroupContentList = (data: GroupListProps ) => {
-    const retList: any = [];
-    if (!data.group) {
-        return retList;
-    }
-    data.group.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/groups/${element.id}` || `#`,
-                actionAreaDestination: `/groups/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};

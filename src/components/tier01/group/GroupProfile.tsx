@@ -21,9 +21,13 @@ import { useAlert } from '../../../providers/alertProvider';
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
 
+// Component Function Imports
+import { buildEquipCardContentList, buildRoomCardContentList, buildUserCardContentList } from "../../tier02/cardlist/CardListFunctions";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, EquipListProps, RoomListProps, UserListProps } from '../../tier02/cardlist/CardListInterfaces';
 import { ReturnGroupObject } from '../../../interfaces/edomGroupInterfaces';
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 
 // Redux Action Imports
 import { fetchEquipListGroup } from '../../../redux/actions/actEquipList';
@@ -43,6 +47,17 @@ const CardRenderProps: CardListRenderProps = {
     mdColumns: 3,
     smColumns: 2,
     xsColumns: 1
+};
+
+const CardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaHeight: 200,
+    displayContent: true,
+    contentHeight:  100,
+    displayActions: false,
+    actionHeight: 100,
+    enableActionArea: true
 };
 
 interface ReduxDataPayload {
@@ -280,9 +295,10 @@ const GroupProfile = () => {
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
-    const userCardContentList = buildUserContentList(reduxUserList);
-    const roomCardContentList = buildRoomContentList(reduxRoomList);
-    const equipCardContentList = buildEquipContentList(reduxEquipList);
+    const userCardContentList = buildUserCardContentList(CardSettings, reduxUserList);
+    const roomCardContentList = buildRoomCardContentList(CardSettings, reduxRoomList);
+    const equipCardContentList = buildEquipCardContentList(CardSettings,reduxEquipList);
+
 
     const userCardListData: CardListProps = {
         listid: `${params.groupID}-user-list`,
@@ -344,115 +360,3 @@ const GroupProfile = () => {
 };
 
 export default GroupProfile;
-
-
-
-const buildEquipContentList = (data: EquipListProps ) => {
-    const retList: any = [];
-    if (!data.equip) {
-        return retList;
-    }
-    data.equip.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/equip/${element.id}` || `#`,
-                actionAreaDestination: `/equip/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
-
-
-const buildRoomContentList = (data: RoomListProps ) => {
-    const retList: any = [];
-    if (!data.rooms) {
-        return retList;
-    }
-    data.rooms.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/rooms/${element.id}` || `#`,
-                actionAreaDestination: `/rooms/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
-
-
-const buildUserContentList = (data: UserListProps ) => {
-    const retList: any = [];
-    if (!data.users) {
-        return retList;
-    }
-    data.users.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/users/${element.username_clean}` || `#`,
-                actionAreaDestination: `/users/${element.username_clean}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.username}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
