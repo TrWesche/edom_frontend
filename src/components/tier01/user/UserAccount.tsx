@@ -12,12 +12,6 @@ import {
     Box
 } from "@mui/material"
 
-// import {
-//     PlayArrow as PlayArrowIcon,
-//     SkipNext as SkipNextIcon,
-//     SkipPrevious as SkipPreviousIcon
-// } from "@mui/icons-material"
-
 
 // Provider Imports
 // import { useAlert } from '../../../providers/alertProvider';
@@ -28,9 +22,12 @@ import CardList from '../../tier02/cardlist/CardList';
 import UserUpdateAccountForm from "../../tier02/user/UserUpdateAccountForm";
 import UserUpdateProfileForm from "../../tier02/user/UserUpdateProfileForm";
 
+// Component Function Imports
+import { buildEquipCardContentList, buildGroupCardContentList, buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, GroupListProps, RoomListProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
-
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 
 // Redux Action Imports
 import { fetchEquipListUser } from '../../../redux/actions/actEquipList';
@@ -50,6 +47,15 @@ const UserAccountCardProps: CardListRenderProps = {
     smColumns: 1,
     xsColumns: 1
 };
+
+const UserAccountCardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaWidth: 151,
+    displayContent: true,
+    displayActions: false,
+    enableActionArea: true
+}
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -96,15 +102,13 @@ const UserAccount = () => {
     const { authData } = useAuth();
 
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
-    const equipCardContentList = buildEquipContentList(reduxEquipList);
+    const equipCardContentList = buildEquipCardContentList(UserAccountCardSettings, reduxEquipList);
 
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    const groupCardContentList = buildGroupContentList(reduxGroupList);
+    const groupCardContentList = buildGroupCardContentList(UserAccountCardSettings, reduxGroupList);
 
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
-    const roomCardContentList = buildRoomContentList(reduxRoomList);
-    // console.log(reduxEquipList);
-    // console.log(equipCardContentList);
+    const roomCardContentList = buildRoomCardContentList(UserAccountCardSettings, reduxRoomList);
 
     const equipCardListData: CardListProps = {
         listid: `${authData.username}-equip-list`,
@@ -247,116 +251,3 @@ const UserAccount = () => {
 };
 
 export default UserAccount;
-
-
-
-
-const buildEquipContentList = (data: EquipListProps ) => {
-    const retList: any = [];
-    if (!data.equip) {
-        return retList;
-    }
-    data.equip.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                // mediaHeight: 100,
-                mediaWidth: 151,
-                displayContent: true,
-                // contentHeight:  200,
-                displayActions: false,
-                // actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/equip/${element.id}` || `#`,
-                actionAreaDestination: `/equip/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: element.image_alt_text ? element.image_alt_text : "Image Description Not Found",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
-
-
-const buildGroupContentList = (data: GroupListProps ) => {
-    const retList: any = [];
-    if (!data.group) {
-        return retList;
-    }
-    data.group.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                // mediaHeight: 100,
-                mediaWidth: 151,
-                displayContent: true,
-                // contentHeight:  200,
-                displayActions: false,
-                // actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/groups/${element.id}` || `#`,
-                actionAreaDestination: `/groups/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: element.image_alt_text ? element.image_alt_text : "Image Description Not Found",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
-
-
-const buildRoomContentList = (data: RoomListProps ) => {
-    const retList: any = [];
-    if (!data.rooms) {
-        return retList;
-    }
-    data.rooms.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                // mediaHeight: 100,
-                mediaWidth: 151,
-                displayContent: true,
-                // contentHeight:  200,
-                displayActions: false,
-                // actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/rooms/${element.id}` || `#`,
-                actionAreaDestination: `/rooms/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: element.image_alt_text ? element.image_alt_text : "Image Description Not Found",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
