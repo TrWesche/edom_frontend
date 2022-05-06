@@ -26,13 +26,17 @@ import { useAlert } from '../../../providers/alertProvider';
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
 
+// Component Function Imports
+import { buildEquipCardContentList, buildGroupCardContentList, buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, RoomListProps } from '../../tier02/cardlist/CardListInterfaces';
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 
 // Redux Action Imports
 import { fetchRoomList } from '../../../redux/actions/actRoomList';
 
-const ContentRenderSettings: CardListRenderProps = {
+const CardProps: CardListRenderProps = {
     xlRows: 3,
     lgRows: 3,
     mdRows: 4,
@@ -43,6 +47,17 @@ const ContentRenderSettings: CardListRenderProps = {
     mdColumns: 3,
     smColumns: 2,
     xsColumns: 1
+};
+
+const CardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaHeight: 200,
+    displayContent: true,
+    contentHeight:  100,
+    displayActions: false,
+    actionHeight: 100,
+    enableActionArea: true
 };
 
 interface ReduxDataPayload {
@@ -222,14 +237,14 @@ const ExploreRooms = () => {
     const dispatch = useDispatch();
     
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
-    const roomCardContentList = buildRoomContentList(reduxRoomList);
+    const roomCardContentList = buildRoomCardContentList(CardSettings, reduxRoomList);
 
     const roomCardListData: CardListProps = {
         listid: `explore-room-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: roomCardContentList,
-        renderConfig: ContentRenderSettings,
+        renderConfig: CardProps,
         displayIsProcessing: reduxRoomList.isProcessing,
         displayError: reduxRoomList.error
     };
@@ -255,41 +270,3 @@ const ExploreRooms = () => {
 }
 
 export default ExploreRooms;
-
-
-
-const buildRoomContentList = (data: RoomListProps ) => {
-    const retList: any = [];
-    if (!data.rooms) {
-        return retList;
-    }
-    data.rooms.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/rooms/${element.id}` || `#`,
-                actionAreaDestination: `/rooms/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};

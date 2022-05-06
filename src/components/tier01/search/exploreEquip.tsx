@@ -26,14 +26,18 @@ import { useAlert } from '../../../providers/alertProvider';
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
 
+// Component Function Imports
+import { buildEquipCardContentList } from "../../tier02/cardlist/CardListFunctions";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 
 // Redux Action Imports
 import { fetchEquipList } from '../../../redux/actions/actEquipList';
 
 
-const EquipListRenderSettings: CardListRenderProps = {
+const CardProps: CardListRenderProps = {
     xlRows: 3,
     lgRows: 3,
     mdRows: 4,
@@ -44,6 +48,17 @@ const EquipListRenderSettings: CardListRenderProps = {
     mdColumns: 3,
     smColumns: 2,
     xsColumns: 1
+};
+
+const CardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaHeight: 200,
+    displayContent: true,
+    contentHeight:  100,
+    displayActions: false,
+    actionHeight: 100,
+    enableActionArea: true
 };
 
 const CheckboxesGroup = () => {
@@ -218,14 +233,14 @@ const ExploreEquip = () => {
     const dispatch = useDispatch();
     
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
-    const equipCardContentList = buildEquipContentList(reduxEquipList);
+    const equipCardContentList = buildEquipCardContentList(CardSettings, reduxEquipList);
 
     const equipCardListData: CardListProps = {
         listid: `explore-equip-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: equipCardContentList,
-        renderConfig: EquipListRenderSettings,
+        renderConfig: CardProps,
         displayIsProcessing: reduxEquipList.isProcessing,
         displayError: reduxEquipList.error
     };
@@ -247,40 +262,3 @@ const ExploreEquip = () => {
 }
 
 export default ExploreEquip;
-
-
-const buildEquipContentList = (data: EquipListProps ) => {
-    const retList: any = [];
-    if (!data.equip) {
-        return retList;
-    }
-    data.equip.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/equip/${element.id}` || `#`,
-                actionAreaDestination: `/equip/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};

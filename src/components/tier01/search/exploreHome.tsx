@@ -23,8 +23,12 @@ import { useAlert } from '../../../providers/alertProvider';
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
 
+// Component Function Imports
+import { buildEquipCardContentList, buildGroupCardContentList, buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, GroupListProps, RoomListProps, EquipListProps } from '../../tier02/cardlist/CardListInterfaces';
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 
 // Redux Action Imports
 import { fetchGroupList } from '../../../redux/actions/actGroupList';
@@ -32,7 +36,7 @@ import { fetchRoomList } from '../../../redux/actions/actRoomList';
 import { fetchEquipList } from '../../../redux/actions/actEquipList';
 
 
-const CardRenderProps: CardListRenderProps = {
+const CardProps: CardListRenderProps = {
     xlRows: 1,
     lgRows: 1,
     mdRows: 2,
@@ -43,6 +47,17 @@ const CardRenderProps: CardListRenderProps = {
     mdColumns: 3,
     smColumns: 2,
     xsColumns: 1
+};
+
+const CardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaHeight: 200,
+    displayContent: true,
+    contentHeight:  100,
+    displayActions: false,
+    actionHeight: 100,
+    enableActionArea: true
 };
 
 interface ReduxDataPayload {
@@ -259,16 +274,16 @@ const ExploreHome = () => {
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
 
-    const groupCardContentList = buildGroupContentList(reduxGroupList);
-    const roomCardContentList = buildRoomContentList(reduxRoomList);
-    const equipCardContentList = buildEquipContentList(reduxEquipList);
+    const groupCardContentList = buildGroupCardContentList(CardSettings, reduxGroupList);
+    const roomCardContentList = buildRoomCardContentList(CardSettings, reduxRoomList);
+    const equipCardContentList = buildEquipCardContentList(CardSettings, reduxEquipList);
 
     const groupCardListData: CardListProps = {
         listid: `explore-group-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: groupCardContentList,
-        renderConfig: CardRenderProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxGroupList.isProcessing,
         displayError: reduxGroupList.error
     };
@@ -278,7 +293,7 @@ const ExploreHome = () => {
         cardType: "horizontal",
         navigate: navigate,
         cardContent: roomCardContentList,
-        renderConfig: CardRenderProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxRoomList.isProcessing,
         displayError: reduxRoomList.error
     };
@@ -288,7 +303,7 @@ const ExploreHome = () => {
         cardType: "horizontal",
         navigate: navigate,
         cardContent: equipCardContentList,
-        renderConfig: CardRenderProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxEquipList.isProcessing,
         displayError: reduxEquipList.error
     };
@@ -316,114 +331,3 @@ const ExploreHome = () => {
 }
 
 export default ExploreHome;
-
-
-const buildEquipContentList = (data: EquipListProps ) => {
-    const retList: any = [];
-    if (!data.equip) {
-        return retList;
-    }
-    data.equip.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/equip/${element.id}` || `#`,
-                actionAreaDestination: `/equip/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
-
-
-const buildRoomContentList = (data: RoomListProps ) => {
-    const retList: any = [];
-    if (!data.rooms) {
-        return retList;
-    }
-    data.rooms.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/rooms/${element.id}` || `#`,
-                actionAreaDestination: `/rooms/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};
-
-
-const buildGroupContentList = (data: GroupListProps ) => {
-    const retList: any = [];
-    if (!data.group) {
-        return retList;
-    }
-    data.group.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/groups/${element.id}` || `#`,
-                actionAreaDestination: `/groups/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};

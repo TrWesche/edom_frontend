@@ -26,23 +26,38 @@ import { useAlert } from '../../../providers/alertProvider';
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
 
+// Component Function Imports
+import { buildEquipCardContentList, buildGroupCardContentList, buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
+
 // Interface Imports
 import { CardListProps, CardListRenderProps, GroupListProps } from '../../tier02/cardlist/CardListInterfaces';
+import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 
 // Redux Action Imports
 import { fetchGroupList } from '../../../redux/actions/actGroupList';
 
-const CardRenderProps: CardListRenderProps = {
-    xlRows: 1,
-    lgRows: 1,
-    mdRows: 2,
-    smRows: 3,
-    xsRows: 6,
+const CardProps: CardListRenderProps = {
+    xlRows: 3,
+    lgRows: 3,
+    mdRows: 4,
+    smRows: 6,
+    xsRows: 12,
     xlColumns: 4,
     lgColumns: 4,
     mdColumns: 3,
     smColumns: 2,
     xsColumns: 1
+};
+
+const CardSettings: CardSettingProps = {
+    displayEdit: true,
+    displayMedia: true,
+    mediaHeight: 200,
+    displayContent: true,
+    contentHeight:  100,
+    displayActions: false,
+    actionHeight: 100,
+    enableActionArea: true
 };
 
 
@@ -218,14 +233,14 @@ const ExploreGroups = () => {
     const dispatch = useDispatch();
     
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    const groupCardContentList = buildGroupContentList(reduxGroupList);
+    const groupCardContentList = buildGroupCardContentList(CardSettings, reduxGroupList);
 
     const groupCardListData: CardListProps = {
         listid: `explore-group-list`,
         cardType: "horizontal",
         navigate: navigate,
         cardContent: groupCardContentList,
-        renderConfig: CardRenderProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxGroupList.isProcessing,
         displayError: reduxGroupList.error
     };
@@ -247,40 +262,3 @@ const ExploreGroups = () => {
 }
 
 export default ExploreGroups;
-
-
-const buildGroupContentList = (data: GroupListProps ) => {
-    const retList: any = [];
-    if (!data.group) {
-        return retList;
-    }
-    data.group.forEach(element => {
-        retList.push({
-            settings: {
-                displayEdit: true,
-                displayMedia: true,
-                mediaHeight: 200,
-                // mediaWidth: 200,
-                displayContent: true,
-                contentHeight:  100,
-                displayActions: false,
-                actionHeight: 100,
-                enableActionArea: true
-            },
-            data: {
-                editAllowed: element.edit_permissions || false,
-                editButtonDestination: `/groups/${element.id}` || `#`,
-                actionAreaDestination: `/groups/${element.id}` || `#`,
-                mediaURI: element.image_url || `Image Not Found`,
-                mediaAltText: "TODO - Alt Text Not Stored",
-                contentTexts: [
-                    {textVariant: "h5", textContent: element.name}, 
-                    {textVariant: "body2", textContent: element.headline}, 
-                    // {textVariant: "body2", textContent: element.description}
-                ]
-            }
-        })
-    });
-
-    return retList;
-};

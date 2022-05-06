@@ -35,7 +35,7 @@ import { fetchGroupListUser } from "../../../redux/actions/actGroupList";
 import { fetchRoomListUser } from "../../../redux/actions/actRoomList";
 
 
-const UserAccountCardProps: CardListRenderProps = {
+const CardProps: CardListRenderProps = {
     xlRows: 6,
     lgRows: 6,
     mdRows: 6,
@@ -48,7 +48,7 @@ const UserAccountCardProps: CardListRenderProps = {
     xsColumns: 1
 };
 
-const UserAccountCardSettings: CardSettingProps = {
+const CardSettings: CardSettingProps = {
     displayEdit: true,
     displayMedia: true,
     mediaWidth: 151,
@@ -102,20 +102,20 @@ const UserAccount = () => {
     const { authData } = useAuth();
 
     const reduxEquipList: EquipListProps = useSelector((store: RootStateOrAny) => store?.redEquipList);
-    const equipCardContentList = buildEquipCardContentList(UserAccountCardSettings, reduxEquipList);
+    const equipCardContentList = buildEquipCardContentList(CardSettings, reduxEquipList);
 
     const reduxGroupList: GroupListProps = useSelector((store: RootStateOrAny) => store?.redGroupList);
-    const groupCardContentList = buildGroupCardContentList(UserAccountCardSettings, reduxGroupList);
+    const groupCardContentList = buildGroupCardContentList(CardSettings, reduxGroupList);
 
     const reduxRoomList: RoomListProps = useSelector((store: RootStateOrAny) => store?.redRoomList);
-    const roomCardContentList = buildRoomCardContentList(UserAccountCardSettings, reduxRoomList);
+    const roomCardContentList = buildRoomCardContentList(CardSettings, reduxRoomList);
 
     const equipCardListData: CardListProps = {
         listid: `${authData.username}-equip-list`,
         cardType: "stacked",
         navigate: navigate,
         cardContent: equipCardContentList,
-        renderConfig: UserAccountCardProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxEquipList.isProcessing,
         displayError: reduxEquipList.error
     };
@@ -125,7 +125,7 @@ const UserAccount = () => {
         cardType: "stacked",
         navigate: navigate,
         cardContent: groupCardContentList,
-        renderConfig: UserAccountCardProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxGroupList.isProcessing,
         displayError: reduxGroupList.error
     };
@@ -135,7 +135,7 @@ const UserAccount = () => {
         cardType: "stacked",
         navigate: navigate,
         cardContent: roomCardContentList,
-        renderConfig: UserAccountCardProps,
+        renderConfig: CardProps,
         displayIsProcessing: reduxRoomList.isProcessing,
         displayError: reduxRoomList.error
     };
