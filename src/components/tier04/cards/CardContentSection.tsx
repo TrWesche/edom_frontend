@@ -11,7 +11,7 @@ export interface CardContentProps {
     textContent: string
 };
 
-const CardContentSection = (props: {showContent: boolean, contentHeight?: number, textSections: Array<CardContentProps>}) => {
+const CardContentSection = (props: {showContent: boolean, contentHeight?: number, textSections: Array<CardContentProps>, keyPrefix: string}) => {
     return (
         <Fragment>
             {props.showContent && 
@@ -22,16 +22,16 @@ const CardContentSection = (props: {showContent: boolean, contentHeight?: number
                     }}
                 >
                     {
-                        props.textSections.map((section) => {
+                        props.textSections.map((section, idx) => {
                             if (section.textVariant === "body1" || section.textVariant === "body2") {
                                 return (
-                                    <Typography variant={section.textVariant} color="text.secondary">
+                                    <Typography key={`${props.keyPrefix}-cs${idx}`} variant={section.textVariant} color="text.secondary">
                                         {section.textContent}
                                     </Typography>
                                 )
                             } else {
                                 return (
-                                    <Typography gutterBottom variant={section.textVariant} component="div">
+                                    <Typography key={`${props.keyPrefix}-cs${idx}`} gutterBottom variant={section.textVariant} component="div">
                                         {section.textContent}
                                     </Typography>
                                 )

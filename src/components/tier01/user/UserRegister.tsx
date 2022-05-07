@@ -6,10 +6,15 @@ import {
     Typography
 } from "@mui/material"
 
-import HandleButtonClick from '../../../utils/HandleButtonClick';
+import { useNavigate } from "react-router-dom";
+
+import { handleClickMouseEvent } from '../../../utils/clickHandlers';
 import RegisterForm from "../../tier02/user/UserRegisterForm";
 
 const UserLogin = () => {   
+    // React / Redux Function Instantiations
+    const navigate = useNavigate();
+
     return (
         <Grid item container xs={12}>
             <Grid item xs={12} flexDirection='column' display={'flex'} justifyContent={'center'}>
@@ -25,7 +30,7 @@ const UserLogin = () => {
                         href='/login' 
                         variant="contained" 
                         color="secondary"
-                        onClick={HandleButtonClick}
+                        onClick={(e) => handleClickMouseEvent(e, navigate, '/login')}
                         sx={{
                             margin: '0.25rem',
                             width: '200px'

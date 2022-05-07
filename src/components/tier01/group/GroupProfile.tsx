@@ -69,7 +69,7 @@ interface ReduxDataPayload {
 
 
 const GroupProfileHeader = (props: {navigate: NavigateFunction, data: ReturnGroupObject}) => {
-    const {data, navigate} = props;
+    const { data } = props;
 
     return (
         <Paper sx={{ display: 'flex', m: 1, width: '100%', alignItems: 'center', padding: '1.5rem' }}>
@@ -336,7 +336,7 @@ const GroupProfile = () => {
         dispatch(fetchUserListGroup([{key: "gid", value: params.groupID}]));
         dispatch(fetchRoomListGroup([{key: "gid", value: params.groupID}]));
         dispatch(fetchEquipListGroup([{key: "gid", value: params.groupID}]));
-    }, [dispatch]);
+    }, [dispatch, params.groupID]);
 
     const reduxData: ReduxDataPayload = {
         group: reduxGroup,

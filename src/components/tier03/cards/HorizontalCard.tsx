@@ -31,7 +31,7 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 };
 
 
-const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
+const HorizontalCard = (config: CardProps, navigate: NavigateFunction, parentKey: string) => {
     return (
         <Box>
             {config.settings.displayEdit && 
@@ -56,6 +56,7 @@ const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
                             showContent={config.settings.displayContent}
                             contentHeight={config.settings.contentHeight}
                             textSections={config.data.contentTexts}
+                            keyPrefix={parentKey}
                         />
                     </CardActionArea>
                     :
@@ -71,6 +72,7 @@ const HorizontalCard = (config: CardProps, navigate: NavigateFunction) => {
                             showContent={config.settings.displayContent}
                             contentHeight={config.settings.contentHeight}
                             textSections={config.data.contentTexts}
+                            keyPrefix={parentKey}
                         />
                     </Fragment>
                 }

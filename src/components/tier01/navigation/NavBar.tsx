@@ -61,7 +61,7 @@ interface NavBarProps {
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-    })<AppBarProps>(({ theme, open, drawerwidth: drawerwidth }) => ({
+    })<AppBarProps>(({ theme, open, drawerwidth }) => ({
         transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,

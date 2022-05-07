@@ -16,13 +16,14 @@ import {
     Chat
 } from '@mui/icons-material';
 
-import HandleButtonClick from '../../../utils/HandleButtonClick';
+import { handleClickMouseEvent } from '../../../utils/clickHandlers';
 import LoginForm from '../user/UserLoginForm';
 
 // Providers
 import { authToken } from '../../../providers/authProvider';
 
 const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, alertSetter: Function | undefined}) => {   
+    const { navigate } = props;
     return (
         <React.Fragment>
             <Grid item container xs={12} margin={'0 0 2rem 0'}>
@@ -43,7 +44,8 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                             href='/register' 
                             variant="contained" 
                             color="secondary"
-                            onClick={HandleButtonClick}
+                            // onClick={handleClickButton}
+                            onClick={(e) => handleClickMouseEvent(e, navigate, '/register')}
                             sx={{
                                 margin: '0.25rem',
                                 width: '150px'
@@ -70,7 +72,7 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                         href='https://www.scuttlerobot.org/' 
                         variant="contained" 
                         startIcon={<PrecisionManufacturing />} 
-                        onClick={HandleButtonClick}
+                        onClick={(e) => handleClickMouseEvent(e, navigate, 'https://www.scuttlerobot.org/', true)}
                     >
                         SCUTTLE
                     </Button>
@@ -81,7 +83,8 @@ const AnonymousHome = (props: {authData: authToken, navigate: NavigateFunction, 
                         href='https://discord.gg/8q6MFRcW79' 
                         variant="contained" 
                         startIcon={<Chat />}
-                        onClick={HandleButtonClick}
+                        // onClick={handleClickButton}
+                        onClick={(e) => handleClickMouseEvent(e, navigate, 'https://discord.gg/8q6MFRcW79', true)}
                     >
                         Discord
                     </Button>

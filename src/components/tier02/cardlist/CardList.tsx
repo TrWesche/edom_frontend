@@ -146,7 +146,7 @@ const RenderCards = (
                     {cardsToRender.map((card, idx) => {
                         return (
                             <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
-                                {HorizontalCard(card, navigate)}
+                                {HorizontalCard(card, navigate,`${listid}-card-${idx}`)}
                             </Grid>    
                         )
                     })}
@@ -160,7 +160,7 @@ const RenderCards = (
                     {cardsToRender.map((card, idx) => {
                         return (
                             <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
-                                {StackedCard(card, navigate)}
+                                {StackedCard(card, navigate, `${listid}-card-${idx}`)}
                             </Grid>    
                         )
                     })}
@@ -173,7 +173,7 @@ const RenderCards = (
                     {cardsToRender.map((card, idx) => {
                         return (
                             <Grid item xs={renderFormat.colWidth} key={`${listid}-card-${idx}`}>
-                                {HorizontalCard(card, navigate)}
+                                {HorizontalCard(card, navigate, `${listid}-card-${idx}`)}
                             </Grid>    
                         )
                     })}

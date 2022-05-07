@@ -21,7 +21,7 @@ import {
 // Providers
 import { authToken } from '../../../providers/authProvider';
 
-import HandleButtonClick from '../../../utils/HandleButtonClick';
+import { handleClickMouseEvent } from '../../../utils/clickHandlers';
 
 // Component Imports
 import CardList from '../../tier02/cardlist/CardList';
@@ -68,7 +68,7 @@ interface ReduxDataPayload {
 };
 
 
-const HomePageHeader = () => {
+const HomePageHeader = (navigate: NavigateFunction) => {
     return (
         <Grid container item spacing={4} xs={12}>
             <Grid item container xs={12} margin={'0 0 2rem 0'}>
@@ -88,7 +88,7 @@ const HomePageHeader = () => {
                         href='https://www.scuttlerobot.org/' 
                         variant="contained" 
                         startIcon={<PrecisionManufacturing />} 
-                        onClick={HandleButtonClick}
+                        onClick={(e) => handleClickMouseEvent(e, navigate, 'https://www.scuttlerobot.org/', true)}
                     >
                         SCUTTLE
                     </Button>
@@ -99,7 +99,7 @@ const HomePageHeader = () => {
                         href='https://discord.gg/8q6MFRcW79' 
                         variant="contained" 
                         startIcon={<Chat />}
-                        onClick={HandleButtonClick}
+                        onClick={(e) => handleClickMouseEvent(e, navigate, 'https://discord.gg/8q6MFRcW79', true)}
                     >
                         Discord
                     </Button>
@@ -127,7 +127,7 @@ const PageLoadHandler = (props: {
     const pageLoaded = () => {
         return (
             <React.Fragment>
-                {HomePageHeader()}
+                {HomePageHeader(navigate)}
                 <Grid item xs={12} margin={"20px 0 0 0"}>
                     <Typography variant='h2' color={'text.primary'}>Featured Groups</Typography>
                 </Grid>

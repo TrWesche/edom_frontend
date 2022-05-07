@@ -27,7 +27,7 @@ import { useAlert } from '../../../providers/alertProvider';
 import CardList from '../../tier02/cardlist/CardList';
 
 // Component Function Imports
-import { buildEquipCardContentList, buildGroupCardContentList, buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
+import { buildGroupCardContentList } from "../../tier02/cardlist/CardListFunctions";
 
 // Interface Imports
 import { CardListProps, CardListRenderProps, GroupListProps } from '../../tier02/cardlist/CardListInterfaces';

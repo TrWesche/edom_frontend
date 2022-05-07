@@ -31,7 +31,7 @@ const handleClick = (e: ClickEvent, navigate: NavigateFunction, target: string) 
 };
 
 
-const StackedCard = (config: CardProps, navigate: NavigateFunction) => {
+const StackedCard = (config: CardProps, navigate: NavigateFunction, parentKey: string) => {
     return (
         <Box>
             {config.settings.displayEdit && 
@@ -65,6 +65,7 @@ const StackedCard = (config: CardProps, navigate: NavigateFunction) => {
                                 showContent={config.settings.displayContent}
                                 contentHeight={config.settings.contentHeight}
                                 textSections={config.data.contentTexts}
+                                keyPrefix={parentKey}
                             />
                         </Box>
                     </CardActionArea>
@@ -82,6 +83,7 @@ const StackedCard = (config: CardProps, navigate: NavigateFunction) => {
                                 showContent={config.settings.displayContent}
                                 contentHeight={config.settings.contentHeight}
                                 textSections={config.data.contentTexts}
+                                keyPrefix={parentKey}
                             />
                         </Box>
                     </Fragment>

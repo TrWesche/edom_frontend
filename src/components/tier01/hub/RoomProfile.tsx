@@ -381,7 +381,7 @@ const RoomProfile = () => {
     useEffect(() => {
         dispatch(fetchRoomProfile(params.roomID));
         dispatch(fetchEquipListRoom(params.roomID));
-    }, [dispatch]);
+    }, [dispatch, params.roomID]);
 
     const renderData: ReduxDataPayload = {
         Room: reduxRoom,

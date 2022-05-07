@@ -27,7 +27,7 @@ import { useAlert } from '../../../providers/alertProvider';
 import CardList from '../../tier02/cardlist/CardList';
 
 // Component Function Imports
-import { buildEquipCardContentList, buildGroupCardContentList, buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
+import { buildRoomCardContentList } from "../../tier02/cardlist/CardListFunctions";
 
 // Interface Imports
 import { CardListProps, CardListRenderProps, RoomListProps } from '../../tier02/cardlist/CardListInterfaces';
@@ -59,11 +59,6 @@ const CardSettings: CardSettingProps = {
     actionHeight: 100,
     enableActionArea: true
 };
-
-interface ReduxDataPayload {
-    rooms: RoomListProps
-};
-
 
 const CheckboxesGroup = () => {
     const [state, setState] = React.useState({
@@ -252,10 +247,6 @@ const ExploreRooms = () => {
     useEffect(() => {
         dispatch(fetchRoomList());
     }, [dispatch]);
-
-    const reduxData: ReduxDataPayload = {
-        rooms: reduxRoomList
-    };
 
     return (
         <Grid container spacing={2} justifyContent={'center'} width={'100%'}>

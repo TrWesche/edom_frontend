@@ -45,7 +45,7 @@ const Home = () => {
     const { authData } = useAuth();
 
     return (
-        <Grid container spacing={5} justifyContent={'center'} xs={12} padding={'20px 0 0 0'}>
+        <Grid container spacing={5} justifyContent={'center'} padding={'20px 0 0 0'}>
             <PageLoadHandler 
                 authData={authData}
                 navigate={navigate}

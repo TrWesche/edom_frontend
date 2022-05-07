@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, MouseEvent } from 'react';
+import React, { useEffect } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 
 // Redux
@@ -25,29 +25,13 @@ import { useAlert } from '../../../providers/alertProvider';
 import { ReturnEquipObject } from '../../../interfaces/edomEquipInterfaces';
 import { fetchEquipProfile } from '../../../redux/actions/actEquip';
 
+// Function Imports
+import { handleClickMouseEvent } from '../../../utils/clickHandlers';
 
 interface ReduxDataPayload {
     Equip: ReturnEquipObject
 };
 
-
-interface ClickEvent extends MouseEvent<HTMLButtonElement> {
-    target: ClickTarget
-};
-
-interface ClickTarget extends EventTarget {
-    href?: string
-};
-
-const handleClick = (e: React.MouseEvent, navigate: NavigateFunction, target: string) => {
-    e.preventDefault();
-    // console.log(`Clicked: ${target}`)
-    if (target !== "") {
-        navigate(target);
-    } else {
-        console.log("Error, destination not defined")
-    }
-};
 
 const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject) => {
     return (
@@ -89,7 +73,8 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject)
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
-                            onClick={(e) => handleClick(e, navigate, `/users/${data.owner_user ? data.owner_user.username : "404"}`)}
+                            href={`/users/${data.owner_user ? data.owner_user.username : "404"}`}
+                            onClick={(e) => handleClickMouseEvent(e, navigate, `/users/${data.owner_user ? data.owner_user.username : "404"}`)}
                         >
                             {data.owner_user.username}
                         </Link>
@@ -105,7 +90,8 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject)
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
-                            onClick={(e) => handleClick(e, navigate, `/groups/${data.owner_group ? data.owner_group.group_id : "404"}`)}
+                            href={`/groups/${data.owner_group ? data.owner_group.group_id : "404"}`}
+                            onClick={(e) => handleClickMouseEvent(e, navigate, `/groups/${data.owner_group ? data.owner_group.group_id : "404"}`)}
                         >
                             {data.owner_group.group_name}
                         </Link>
@@ -121,7 +107,8 @@ const EquipProfileHeader = (navigate: NavigateFunction, data: ReturnEquipObject)
                             margin={"1rem 0rem 0rem 0rem"}
                             padding={"0.25rem"}
                             textAlign={"right"}
-                            onClick={(e) => handleClick(e, navigate, `/rooms/${data.room_associations ? data.room_associations[0].room_name : "404"}`)}
+                            href={`/rooms/${data.room_associations ? data.room_associations[0].room_name : "404"}`}
+                            onClick={(e) => handleClickMouseEvent(e, navigate, `/rooms/${data.room_associations ? data.room_associations[0].room_name : "404"}`)}
                         >
                             {data.room_associations[0].room_name}
                         </Link>
@@ -311,7 +298,7 @@ const EquipProfile = () => {
 
     useEffect(() => {
         dispatch(fetchEquipProfile(params.equipID));
-    }, [dispatch]);
+    }, [dispatch, params.equipID]);
 
     const reduxData: ReduxDataPayload = {
         Equip: reduxEquip
