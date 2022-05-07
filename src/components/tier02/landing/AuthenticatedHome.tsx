@@ -36,6 +36,7 @@ import { CardSettingProps } from "../../tier03/cards/_interfaceCardProps";
 // Redux Action Imports
 import { fetchGroupList } from '../../../redux/actions/actGroupList';
 import { fetchRoomList } from '../../../redux/actions/actRoomList';
+import { fetchEquipList } from '../../../redux/actions/actEquipList';
 
 const CardProps: CardListRenderProps = {
     xlRows: 1,
@@ -232,6 +233,7 @@ const AuthenticatedHome = (props: {authData: authToken, navigate: NavigateFuncti
     useEffect(() => {
         dispatch(fetchGroupList());
         dispatch(fetchRoomList());
+        dispatch(fetchEquipList());
     }, [dispatch]);
 
     const renderData: ReduxDataPayload = {
